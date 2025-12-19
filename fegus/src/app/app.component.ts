@@ -8,9 +8,6 @@ import { ColorModeService } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 
-import { NgbDatepickerModule, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-
-
 @Component({
     selector: 'app-root',
     template: '<router-outlet />',

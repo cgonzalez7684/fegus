@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, computed, DOCUMENT, forwardRef, inject, input, OnInit, Renderer2 } from '@angular/core';
-import { NgClass } from '@angular/common';
 
 import { getStyle, rgbToHex } from '@coreui/utils';
 import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular';
@@ -48,11 +47,11 @@ export class ColorsComponent implements OnInit, AfterViewInit {
   selector: 'app-theme-color',
   template: `
     <c-col xl="2" md="4" sm="6" xs="12" class="my-4 ms-4">
-      <div [ngClass]="colorClasses()" style="padding-top: 75%;"></div>
+      <div [class]="colorClasses()" style="padding-top: 75%;"></div>
       <ng-content />
     </c-col>
   `,
-  imports: [ColComponent, NgClass],
+  imports: [ColComponent],
   host: {
     style: 'display: contents;'
   }
@@ -63,10 +62,12 @@ export class ThemeColorComponent {
   readonly colorClasses = computed(() => {
     const color = this.color();
     return {
-      'theme-color w-75 rounded mb-3': true,
+      'theme-color': true,
+      'w-75': true,
+      'rounded': true,
+      'mb-3': true,
       [`bg-${color}`]: !!color
-    };
+    } as Record<string, boolean>;
   });
-
 }
 

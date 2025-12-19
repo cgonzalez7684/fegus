@@ -58,7 +58,87 @@ export const navItems: INavData[] = [
         name: 'Cards',
         url: '/base/cards',
         icon: 'nav-icon-bullet'
-      }      
+      },
+      {
+        name: 'Carousel',
+        url: '/base/carousel',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Collapse',
+        url: '/base/collapse',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'List Group',
+        url: '/base/list-group',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Navs & Tabs',
+        url: '/base/navs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Pagination',
+        url: '/base/pagination',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Placeholder',
+        url: '/base/placeholder',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Smart Table',
+        url: 'https://coreui.io/angular/docs/components/smart-table/',
+        icon: 'nav-icon-bullet',
+        badge: {
+          color: 'danger',
+          text: 'PRO'
+        },
+        attributes: { target: '_blank' }
+      },
+      {
+        name: 'Smart Pagination',
+        url: 'https://coreui.io/angular/docs/components/smart-pagination/',
+        icon: 'nav-icon-bullet',
+        badge: {
+          color: 'danger',
+          text: 'PRO'
+        },
+        attributes: { target: '_blank' }
+      },
+      {
+        name: 'Popovers',
+        url: '/base/popovers',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Progress',
+        url: '/base/progress',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Spinners',
+        url: '/base/spinners',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Tables',
+        url: '/base/tables',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Tabs',
+        url: '/base/tabs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Tooltips',
+        url: '/base/tooltips',
+        icon: 'nav-icon-bullet'
+      }
     ]
   },
   {
@@ -93,16 +173,11 @@ export const navItems: INavData[] = [
       }
     ]
   },
-   {
+  {
     name: 'Forms',
     url: '/forms',
     iconComponent: { name: 'cil-notes' },
     children: [
-      {
-        name: 'Pruebas',
-        url: '/forms/pantalla-prubas',
-        icon: 'nav-icon-bullet'
-      },
       {
         name: 'Autocomplete',
         url: 'https://coreui.io/angular/docs/forms/autocomplete/',
@@ -156,6 +231,16 @@ export const navItems: INavData[] = [
       {
         name: 'Multi Select',
         url: 'https://coreui.io/angular/docs/forms/multi-select/',
+        icon: 'nav-icon-bullet',
+        badge: {
+          color: 'danger',
+          text: 'PRO'
+        },
+        attributes: { target: '_blank' }
+      },
+      {
+        name: 'OTP Input',
+        url: 'https://coreui.io/angular/docs/forms/otp/',
         icon: 'nav-icon-bullet',
         badge: {
           color: 'danger',
@@ -234,6 +319,73 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet'
       }
     ]
+  },
+  {
+    name: 'Charts',
+    iconComponent: { name: 'cil-chart-pie' },
+    url: '/charts'
+  },
+  {
+    name: 'Icons',
+    iconComponent: { name: 'cil-star' },
+    url: '/icons',
+    children: [
+      {
+        name: 'CoreUI Free',
+        url: '/icons/coreui-icons',
+        icon: 'nav-icon-bullet',
+        badge: {
+          color: 'success',
+          text: 'FREE'
+        }
+      },
+      {
+        name: 'CoreUI Flags',
+        url: '/icons/flags',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'CoreUI Brands',
+        url: '/icons/brands',
+        icon: 'nav-icon-bullet'
+      }
+    ]
+  },
+  {
+    name: 'Notifications',
+    url: '/notifications',
+    iconComponent: { name: 'cil-bell' },
+    children: [
+      {
+        name: 'Alerts',
+        url: '/notifications/alerts',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Badges',
+        url: '/notifications/badges',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Modal',
+        url: '/notifications/modal',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Toast',
+        url: '/notifications/toasts',
+        icon: 'nav-icon-bullet'
+      }
+    ]
+  },
+  {
+    name: 'Widgets',
+    url: '/widgets',
+    iconComponent: { name: 'cil-calculator' },
+    badge: {
+      color: 'info',
+      text: 'NEW'
+    }
   },
   {
     title: true,

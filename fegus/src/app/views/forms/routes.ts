@@ -12,18 +12,11 @@ export const routes: Routes = [
         redirectTo: 'form-control',
         pathMatch: 'full'
       },
-       {
+      {
         path: 'form-control',
         loadComponent: () => import('./form-controls/form-controls.component').then(m => m.FormControlsComponent),
         data: {
           title: 'Form Control'
-        }
-      },
-      {
-        path: 'pantalla-prubas',
-        loadComponent: () => import('./pantalla-prubas/pantalla-prubas.component').then(m => m.PantallaPrubasComponent),
-        data: {
-          title: 'Pruebas'
         }
       },
       {
