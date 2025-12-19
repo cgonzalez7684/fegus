@@ -1,0 +1,158 @@
+<c-row ngPreserveWhitespaces>
+  <c-row [gutter]="{ gx: 5 }">
+    <c-col>
+      <div class="p-3 border bg-light">
+        <button
+          cButton
+          [cModalToggle]="verticallyCenteredModal.id"
+          color="primary"
+          (click)="abrirModal()"
+        >
+          Primary
+        </button>
+      </div>
+    </c-col>
+    <c-col>
+      <div class="p-3 border bg-light">Custom column padding</div>
+    </c-col>
+  </c-row>
+
+  <c-modal
+    #verticallyCenteredModal
+    alignment="center"
+    id="verticallyCenteredModal"
+    size="lg"
+    alignment="center"
+    visible="true"
+    transition="true"
+    scrollable="true"
+  >
+    <c-modal-body>
+      <c-col xs="12">
+        <c-card class="mb-4">
+          <c-card-header>
+            <strong>Registro usuario</strong>
+          </c-card-header>
+          <c-card-body>
+            <form cForm>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlInput1"
+                  >Email address</label
+                >
+                <input
+                  cFormControl
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                  type="email"
+                />
+              </div>
+              <div class="mb-3">
+                <c-col xs="2">
+                  <c-row>
+                    <label for="date" class="form-label"
+                      >Fecha de gestión</label
+                    >
+                  </c-row>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      name="dp"
+                      [(ngModel)]="model"
+                      (ngModelChange)="onDateChange($event)"
+                      ngbDatepicker
+                      #d="ngbDatepicker"
+                    />
+                    <button
+                      class="btn btn-outline-secondary bi bi-calendar3"
+                      (click)="d.toggle()"
+                      type="button"
+                    ></button>
+                  </div>
+                </c-col>
+              </div>
+              <div class="mb-3">
+                <label cLabel for="exampleFormControlTextarea1"
+                  >Example textarea</label
+                >
+                <textarea
+                  cFormControl
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                ></textarea>
+              </div>
+            </form>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table cTable [hover]="true" [striped]="true">
+              <thead>
+                <tr>
+                  <th scope="col">Class</th>
+                  <th scope="col">Heading</th>
+                  <th scope="col">Heading</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Default</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="primary">
+                  <th scope="row">Primary</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="secondary">
+                  <th scope="row">Secondary</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="success">
+                  <th scope="row">Success</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="danger">
+                  <th scope="row">Danger</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="warning">
+                  <th scope="row">Warning</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="info">
+                  <th scope="row">Info</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="light">
+                  <th scope="row">Light</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="dark">
+                  <th scope="row">Dark</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                 <tr cTableColor="light">
+                  <th scope="row">Light</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+                <tr cTableColor="dark">
+                  <th scope="row">Dark</th>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-modal-body>
+  </c-modal>
+</c-row>
