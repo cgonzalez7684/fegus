@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ArchivoSICVECA NS0:noNamespaceSchemaLocation="NEC2024_CuentasPorCobrarNoAsociadas.xsd" xmlns:NS0="http://www.w3.org/2001/XMLSchema-instance">
+  <Encabezado>
+    <ClaseDato>51</ClaseDato>
+    <VersionClaseDato>1.0</VersionClaseDato>
+    <Archivo>5119</Archivo>
+    <VersionArchivo>2.0</VersionArchivo>
+    <Periodo>01/01/2022</Periodo>
+    <IdEntidad>3101192928</IdEntidad>
+    <TipoCarga>1</TipoCarga>
+    <TipoMoneda>1</TipoMoneda>
+  </Encabezado>
+  <Datos>
+    <Registro id="" accion="">
+      <IdOperacionCredito></IdOperacionCredito>
+      <TipoPersonaDeudor></TipoPersonaDeudor>
+      <IdPersona></IdPersona>
+      <TipoMonedaMonto></TipoMonedaMonto>
+      <MontoOriginal></MontoOriginal>
+      <TipoCatalogoSUGEF></TipoCatalogoSUGEF>
+      <CuentaContableSaldoPrincipal></CuentaContableSaldoPrincipal>
+      <SaldoPrincipal></SaldoPrincipal>
+      <CuentaContableSaldoProductosPorCobrar></CuentaContableSaldoProductosPorCobrar>
+      <SaldoProductosPorCobrar></SaldoProductosPorCobrar>
+      <FechaRegistroContable></FechaRegistroContable>
+      <FechaExigibilidad></FechaExigibilidad>
+      <FechaVencimiento></FechaVencimiento>
+      <MontoEstimacionRegistrada></MontoEstimacionRegistrada>
+      <TipoDependencia></TipoDependencia>
+      <DiasMora></DiasMora>
+    </Registro>
+  </Datos>
+</ArchivoSICVECA>

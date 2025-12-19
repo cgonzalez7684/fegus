@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ArchivoSICVECA NS0:noNamespaceSchemaLocation="NEC2024_NaturalezaGasto.xsd" xmlns:NS0="http://www.w3.org/2001/XMLSchema-instance">
+  <Encabezado>
+    <ClaseDato>51</ClaseDato>
+    <VersionClaseDato>1.0</VersionClaseDato>
+    <Archivo>5106</Archivo>
+    <VersionArchivo>2.0</VersionArchivo>
+    <Periodo>01/01/2022</Periodo>
+    <IdEntidad>3101192928</IdEntidad>
+    <TipoCarga>1</TipoCarga>
+    <TipoMoneda>1</TipoMoneda>
+  </Encabezado>
+  <Datos>
+    <Registro id="" accion="">
+      <IdOperacionCredito></IdOperacionCredito>
+      <TipoNaturalezaGasto></TipoNaturalezaGasto>
+      <PorcentajeNaturalezaGasto></PorcentajeNaturalezaGasto>
+    </Registro>
+  </Datos>
+</ArchivoSICVECA>

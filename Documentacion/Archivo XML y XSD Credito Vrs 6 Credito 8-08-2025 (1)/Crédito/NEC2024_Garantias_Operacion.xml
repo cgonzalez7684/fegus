@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ArchivoSICVECA NS0:noNamespaceSchemaLocation="NEC2024_Garantias_Operacion.xsd" xmlns:NS0="http://www.w3.org/2001/XMLSchema-instance">
+  <Encabezado>
+    <ClaseDato>51</ClaseDato>
+    <VersionClaseDato>1.0</VersionClaseDato>
+    <Archivo>5113</Archivo>
+    <VersionArchivo>2.0</VersionArchivo>
+    <Periodo>01/01/2022</Periodo>
+    <IdEntidad>3101192928</IdEntidad>
+    <TipoCarga>1</TipoCarga>
+    <TipoMoneda>1</TipoMoneda>
+  </Encabezado>
+  <Datos>
+    <Registro id="" accion="">
+      <TipoPersonaDeudor></TipoPersonaDeudor>
+      <IdDeudor></IdDeudor>
+      <IdOperacionCredito></IdOperacionCredito>
+      <TipoGarantia></TipoGarantia>
+      <IdGarantia></IdGarantia>
+      <IndicadorFormaTraspasoBien></IndicadorFormaTraspasoBien>
+      <IdGarantiaTraspaso></IdGarantiaTraspaso>
+      <TipoMitigador></TipoMitigador>
+      <TipoDocumentoLegal></TipoDocumentoLegal>
+      <ValorAjustadoGarantia></ValorAjustadoGarantia>
+      <TipoInscripcionGarantia></TipoInscripcionGarantia>
+      <FechaPresentacionRegistroGarantia></FechaPresentacionRegistroGarantia>
+      <PorcentajeResponsabilidadGarantia></PorcentajeResponsabilidadGarantia>
+      <ValorNominalGarantia></ValorNominalGarantia>
+      <TipoMonedaValorNominalGarantia></TipoMonedaValorNominalGarantia>
+      <FechaConstitucionGarantia></FechaConstitucionGarantia>
+      <FechaVencimientoGarantia></FechaVencimientoGarantia>
+    </Registro>
+  </Datos>
+</ArchivoSICVECA>

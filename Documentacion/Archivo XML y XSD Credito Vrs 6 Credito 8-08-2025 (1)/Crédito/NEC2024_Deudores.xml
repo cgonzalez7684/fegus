@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ArchivoSICVECA NS0:noNamespaceSchemaLocation="NEC2024_Deudores.xsd" xmlns:NS0="http://www.w3.org/2001/XMLSchema-instance">
+	<Encabezado>
+		<ClaseDato>51</ClaseDato>
+		<VersionClaseDato>1.0</VersionClaseDato>
+		<Archivo>5101</Archivo>
+		<VersionArchivo>2.0</VersionArchivo>
+		<Periodo>01/01/2022</Periodo>
+		<IdEntidad>3101192928</IdEntidad>
+		<TipoCarga>1</TipoCarga>
+		<TipoMoneda>1</TipoMoneda>
+	</Encabezado>
+	<Datos>
+		<Registro id="" accion="">
+			<TipoDeudorSFN></TipoDeudorSFN>
+			<TipoPersonaDeudor></TipoPersonaDeudor>
+			<IdDeudor></IdDeudor>
+			<CodigoSectorEconomico></CodigoSectorEconomico>
+			<TipoCapacidadPago></TipoCapacidadPago>
+			<SaldoTotalSegmentacion></SaldoTotalSegmentacion>
+			<TipoCondicionEspecialDeudor></TipoCondicionEspecialDeudor>
+			<FechaCalificacionRiesgo></FechaCalificacionRiesgo>
+			<TipoIndicadorGeneradorDivisas></TipoIndicadorGeneradorDivisas>
+			<TipoAsignacionCalificacion></TipoAsignacionCalificacion>
+			<CategoriaCalificacion></CategoriaCalificacion>
+			<CalificacionRiesgo></CalificacionRiesgo>
+			<CodigoEmpresaCalificadora></CodigoEmpresaCalificadora>
+			<IndicadorVinculadoEntidad></IndicadorVinculadoEntidad>
+			<IndicadorVinculadoGrupoFinanciero></IndicadorVinculadoGrupoFinanciero>
+			<IdGrupoInteresEconomico></IdGrupoInteresEconomico>
+			<TipoComportamientoPago></TipoComportamientoPago>
+			<TipoActividadEconomicaDeudor></TipoActividadEconomicaDeudor>
+			<TipoComportamientoPagoSBD></TipoComportamientoPagoSBD>
+			<TipoBeneficiarioSBD></TipoBeneficiarioSBD>
+			<TotalOperacionesRestructuradasSBD></TotalOperacionesRestructuradasSBD>
+			<TipoIndicadorGeneradorDivisasSBD></TipoIndicadorGeneradorDivisasSBD>
+			<RiesgoCambiarioDeudor></RiesgoCambiarioDeudor>
+			<MontoIngresoTotalDeudor></MontoIngresoTotalDeudor>
+			<TotalCargaMensualCSD></TotalCargaMensualCSD>
+			<IndicadorCSD></IndicadorCSD>
+		</Registro>
+	</Datos>
+</ArchivoSICVECA>

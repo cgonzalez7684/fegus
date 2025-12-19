@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <!-- Bloque General-->
+  <xs:element name="ArchivoSICVECA">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Encabezado" />
+        <xs:element ref="Datos" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Bloque Encabezado-->
+  <xs:element name="Encabezado">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ClaseDato" />
+        <xs:element ref="VersionClaseDato" />
+        <xs:element ref="Archivo" />
+        <xs:element ref="VersionArchivo" />
+        <xs:element ref="Periodo" />
+        <xs:element ref="IdEntidad" />
+        <xs:element ref="TipoCarga" />
+        <xs:element ref="TipoMoneda" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClaseDato">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="5" />
+        <xs:pattern value="([0-9])+" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="VersionClaseDato">
+    <xs:simpleType>
+      <xs:restriction base="xs:decimal">
+        <xs:totalDigits value="10" />
+        <xs:fractionDigits value="2" />
+        <xs:pattern value="([0-9])+.[0-9][0-9]?" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="Archivo">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="15" />
+        <xs:pattern value="([0-9])+" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="VersionArchivo">
+    <xs:simpleType>
+      <xs:restriction base="xs:decimal">
+        <xs:totalDigits value="10" />
+        <xs:fractionDigits value="2" />
+        <xs:pattern value="([0-9])+.[0-9][0-9]?" />
+        <xs:maxInclusive value="2.0" />
+        <xs:minInclusive value="2.0" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="Periodo">
+    <xs:simpleType>
+      <xs:restriction base="xs:token">
+        <xs:length value="10" />
+        <xs:pattern value="([0][1-9][/][0][1-9][/][0-2][0-9][0-9][0-9])?" />
+        <xs:pattern value="([0][1-9][/][1][0-2][/][0-2][0-9][0-9][0-9])?" />
+        <xs:pattern value="([1-2][0-9][/][0][1-9][/][0-2][0-9][0-9][0-9])?" />
+        <xs:pattern value="([1-2][0-9][/][1][0-2][/][0-2][0-9][0-9][0-9])?" />
+        <xs:pattern value="([3][0-1][/][0][1-9][/][0-2][0-9][0-9][0-9])?" />
+        <xs:pattern value="([3][0-1][/][1][0-2][/][0-2][0-9][0-9][0-9])?" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="IdEntidad">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="30" />
+        <xs:minLength value="1" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="TipoCarga">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="2" />
+        <xs:pattern value="([0-9])+" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="TipoMoneda">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="6" />
+        <xs:pattern value="([0-9])+" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <!-- Bloque Datos-->
+  <xs:element name="Datos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Registro" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Registro">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TipoPersonaDeudor" minOccurs="1"/>
+        <xs:element ref="IdDeudor" minOccurs="1"/>
+        <xs:element ref="IdOperacionCredito" minOccurs="1"/>
+        <xs:element ref="TipoCuota" minOccurs="1"/>
+        <xs:element ref="NumeroCuotaAtrasada" minOccurs="1"/>
+        <xs:element ref="DiasAtraso" minOccurs="1" />
+        <xs:element ref="MontoCuotaAtrasada" minOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:integer" use="required" />
+      <xs:attribute name="accion" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+            <xs:enumeration value="insertar" />
+            <xs:enumeration value="modificar" />
+            <xs:enumeration value="eliminar" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TipoPersonaDeudor">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="2" />
+		<xs:enumeration value="1" />
+		<xs:enumeration value="2" />
+		<xs:enumeration value="3" />
+		<xs:enumeration value="4" />
+		<xs:enumeration value="5" />
+		<xs:enumeration value="6" />
+		<xs:enumeration value="13" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="IdDeudor">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="1" />
+        <xs:maxLength value="30" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="IdOperacionCredito">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="1" />
+        <xs:maxLength value="25" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="TipoCuota">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="2" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="NumeroCuotaAtrasada">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="4" />
+		<xs:minExclusive value="-1"/>        
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="DiasAtraso">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+        <xs:totalDigits value="6" />
+		<xs:minExclusive value="-1"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="MontoCuotaAtrasada">
+    <xs:simpleType>
+      <xs:restriction base="xs:decimal">
+        <xs:totalDigits value="22" />
+        <xs:fractionDigits value="2" />
+        <xs:minInclusive value="0"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+</xs:schema>

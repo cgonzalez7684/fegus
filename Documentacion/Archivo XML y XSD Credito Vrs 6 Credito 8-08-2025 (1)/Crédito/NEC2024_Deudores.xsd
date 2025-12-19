@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="Encabezado">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ClaseDato"/>
+				<xs:element ref="VersionClaseDato"/>
+				<xs:element ref="Archivo"/>
+				<xs:element ref="VersionArchivo"/>
+				<xs:element ref="Periodo"/>
+				<xs:element ref="IdEntidad"/>
+				<xs:element ref="TipoCarga"/>
+				<xs:element ref="TipoMoneda"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ClaseDato">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="5"/>
+				<xs:pattern value="([0-9])+"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="Archivo">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="15"/>
+				<xs:pattern value="([0-9])+"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="ArchivoSICVECA">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Encabezado"/>
+				<xs:element ref="Datos"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Datos">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Registro" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	
+	<xs:element name="IdEntidad">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="30"/>
+				<xs:minLength value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	
+	<xs:element name="Periodo">
+		<xs:simpleType>
+			<xs:restriction base="xs:token">
+				<xs:length value="10"/>
+				<xs:pattern value="([0-3][0-9][/][0-1][0-9][/][0-2][0-9][0-9][0-9])?"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	
+	<xs:element name="TipoMoneda">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="6"/>
+				<xs:pattern value="([0-9])+"/>
+				
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+
+	<xs:element name="VersionArchivo">
+		<xs:simpleType>
+			<xs:restriction base="xs:decimal">
+				<xs:totalDigits value="10"/>
+				<xs:fractionDigits value="2"/>
+				<xs:pattern value="([0-9])+.[0-9][0-9]?"/>
+				<xs:maxInclusive value="2.0"/>
+				<xs:minInclusive value="2.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+
+	<xs:element name="VersionClaseDato">
+		<xs:simpleType>
+			<xs:restriction base="xs:decimal">
+				<xs:totalDigits value="10"/>
+				<xs:fractionDigits value="2"/>
+				<xs:pattern value="([0-9])+.[0-9][0-9]?"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+
+	<xs:element name="TipoCarga">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="2"/>
+				<xs:pattern value="([0-9])+"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="Registro">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="TipoDeudorSFN" minOccurs="1"/>
+				<xs:element ref="TipoPersonaDeudor" minOccurs="1"/>
+				<xs:element ref="IdDeudor" minOccurs="1"/>
+				<xs:element ref="CodigoSectorEconomico" minOccurs="1"/>
+				<xs:element ref="TipoCapacidadPago" minOccurs="1"/>
+				<xs:element ref="SaldoTotalSegmentacion" minOccurs="0"/>
+				<xs:element ref="TipoCondicionEspecialDeudor" minOccurs="0"/>
+				<xs:element ref="FechaCalificacionRiesgo" minOccurs="1"/>
+				<xs:element ref="TipoIndicadorGeneradorDivisas" minOccurs="1"/>
+				<xs:element ref="TipoAsignacionCalificacion" minOccurs="1"/>
+				<xs:element ref="CategoriaCalificacion" minOccurs="0"/>
+				<xs:element ref="CalificacionRiesgo" minOccurs="0"/>
+				<xs:element ref="CodigoEmpresaCalificadora" minOccurs="0"/>
+				<xs:element ref="IndicadorVinculadoEntidad" minOccurs="1"/>
+				<xs:element ref="IndicadorVinculadoGrupoFinanciero" minOccurs="1"/>
+				<xs:element ref="IdGrupoInteresEconomico" minOccurs="0"/>
+				<xs:element ref="TipoComportamientoPago" minOccurs="1"/>
+				<xs:element ref="TipoActividadEconomicaDeudor" minOccurs="1"/>
+				<xs:element ref="TipoComportamientoPagoSBD" minOccurs="1"/>
+				<xs:element ref="TipoBeneficiarioSBD" minOccurs="1"/>
+				<xs:element ref="TotalOperacionesRestructuradasSBD" minOccurs="1"/>
+				<xs:element ref="TipoIndicadorGeneradorDivisasSBD" minOccurs="1"/>
+				<xs:element ref="RiesgoCambiarioDeudor" minOccurs="1"/>
+				<xs:element ref="MontoIngresoTotalDeudor" minOccurs="1"/>
+				<xs:element ref="TotalCargaMensualCSD" minOccurs="1"/>
+				<xs:element ref="IndicadorCSD" minOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="id" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="accion" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="TipoDeudorSFN">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="2"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="TipoPersonaDeudor">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer" >
+				<xs:totalDigits value="2"/>
+				<xs:enumeration value="1" />
+				<xs:enumeration value="2" />
+				<xs:enumeration value="3" />
+				<xs:enumeration value="4" />
+				<xs:enumeration value="5" />
+				<xs:enumeration value="6" />
+				<xs:enumeration value="13" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="IdDeudor">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+				<xs:maxLength value="30"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="CodigoSectorEconomico">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="4"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoCapacidadPago">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="SaldoTotalSegmentacion">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:totalDigits value="22"/>
+						<xs:fractionDigits value="2"/>
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value=""/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoCondicionEspecialDeudor">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer" >
+						<xs:totalDigits value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="FechaCalificacionRiesgo">
+		<xs:simpleType>
+			<xs:restriction base="xs:token">
+					<xs:length value="10" />
+					<xs:pattern value="([0][1-9][/][0][1-9][/][1-2][0-9][0-9][0-9])?" />
+					<xs:pattern value="([0][1-9][/][1][0-2][/][1-2][0-9][0-9][0-9])?" />
+					<xs:pattern value="([1-2][0-9][/][0][1-9][/][1-2][0-9][0-9][0-9])?" />
+					<xs:pattern value="([1-2][0-9][/][1][0-2][/][1-2][0-9][0-9][0-9])?" />
+					<xs:pattern value="([3][0-1][/][0][1-9][/][1-2][0-9][0-9][0-9])?" />
+					<xs:pattern value="([3][0-1][/][1][0-2][/][1-2][0-9][0-9][0-9])?" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoIndicadorGeneradorDivisas">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoAsignacionCalificacion">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="CategoriaCalificacion">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer" >
+						<xs:totalDigits value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="CalificacionRiesgo">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="0"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="CodigoEmpresaCalificadora">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer" >
+						<xs:totalDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="IndicadorVinculadoEntidad">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+				<xs:maxLength value="1"/>
+				<xs:enumeration value="V"/>
+				<xs:enumeration value="N"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="IndicadorVinculadoGrupoFinanciero">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+				<xs:maxLength value="1"/>
+				<xs:enumeration value="V"/>
+				<xs:enumeration value="N"/>
+				<xs:enumeration value="F"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="IdGrupoInteresEconomico">
+		<xs:simpleType>
+			<xs:union>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer" >
+						<xs:totalDigits value="6"/>
+					</xs:restriction>
+				</xs:simpleType>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:union>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoComportamientoPago">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+		
+	<xs:element name="TipoActividadEconomicaDeudor">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+				<xs:maxLength value="10"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoComportamientoPagoSBD">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoBeneficiarioSBD">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="2"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TotalOperacionesRestructuradasSBD">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="2"/>
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TipoIndicadorGeneradorDivisasSBD">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="RiesgoCambiarioDeudor">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="MontoIngresoTotalDeudor">
+		<xs:simpleType>
+			<xs:restriction base="xs:decimal">
+				<xs:totalDigits value="22"/>
+				<xs:fractionDigits value="2"/>
+				<xs:maxExclusive value="100000000000000000000"/>
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="TotalCargaMensualCSD">
+		<xs:simpleType>
+			<xs:restriction base="xs:decimal">
+				<xs:totalDigits value="22"/>
+				<xs:fractionDigits value="2"/>
+				<xs:maxExclusive value="100000000000000000000"/>
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="IndicadorCSD">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:totalDigits value="3"/>
+				<xs:maxInclusive value="999"/>
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+</xs:schema>
