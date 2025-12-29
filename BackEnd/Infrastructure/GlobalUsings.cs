@@ -1,0 +1,8 @@
+global using System.Data;
+global using Application.Interfaces;
+global using Microsoft.Extensions.Configuration;
+global using Npgsql;
+global using Application.Feactures.Deudores;
+global using Dapper;
+global using Microsoft.Extensions.DependencyInjection;
+global using Infrastructure.Persistence.Repositories;

@@ -1,0 +1,10 @@
+global using MediatR;
+global using Application.Interfaces;
+global using FastEndpoints;
+global using FastEndpoints.Swagger;
+global using Infrastructure.Persistence.ConnetionFactory;
+global using Application.Feactures.Deudores;
+global using Application.Feactures.Deudores.Queries;
+global using Common.Share;
+global using Common.Extensions;
+global using System.Reflection;

@@ -1,9 +1,3 @@
-using System;
-using System.Data;
-using Application.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
-
 namespace Infrastructure.Persistence.ConnetionFactory;
 
 public class NpgsqlConnectionFactory : IDbConnectionFactory
