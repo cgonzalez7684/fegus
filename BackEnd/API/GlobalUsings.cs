@@ -8,3 +8,6 @@ global using Application.Feactures.Deudores.Queries;
 global using Common.Share;
 global using Common.Extensions;
 global using System.Reflection;
+global using Serilog;
+global using Serilog.Events;
+global using System.Diagnostics;

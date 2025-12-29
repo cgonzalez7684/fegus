@@ -1,7 +1,15 @@
+using Microsoft.Extensions.Logging;
+
 public sealed class ExceptionToResultBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+    private readonly ILogger<ExceptionToResultBehavior<TRequest, TResponse>> _logger;
+
+    public ExceptionToResultBehavior(ILogger<ExceptionToResultBehavior<TRequest,TResponse>> logger)
+    {
+        this._logger = logger;
+    }
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
@@ -13,6 +21,21 @@ public sealed class ExceptionToResultBehavior<TRequest, TResponse>
         }
         catch (Exception ex)
         {
+
+           var errorId = Guid.NewGuid().ToString("N");
+           var traceId = Activity.Current?.TraceId.ToString();     
+
+           _logger.LogError(ex,
+                "ErrorId={ErrorId} TraceId={TraceId} Request={RequestType} Assembly={Assembly} Class={Class} Method={Method}",
+                errorId,
+                traceId,
+                typeof(TRequest).FullName,
+                ex.TargetSite?.DeclaringType?.Assembly.FullName,
+                ex.TargetSite?.DeclaringType?.FullName,
+                ex.TargetSite?.Name);
+
+
+
             // Aquí decides qué mensaje devolver (sin exponer detalles internos)
             var message = MapExceptionToMessage(ex);
 

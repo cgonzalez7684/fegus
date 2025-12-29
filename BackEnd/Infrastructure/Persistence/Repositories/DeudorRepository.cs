@@ -13,7 +13,7 @@ public class DeudorRepository : IDeudorRepository
     {
         using var connection = _connectionFactory.CreateConnection();
 
-        throw new Exception("Esteee es un error");
+        //throw new Exception("Esteee es un error");
         
         var sql = """
             SELECT *
@@ -28,7 +28,7 @@ public class DeudorRepository : IDeudorRepository
 
         return await connection.QueryFirstOrDefaultAsync<DeudorDto>(
             sql,
-            new { IdCliente = idCliente, IdDeudor = idDeudor }
+            new { p_id_cliente = idCliente, p_iddeudor = idDeudor }
         );
     }
 }

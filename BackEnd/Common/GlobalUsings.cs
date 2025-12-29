@@ -5,3 +5,4 @@ global using Common.Enums;
 global using Microsoft.Extensions.Configuration;
 global using NLog;
 global using System.Text.Json;
+global using System.Diagnostics;
