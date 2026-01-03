@@ -2,7 +2,7 @@ using Common.Share;
 
 namespace Application.Feactures.Deudores.Queries;
 
-public sealed record GetDeudorByIdResponse(DeudorDto pDeudorDto);
+public sealed record GetDeudorByIdResponse(Deudor pDeudorDto);
 
 public sealed record GetDeudorByIdQuery(int idCliente, string idDeudor):IQuery<GetDeudorByIdResponse>;
 
@@ -19,11 +19,11 @@ public class GetDeudorByIdQueryHandler : IQueryHandler<GetDeudorByIdQuery, GetDe
 
          
 
-        DeudorDto? aux = await _deudorRepository.GetDeudorByIdAsync(request.idCliente,request.idDeudor);
+        Deudor? aux = await _deudorRepository.GetDeudorByIdAsync(request.idCliente,request.idDeudor);
         
-        return Result<GetDeudorByIdResponse>.Fail("esto es un error",ErrorType.Conflict);
+        //return Result<GetDeudorByIdResponse>.Fail("esto es un error",ErrorType.Conflict);
 
-        //return Result<GetDeudorByIdResponse>.Success(new GetDeudorByIdResponse(aux!));
+        return Result<GetDeudorByIdResponse>.Success(new GetDeudorByIdResponse(aux!));
         
         
 

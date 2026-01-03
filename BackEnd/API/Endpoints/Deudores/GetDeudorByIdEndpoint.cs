@@ -33,7 +33,11 @@ public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudo
 
         Result<GetDeudorByIdResponse> result = await _sender.Send(query,ct);
 
-         await Send.ResponseAsync(result);
+        await Send.ResponseAsync(result);   
+
+        
+
+         
 
         /*if (result.IsSuccess)
         {

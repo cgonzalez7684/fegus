@@ -1,6 +1,8 @@
+
+
 namespace Application.Interfaces;
 
 public interface IDeudorRepository
 {
-    Task<DeudorDto?> GetDeudorByIdAsync(int idCliente, string idDeudor);
+    Task<Deudor?> GetDeudorByIdAsync(int idCliente, string idDeudor);
 }
