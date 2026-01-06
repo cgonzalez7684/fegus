@@ -50,6 +50,7 @@ app.UseMiddleware<ExceptionLoggingMiddleware>();
 // app.UseFastEndpoints();
 // app.UseSwaggerGen();
 
+app.UseCors("AllowAll");
 
 app.UseFastEndpoints();
 app.UseSwaggerGen();

@@ -8,7 +8,15 @@ namespace efGate.WebAPI
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
 
-            
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
 
             services.AddFastEndpoints();
             services.SwaggerDocument();
