@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
     data: {
-      title: 'Natalia'
+      title: 'Natalia te quiero mucho'
     },
     children: [
       {
