@@ -40,6 +40,14 @@ public class Deudor
     public decimal? TotalCargaMensualCSD { get; set; }
     public decimal? IndicadorCSD { get; set; }
 
+    // --- Moratoria ---
+    public decimal? SaldoMoratoriaMayorUltMeses1421 { get; set; }
+    public int? NumMesesMoratoriaMayor1421 { get; set; }
+    public decimal? SaldoMoratoriaMayorUltMeses1516 { get; set; }
+    public int? NumMesesMoratoriaMayor1516 { get; set; }
+    public int? NumDiasAtraso1421 { get; set; }
+    public int? NumDiasAtraso1516 { get; set; }
+
     // --- Auditoría ---
     public DateTime FechaUltGestion { get; set; }
     public string? CodUsuarioUltGestion { get; set; }

@@ -1,0 +1,7 @@
+--Para levantar desde el entorno de desarrollo de Visual Studio Code
+--el API en modo "Development" y que esto implique que utilizará lo configurado
+--en appsettings.Development.json solo se debe ejecutar en la terminal de la carpeta
+--del proyecto API el siguiente comando
+
+set ASPNETCORE_ENVIRONMENT=Development
+dotnet run

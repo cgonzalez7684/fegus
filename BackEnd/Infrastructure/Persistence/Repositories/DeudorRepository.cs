@@ -51,6 +51,12 @@ public class DeudorRepository : IDeudorRepository
             pmontoingresototaldeudor AS ""MontoIngresoTotalDeudor"",
             ptotalcargamensualcsd    AS ""TotalCargaMensualCSD"",
             pindicadorcsd            AS ""IndicadorCSD"",
+            psaldomoramayorultmeses1421 AS ""SaldoMoratoriaMayorUltMeses1421"",
+            pnummesesmoramayor1421 AS ""NumMesesMoratoriaMayor1421"",
+            psaldomoramayorultmeses1516 AS ""SaldoMoratoriaMayorUltMeses1516"",
+            pnummesesmoramayor1516 AS ""NumMesesMoratoriaMayor1516"",
+            pnumdiasatraso1421 AS ""NumDiasAtraso1421"",
+            pnumdiasatraso1516 AS ""NumDiasAtraso1516"",
             pfechaultgestion::timestamp AS ""FechaUltGestion"",
             pcodusuarioultgestion    AS ""CodUsuarioUltGestion""
             FROM fegusdata.obtener_deudores(@p_id_cliente, @p_iddeudor);
