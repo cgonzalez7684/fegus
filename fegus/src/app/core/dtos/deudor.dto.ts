@@ -26,6 +26,12 @@ export interface DeudorDto {
   montoIngresoTotalDeudor: number;
   totalCargaMensualCSD: number;
   indicadorCSD: number;
-  fechaUltGestion: string;
+  saldoMoratoriaMayorUltMeses1421: number;
+  numMesesMoratoriaMayor1421: number;
+  saldoMoratoriaMayorUltMeses1516: number;
+  numMesesMoratoriaMayor1516: number;
+  numDiasAtraso1421: number;
+  numDiasAtraso1516: number;
+  fechaUltGestion: string;  
   codUsuarioUltGestion: string;
 }

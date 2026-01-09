@@ -26,7 +26,7 @@ export class ButtonsComponent {
       next: response => {
         if (response.isSuccess) {
           this.deudorData = response;
-          console.log('Respuesta API recibida:', this.deudorData.value.pDeudorDto.idDeudor);
+          console.log('Respuesta API recibida:', this.deudorData.value.pDeudorDto);
 
           // Ejemplo: convertir fechas a Date si lo necesitas
          /* this.deudorData.fechaUltGestion = new Date(
