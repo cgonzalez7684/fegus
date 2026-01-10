@@ -2,7 +2,7 @@
 @use "@coreui/coreui/scss/mixins/color-mode" as *;
 
 body {
-  background-color: var(--cui-blue);  
+  background-color: var(--cui-tertiary-bg); 
 }
 
 .wrapper {
