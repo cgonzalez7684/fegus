@@ -26,8 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\" />
-    <Folder Include="Endpoints\Deudores\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
 
