@@ -7,6 +7,28 @@ namespace efGate.WebAPI
 
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+
+                var azureAd = services.BuildServiceProvider()
+                    .GetRequiredService<IConfiguration>()
+                    .GetSection("AzureAd");
+            
+
+                options.Authority = $"{azureAd["Instance"]}{azureAd["TenantId"]}/v2.0"; 
+                options.Audience = azureAd["Audience"];   
+
+                /*options.Authority =
+                    "https://login.microsoftonline.com/organizations/v2.0";*/
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true
+                };
+            });
 
             services.AddCors(opt =>
             {
@@ -18,6 +40,15 @@ namespace efGate.WebAPI
                 });
             });
 
+
+            services.AddAuthorization(op=>
+            {
+                op.AddPolicy("AuthenticatedUser", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    //policy.RequireClaim("scp", "access_as_user");
+                });
+            });
             services.AddFastEndpoints();
             services.SwaggerDocument();
             //services.AddEndpointsApiExplorer();

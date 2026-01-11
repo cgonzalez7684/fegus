@@ -14,7 +14,8 @@ public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudo
     public override void Configure()
     {
         Get("/deudores/{idCliente:int}/{idDeudor}");
-        AllowAnonymous();
+        Policies("AuthenticatedUser");
+        //AllowAnonymous();
         Summary(s =>
         {
            s.Summary = "Obtiene del cliente el deudor solicitado" ;

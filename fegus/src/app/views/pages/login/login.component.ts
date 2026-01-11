@@ -14,9 +14,19 @@ import {
   RowComponent
 } from '@coreui/angular';
 
+import { MsalService } from '@azure/msal-angular';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective]
 })
-export class LoginComponent {}
+export class LoginComponent {
+
+  constructor(private msalService: MsalService) {}
+
+  login():void {
+    this.msalService.loginRedirect();
+  }
+
+}

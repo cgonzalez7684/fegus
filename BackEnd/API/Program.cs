@@ -1,10 +1,3 @@
-
-
-using API.Middleware;
-using Application;
-using efGate.WebAPI;
-using Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -51,6 +44,9 @@ app.UseMiddleware<ExceptionLoggingMiddleware>();
 // app.UseSwaggerGen();
 
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseFastEndpoints();
 app.UseSwaggerGen();
