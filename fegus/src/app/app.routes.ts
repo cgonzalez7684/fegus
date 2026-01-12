@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
+import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -8,25 +9,25 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  {
+  /*{
     path: 'login',    
     loadComponent: () => import('./views/pages/login/login.component').then(m => m.LoginComponent),
     data: {
       title: 'Login Page'
     }
-  },
+  },*/
   {
     path: 'dashboard',
-    canActivate: [MsalGuard],
+    canActivate: [AuthGuard],
     loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
     data: {
       title: 'Dashboard'
     },
-    children: [
-      {
+    children: [           
+      /*{
         path: 'dashboard',
         loadChildren: () => import('./views/dashboard/routes').then((m) => m.routes)
-      },
+      },*/
       {
         path: 'theme',
         loadChildren: () => import('./views/theme/routes').then((m) => m.routes)

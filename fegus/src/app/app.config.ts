@@ -20,7 +20,8 @@ import {
   MsalInterceptorConfiguration,
   MsalService,
   MsalGuard,
-  MsalInterceptor
+  MsalInterceptor,
+  MsalBroadcastService
 } from '@azure/msal-angular';
 
 import {
@@ -28,8 +29,9 @@ import {
   PublicClientApplication,
   InteractionType
 } from '@azure/msal-browser';
-import { environment } from 'src/environments/environment';
-import { msalConfig } from './auth/msal-config';
+//import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
+import { msalConfig } from './core/auth/msal-config';
 
 
 /* =========================
@@ -46,7 +48,7 @@ export function msalGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: ['openid', 'profile', 'email']
+      scopes: [environment.ApiAZScope, 'openid', 'profile', 'email']
     }
   };
 }
@@ -108,7 +110,8 @@ export const appConfig: ApplicationConfig = {
     },
 
     MsalService,
-    MsalGuard,
+    //MsalGuard,
+    MsalBroadcastService,
 
     {
       provide: HTTP_INTERCEPTORS,

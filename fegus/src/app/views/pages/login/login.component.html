@@ -27,7 +27,9 @@
                 </c-input-group>
                 <c-row>
                   <c-col xs="6">
-                    <button cButton class="px-4" color="primary" (click)="login()">
+                    <button cButton class="px-4" color="primary" 
+                    [disabled]=""
+                    (click)="loginWithMicrosoft()">
                       Login
                     </button>
                   </c-col>

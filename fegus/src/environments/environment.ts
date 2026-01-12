@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
   apiUrl: 'http://localhost:8080/deudores/200/818160570',
-  AuthClientId: 'a118d15b-c3d2-413c-8b4a-d7ecb6762ade', // 👈 Fegus SPA (Azure)
-  AuthAuthority: 'https://login.microsoftonline.com/organizations',  
-  ApiAZScope: 'api://610daa75-d728-4892-a3ae-a3a97f8f8850/access_as_user' // 👈 Reemplaza con el Application ID URI de tu API
+  AuthClientId: 'cb8fcede-1f85-4d07-b4f5-b17b205481a6', // 👈 Fegus SPA (Azure)
+  AuthAuthority: 'https://login.microsoftonline.com/common',  
+  ApiAZScope: 'api://6213113d-96b9-44a6-981a-10f4c542cf43/access_as_user' // 👈 Reemplaza con el Application ID URI de tu API
 };

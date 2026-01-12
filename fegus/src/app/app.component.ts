@@ -7,6 +7,10 @@ import { delay, filter, map, tap } from 'rxjs/operators';
 import { ColorModeService } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
+import { MsalService } from '@azure/msal-angular';
+import { AuthService } from './core/services/auth.service';
+
+
 
 @Component({
     selector: 'app-root',
@@ -24,7 +28,7 @@ export class AppComponent implements OnInit {
   readonly #colorModeService = inject(ColorModeService);
   readonly #iconSetService = inject(IconSetService);
 
-  constructor() {
+  constructor(private msalService: MsalService, private authService: AuthService) {
     this.#titleService.setTitle(this.title);
     // iconSet singleton
     this.#iconSetService.icons = { ...iconSubset };
@@ -32,7 +36,9 @@ export class AppComponent implements OnInit {
     this.#colorModeService.eventName.set('ColorSchemeChange');
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    
 
     this.#router.events.pipe(
         takeUntilDestroyed(this.#destroyRef)
@@ -53,5 +59,26 @@ export class AppComponent implements OnInit {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe();
+
+    await this.msalService.instance.initialize();
+
+     // 2️⃣ PROCESAR EL RESULTADO DEL REDIRECT (CLAVE)
+    const result = await this.msalService.instance.handleRedirectPromise();
+
+    //this.authService.setActiveAccount();  
+    if (result?.account) {
+      // 3️⃣ Establecer cuenta activa
+      this.msalService.instance.setActiveAccount(result.account);
+      console.log('Active account:',this.msalService.instance.getActiveAccount());
+
+    } else {
+      // 4️⃣ Fallback si ya existía sesión
+      const accounts = this.msalService.instance.getAllAccounts();
+      if (accounts.length > 0) {
+        this.msalService.instance.setActiveAccount(accounts[0]);
+      }
+    }  
+
+
   }
 }
