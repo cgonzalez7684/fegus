@@ -79,10 +79,10 @@ export class LoginComponent implements OnDestroy, OnInit {
 
     sessionStorage.removeItem('msal.interaction.status');
 
-    if (this.isInteractionInProgress) {
+    /*if (this.isInteractionInProgress) {
       console.log('Interacción en progreso, espere...');
       return; // evita doble login
-    }
+    }*/
 
     this.authService.login();
   }
