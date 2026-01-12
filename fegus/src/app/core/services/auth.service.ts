@@ -9,7 +9,7 @@ export class AuthService {
   login(): void {
     //this.msal.loginRedirect();
     this.msal.loginRedirect({
-      prompt: 'dashboard',
+      prompt: 'login',
       scopes: []
     });
   }
