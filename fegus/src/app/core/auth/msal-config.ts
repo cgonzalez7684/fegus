@@ -6,7 +6,7 @@ export const msalConfig: Configuration = {
   auth: {
       clientId: environment.AuthClientId,
       authority: environment.AuthAuthority,
-      redirectUri: 'http://localhost:4200' //environment.AuthRedirectUri
+      redirectUri: environment.AuthRedirectUri //
     },
     cache: {
       cacheLocation: 'localStorage',
