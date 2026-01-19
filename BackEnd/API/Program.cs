@@ -1,3 +1,5 @@
+using API.Auth;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,7 +15,9 @@ builder.Host.UseSerilog((ctx, lc) =>
 builder.Services
 .AddApplication()
 .AddInfrastructure()
-.AddPresentation();
+.AddPresentation(builder.Configuration);
+
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 
 

@@ -17,3 +17,4 @@ global using API.Middleware;
 global using Application;
 global using efGate.WebAPI;
 global using Infrastructure;
+global using Domain.DTOs.Auth;

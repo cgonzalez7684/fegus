@@ -3,76 +3,80 @@ import { MsalGuard } from '@azure/msal-angular';
 import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
-  {
+  /*{
+    //canActivate: [AuthGuard],
     path: '',
     //redirectTo: 'dashboard',
     redirectTo: 'login',
     pathMatch: 'full'
-  },
-  /*{
+  },*/
+  {
     path: 'login',    
     loadComponent: () => import('./views/pages/login/login.component').then(m => m.LoginComponent),
     data: {
       title: 'Login Page'
     }
-  },*/
+  },
   {
-    canActivate: [AuthGuard],
-    path: 'dashboard',    
-    loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
-    data: {
-      title: 'Dashboard'
-    },
+    
+    path: '',
+    canActivate: [AuthGuard],        
     children: [           
-      /*{
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/routes').then((m) => m.routes)
-      },*/
       {
-        canActivate: [AuthGuard],
+        path: 'dashboard',
+        loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent),
+      },
+      {
+        
         path: 'theme',
         loadChildren: () => import('./views/theme/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'base',
         loadChildren: () => import('./views/base/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'buttons',
         loadChildren: () => import('./views/buttons/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'forms',
         loadChildren: () => import('./views/forms/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'icons',
         loadChildren: () => import('./views/icons/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'notifications',
         loadChildren: () => import('./views/notifications/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'widgets',
         loadChildren: () => import('./views/widgets/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'charts',
         loadChildren: () => import('./views/charts/routes').then((m) => m.routes)
       },
       {
-        canActivate: [AuthGuard],
+        
         path: 'pages',
         loadChildren: () => import('./views/pages/routes').then((m) => m.routes)
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'dashboard'
       }
+      
     ]
   },
   {
@@ -103,5 +107,9 @@ export const routes: Routes = [
       title: 'Register Page'
     }
   },
-  { path: '**', redirectTo: 'dashboard' }
+   
+  { 
+    path: '**', 
+    redirectTo: '' 
+  }
 ];

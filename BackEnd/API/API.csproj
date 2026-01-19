@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Endpoints\Auth\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
 

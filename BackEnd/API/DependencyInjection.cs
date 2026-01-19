@@ -1,74 +1,76 @@
 ﻿
+using System.Text;
+using Infrastructure.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
-namespace efGate.WebAPI
+namespace efGate.WebAPI;
+
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddPresentation(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
+        // =========================
+        // JWT Options
+        // =========================
+        services.Configure<JwtOptions>(
+            configuration.GetSection("Jwt"));
 
-        public static IServiceCollection AddPresentation(this IServiceCollection services)
-        {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        var jwtOptions = configuration
+            .GetSection("Jwt")
+            .Get<JwtOptions>()
+            ?? throw new InvalidOperationException("JWT configuration section is missing");
+
+        var keyBytes = Encoding.UTF8.GetBytes(jwtOptions.Key);
+
+        // =========================
+        // Authentication (JWT Bearer)
+        // =========================
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-
-                var azureAd = services.BuildServiceProvider()
-                    .GetRequiredService<IConfiguration>()
-                    .GetSection("AzureAd");
-            
-
-                options.Authority = $"{azureAd["Instance"]}{azureAd["TenantId"]}/v2.0"; 
-                options.Audience = azureAd["Audience"];   
-
-                /*options.Authority =
-                    "https://login.microsoftonline.com/organizations/v2.0";*/
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+
                     ValidateAudience = true,
-                    ValidateLifetime = true
+                    ValidAudience = jwtOptions.Audience,
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromSeconds(30)
                 };
             });
 
-            services.AddCors(opt =>
-            {
-                opt.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
-            });
+        // =========================
+        // Authorization
+        // =========================
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AuthenticatedUser", policy =>
+                policy.RequireAuthenticatedUser());
 
+            // Ejemplo de policy fija
+            options.AddPolicy("CREDIT_VIEW", policy =>
+                policy.RequireClaim("perm", "CREDIT_VIEW"));
 
-            services.AddAuthorization(op=>
-            {
-                op.AddPolicy("AuthenticatedUser", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    //policy.RequireClaim("scp", "access_as_user");
-                });
-            });
-            services.AddFastEndpoints();
-            services.SwaggerDocument();
-            //services.AddEndpointsApiExplorer();
+            // Aquí puedes registrar más policies
+        });
 
-            
-            /*services.AddSwaggerGen(options =>
-            {
-                options.EnableAnnotations();
-                //options.ExampleFilters();
-            });*/
-
-            //services.AddScoped<IDbConnectionFactory, NpgsqlConnectionFactory>();
-
-            //services.AddEndpoints(Assembly.GetExecutingAssembly());
-
-            // REMARK: If you want to use Controllers, you'll need this.
-            //services.AddControllers();
-
-
-            return services;
-        }
+        return services;
     }
 }
+
+

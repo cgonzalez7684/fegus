@@ -59,11 +59,6 @@ export function msalGuardConfigFactory(): MsalGuardConfiguration {
 export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, string[]>();
 
-  /*protectedResourceMap.set(    
-    'https://appfeguscgr-evakfaanbbc3cwaf.canadacentral-01.azurewebsites.net', // 👈 URL de tu API
-    ['api://TU_API_CLIENT_ID/access_as_user']
-  );*/
-
   protectedResourceMap.set(    
     environment.baseUrl, 
     [environment.ApiAZScope]
@@ -86,8 +81,8 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled'
       }),
       withEnabledBlockingInitialNavigation(),
-      withViewTransitions(),
-      withHashLocation()
+      withViewTransitions()
+      //withHashLocation()
     
     ),
     IconSetService,
@@ -111,7 +106,7 @@ export const appConfig: ApplicationConfig = {
 
     MsalService,
     //MsalGuard,
-    MsalBroadcastService,
+    //MsalBroadcastService,
 
     {
       provide: HTTP_INTERCEPTORS,

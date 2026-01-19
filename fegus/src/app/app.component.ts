@@ -18,7 +18,7 @@ import { AuthService } from './core/services/auth.service';
     imports: [RouterOutlet]
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Angular Admin Template';
+  title = 'Sistema de Gestión FEGUS';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -37,8 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-
-    
+  
 
     this.#router.events.pipe(
         takeUntilDestroyed(this.#destroyRef)
@@ -60,7 +59,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe();
 
-    await this.msalService.instance.initialize();
+    //await this.msalService.instance.initialize();
 
      // 2️⃣ PROCESAR EL RESULTADO DEL REDIRECT (CLAVE)
     const result = await this.msalService.instance.handleRedirectPromise();
@@ -69,15 +68,17 @@ export class AppComponent implements OnInit {
     if (result?.account) {
       // 3️⃣ Establecer cuenta activa
       this.msalService.instance.setActiveAccount(result.account);
+      await this.#router.navigateByUrl('/dashboard');
       console.log('Active account:',this.msalService.instance.getActiveAccount());
+      return;
 
-    } else {
-      // 4️⃣ Fallback si ya existía sesión
-      const accounts = this.msalService.instance.getAllAccounts();
-      if (accounts.length > 0) {
-        this.msalService.instance.setActiveAccount(accounts[0]);
-      }
-    }  
+    } 
+
+    // Si ya había sesión previa (ej: refresh)
+    const accounts = this.msalService.instance.getAllAccounts();
+    if (accounts.length > 0) {
+      this.msalService.instance.setActiveAccount(accounts[0]);
+    }
 
 
   }

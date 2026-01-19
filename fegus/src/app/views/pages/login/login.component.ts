@@ -64,12 +64,13 @@ export class LoginComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    
     //this.authService.setActiveAccount();
     // 🔑 SI YA ESTÁ AUTENTICADO → IR AL DASHBOARD
-    if (this.authService.isAuthenticated()) {
+    /*if (this.authService.isAuthenticated()) {
       this.router.navigateByUrl('dashboard');
       
-    }
+    }*/
     
 
 
@@ -85,6 +86,14 @@ export class LoginComponent implements OnDestroy, OnInit {
     }*/
 
     this.authService.login();
+
+    /*if (this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('/dashboard');
+      
+    }*/
+
+
+
   }
 
   ngOnDestroy(): void {
