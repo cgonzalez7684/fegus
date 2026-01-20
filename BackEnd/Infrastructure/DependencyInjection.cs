@@ -18,6 +18,7 @@ public static class DependencyInjection
         cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         
         services.AddScoped<IDbConnectionFactory,NpgsqlConnectionFactory>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IDeudorRepository,DeudorRepository>();
         
         

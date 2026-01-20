@@ -1,4 +1,8 @@
-using API.Auth;
+
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,7 @@ builder.Services
 .AddInfrastructure()
 .AddPresentation(builder.Configuration);
 
-builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 
 
 
