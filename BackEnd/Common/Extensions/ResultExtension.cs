@@ -17,6 +17,6 @@ namespace Common.Extensions;
         Func<TIn, TOut> onSuccess,
         Func<Result<TIn>, TOut> onFailure)
     {
-        return result.IsSuccess ? onSuccess(result.Value) : onFailure(result);
+        return result.IsSuccess ? onSuccess(result.Value!) : onFailure(result);
     }
 }

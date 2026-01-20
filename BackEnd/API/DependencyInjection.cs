@@ -15,6 +15,9 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+
+        services.AddFastEndpoints();
+
         // =========================
         // JWT Options
         // =========================
@@ -68,6 +71,19 @@ public static class DependencyInjection
 
             // Aquí puedes registrar más policies
         });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+
+         
 
         return services;
     }

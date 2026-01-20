@@ -19,6 +19,8 @@ public static class DependencyInjection
         
         services.AddScoped<IDbConnectionFactory,NpgsqlConnectionFactory>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IDeudorRepository,DeudorRepository>();
         
         

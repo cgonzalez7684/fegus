@@ -59,6 +59,7 @@ app.UseAuthorization();
 app.UseFastEndpoints();
 app.UseSwaggerGen();
 
+
 app.Logger.LogInformation( "Environment: {Env}",
     app.Environment.EnvironmentName);
 
