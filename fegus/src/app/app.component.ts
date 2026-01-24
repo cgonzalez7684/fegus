@@ -8,16 +8,13 @@ import { ColorModeService } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 
-
-
-
 @Component({
     selector: 'app-root',
     template: '<router-outlet />',
     imports: [RouterOutlet]
 })
 export class AppComponent implements OnInit {
-  title = 'Sistema de Gestión FEGUS';
+  title = 'Sistema Fegus gestion normativa';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -27,9 +24,15 @@ export class AppComponent implements OnInit {
   readonly #colorModeService = inject(ColorModeService);
   readonly #iconSetService = inject(IconSetService);
 
-  
-  async ngOnInit(): Promise<void> {
-  
+  constructor() {
+    this.#titleService.setTitle(this.title);
+    // iconSet singleton
+    this.#iconSetService.icons = { ...iconSubset };
+    this.#colorModeService.localStorageItemName.set('coreui-free-angular-admin-template-theme-default');
+    this.#colorModeService.eventName.set('ColorSchemeChange');
+  }
+
+  ngOnInit(): void {
 
     this.#router.events.pipe(
         takeUntilDestroyed(this.#destroyRef)
@@ -50,9 +53,5 @@ export class AppComponent implements OnInit {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe();
-
-    
-
-
   }
 }
