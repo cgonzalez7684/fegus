@@ -86,6 +86,7 @@ public sealed class GetLoginUserQueryHandler : IQueryHandler<GetLoginUserQuery, 
                 token: refreshToken,
                 expires_at: DateTime.UtcNow.AddDays(7),
                 is_revoked: false,
+                created_at:  DateTime.UtcNow,
                 ip: "",                             // TODO: obtener IP
                 user_agent: ""                      // TODO: obtener User-Agent
             ),

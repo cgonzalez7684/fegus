@@ -32,6 +32,7 @@ import {
 //import { environment } from 'src/environments/environment';
 import { environment } from '../environments/environment';
 import { msalConfig } from './core/auth/msal-config';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 
 
 /* =========================
@@ -110,7 +111,8 @@ export const appConfig: ApplicationConfig = {
 
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
+      useClass: AuthInterceptor,
+      //useClass: MsalInterceptor,
       multi: true
     }
   ]

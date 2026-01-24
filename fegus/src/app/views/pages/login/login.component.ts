@@ -1,4 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthLocalService } from '../../../core/auth/authlocal.service';
+import { NgStyle } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ButtonDirective,
@@ -14,91 +17,42 @@ import {
   RowComponent
 } from '@coreui/angular';
 
-//import { MsalService } from '@azure/msal-angular';
-//import { AuthService } from './core/services/auth.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { MsalBroadcastService } from '@azure/msal-angular';
-import { InteractionStatus } from '@azure/msal-browser';
-import { Subject,takeUntil } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-login',
-  standalone: true,
   templateUrl: './login.component.html',
-  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective]
+  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective, NgStyle]
 })
-export class LoginComponent implements OnDestroy, OnInit {
+export class LoginComponent {
+
+  loading = false;
+  errorMessage?: string;
+
+  constructor(
+    private authService: AuthLocalService,
+    private router: Router
+  ) {}
+
+  login(email: string, password: string): void {
+
+    // Validación mínima
+    if (!email || !password) {
+      this.errorMessage = 'Email and password are required';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = undefined;
+    const dataAccess = {idCliente : 1001, username: email!, password: password!};
 
 
-  isInteractionInProgress = false;
-  private destroy$ = new Subject<void>();
-  
-  constructor(private authService: AuthService,
-              private msalBroadcast: MsalBroadcastService,
-              private router: Router
-  ) { 
-    
-
-    this.msalBroadcast.inProgress$
-      .pipe(
-        filter(status => status === InteractionStatus.None),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        //cuando NO hay interacción, habilita botón
-        this.isInteractionInProgress = false;
-      });
-
-    // Escuchar el estado de interacción
-    this.msalBroadcast.inProgress$
-      .pipe(filter(status => status !== InteractionStatus.None),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        
-        this.isInteractionInProgress = true;
-      });
-   
+    this.authService.login(dataAccess).subscribe({
+      next: () => {
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.errorMessage = 'Invalid email or password';
+        this.loading = false;
+      }
+    });
   }
-
-  ngOnInit(): void {
-    
-    //this.authService.setActiveAccount();
-    // 🔑 SI YA ESTÁ AUTENTICADO → IR AL DASHBOARD
-    /*if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('dashboard');
-      
-    }*/
-    
-
-
-  }
-
-  loginWithMicrosoft(): void {
-
-    sessionStorage.removeItem('msal.interaction.status');
-
-    /*if (this.isInteractionInProgress) {
-      console.log('Interacción en progreso, espere...');
-      return; // evita doble login
-    }*/
-
-    this.authService.login();
-
-    /*if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('/dashboard');
-      
-    }*/
-
-
-
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
 }
