@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
 import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
