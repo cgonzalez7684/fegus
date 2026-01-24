@@ -72,16 +72,21 @@ public static class DependencyInjection
             // Aquí puedes registrar más policies
         });
 
+        var allowedOrigins = configuration
+            .GetSection("Cors:AllowedOrigins")
+            .Get<string[]>();
+
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowAll", builder =>
+            options.AddPolicy("FegusCorsPolicy", policy =>
             {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
+                    policy
+                        .WithOrigins(allowedOrigins ?? Array.Empty<string>())                        
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
         });
+
 
          
 

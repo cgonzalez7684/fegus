@@ -51,7 +51,7 @@ app.UseMiddleware<ExceptionLoggingMiddleware>();
 // app.UseFastEndpoints();
 // app.UseSwaggerGen();
 
-app.UseCors("AllowAll");
+app.UseCors("FegusCorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
