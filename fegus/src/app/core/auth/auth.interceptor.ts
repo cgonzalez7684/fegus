@@ -41,7 +41,8 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
 
         // 🚨 AQUÍ VA EXACTAMENTE LO QUE TE COMENTÉ
-        if (error.status === 401) {
+        //if (error.status === 401) {
+        if ([401, 404].includes(error.status)) {
           console.warn('Token expirado o inválido. Cerrando sesión.');
 
           // 1️⃣ Limpiar tokens
