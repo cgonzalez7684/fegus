@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, finalize } from 'rxjs/operators';
 import { ApiResult, LoginResponse } from './auth.model';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({ providedIn: 'root' })
 export class AuthLocalService {
@@ -36,11 +37,29 @@ export class AuthLocalService {
       );
   }
 
-  logout(): void {
+  /*logout(): void {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     this.router.navigate(['/login']);
+  }*/
+
+  logout(): Observable<void> {
+    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
+
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+
+    return this.http.post<void>(
+      `${environment.baseUrl}/auth/logout`,
+      { refreshToken }
+    ).pipe(
+      finalize(() => {
+        localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+      })
+    );
   }
+  
 
   getAccessToken(): string | null {
     return localStorage.getItem(this.ACCESS_TOKEN_KEY);
