@@ -33,9 +33,32 @@
     position="sticky"
     sidebarId="sidebar1"
   />
+  
   <!--app-body-->
+  <c-toaster placement="top-end" position="fixed" class="p-3">
+  @for (toast of toastService.toasts(); track toast) {
+    <c-toast
+      [color]="toast.color ?? 'danger'"
+      [delay]="toast.delay ?? 4000"
+      [autohide]="true"
+      [visible]="true"
+    >
+      @if (toast.title) {
+        <c-toast-header>
+          {{ toast.title }}
+        </c-toast-header>
+      }
+
+      <c-toast-body>
+        {{ toast.message }}
+      </c-toast-body>
+    </c-toast>
+  }
+</c-toaster>
+
   <div class="body flex-grow-1">
     <c-container breakpoint="lg" class="h-auto px-4">
+      
       <router-outlet />
     </c-container>
   </div>

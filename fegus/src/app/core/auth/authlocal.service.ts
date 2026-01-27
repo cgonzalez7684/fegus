@@ -31,23 +31,18 @@ export class AuthLocalService {
           return res.value;
         }),
         tap(tokens => {
-          localStorage.setItem(this.ACCESS_TOKEN_KEY, tokens.accessToken);
-          localStorage.setItem(this.REFRESH_TOKEN_KEY, tokens.refreshToken);
+          this.setTokens(tokens.accessToken, tokens.refreshToken);          
         })
       );
   }
 
-  /*logout(): void {
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    this.router.navigate(['/login']);
-  }*/
+  
 
   logout(): Observable<void> {
     const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
 
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    //Se elimina localmente los tokens antes de hacer la llamada al backend
+    this.clear()
 
     return this.http.post<void>(
       `${environment.baseUrl}/auth/logout`,
@@ -59,7 +54,15 @@ export class AuthLocalService {
       })
     );
   }
+
+  setTokens(access: string, refresh: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, access);
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, refresh);
+  }
   
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+  }
 
   getAccessToken(): string | null {
     return localStorage.getItem(this.ACCESS_TOKEN_KEY);
@@ -68,4 +71,10 @@ export class AuthLocalService {
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
   }
+
+  clear(): void {
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+  }
+
 }

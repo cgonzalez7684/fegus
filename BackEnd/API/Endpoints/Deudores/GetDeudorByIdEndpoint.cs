@@ -1,5 +1,3 @@
-
-
 namespace API.Endpoints.Deudores;
 
 public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudorByIdResponse>>
@@ -23,8 +21,7 @@ public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudo
         });
 
     }
-
-    //public override async Task<Result<GetDeudorByIdResponse>> HandleAsync(GetDeudorByIdQuery req, CancellationToken ct)
+    
     public override async Task HandleAsync(GetDeudorByIdQuery req, CancellationToken ct)
     {
       
@@ -36,44 +33,8 @@ public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudo
 
         await Send.ResponseAsync(result);   
 
-        
-
-         
-
-        /*if (result.IsSuccess)
-        {
-           
-        }
-
-        await Send.ErrorsAsync(result);*/
-        
-        //await Send.OkAsync(result);
+       
         
     }
 
-}
-
-
-// --------------------------------------------------------
-public sealed class GetSaludoDeudorEndpoint
-    : Endpoint<EmptyRequest, Result<GetSaludoDeudorResponse>>
-{
-    private readonly ISender _sender;
-
-    public GetSaludoDeudorEndpoint(ISender sender)
-    {
-        _sender = sender;
-    }
-
-    public override void Configure()
-    {
-        Get("/deudores/saludo");
-        AllowAnonymous();
-    }
-
-    public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
-    {
-        var result = await _sender.Send(new GetSaludoDeudorQuery(), ct);
-        await Send.ResponseAsync(result);
-    }
 }

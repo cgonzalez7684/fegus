@@ -8,8 +8,10 @@ import { ColorModeService } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 
+
 @Component({
     selector: 'app-root',
+    standalone: true,
     template: '<router-outlet />',
     imports: [RouterOutlet]
 })

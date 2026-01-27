@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthLocalService } from '../../../core/auth/authlocal.service';
 import { NgStyle } from '@angular/common';
@@ -14,45 +14,84 @@ import {
   FormDirective,
   InputGroupComponent,
   InputGroupTextDirective,
-  RowComponent
+  RowComponent, 
+  ToastBodyComponent,
+  ToastComponent,
+  ToasterComponent,
+  ToastHeaderComponent
 } from '@coreui/angular';
+
+import { ToastService } from '../../../services/toast.service';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective, NgStyle]
+  standalone: true,
+  imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, 
+    CardComponent, CardBodyComponent, FormDirective, 
+    InputGroupComponent, InputGroupTextDirective, IconDirective, 
+    FormControlDirective, ButtonDirective, NgStyle,
+    ToasterComponent,
+    ToastComponent,
+    ToastHeaderComponent,
+    ToastBodyComponent    
+  ]
 })
 export class LoginComponent {
-
-  loading = false;
+ 
+  toasterService = inject(ToastService);
+  
+  loading = signal(false);
   errorMessage?: string;
+  
+  
+ 
 
   constructor(
     private authService: AuthLocalService,
     private router: Router
+    //private toasterService: ToastService
   ) {}
+
+ 
+
+   
+ 
 
   login(email: string, password: string): void {
 
     // Validación mínima
     if (!email || !password) {
-      this.errorMessage = 'Email and password are required';
+      this.errorMessage = 'User and password are required';
+      this.loading.set(false);
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.errorMessage = undefined;
     const dataAccess = {idCliente : 1001, username: email!, password: password!};
 
+   
 
     this.authService.login(dataAccess).subscribe({
       next: () => {
+        this.loading.set(false); 
         this.router.navigate(['/dashboard']);
       },
       error: () => {
+        
+        console.log('Login error');
         this.errorMessage = 'Invalid email or password';
-        this.loading = false;
+        this.loading.set(false); 
+        this.toasterService.error('Login fallido: Invalid email or password'); 
+        //alert('Login failed: Invalid email or password');      
+        
       }
     });
   }
+
+
+  
+ 
 }

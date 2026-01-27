@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
 
@@ -15,8 +15,12 @@ import {
   SidebarTogglerDirective
 } from '@coreui/angular';
 
+
+
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { navItems } from './_nav';
+import { ToasterComponent, ToastComponent, ToastHeaderComponent, ToastBodyComponent } from '@coreui/angular';
+import { ToastService } from '../../services/toast.service';
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -29,6 +33,7 @@ function isOverflown(element: HTMLElement) {
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss'],
+  standalone: true,
   imports: [
     SidebarComponent,
     SidebarHeaderComponent,
@@ -44,9 +49,15 @@ function isOverflown(element: HTMLElement) {
     NgScrollbar,
     RouterOutlet,
     RouterLink,
-    ShadowOnScrollDirective
+    ShadowOnScrollDirective,
+    ToasterComponent,
+    ToastComponent,
+    ToastHeaderComponent,
+    ToastBodyComponent
+    
   ]
 })
 export class DefaultLayoutComponent {
   public navItems = [...navItems];
+  toastService = inject(ToastService);
 }
