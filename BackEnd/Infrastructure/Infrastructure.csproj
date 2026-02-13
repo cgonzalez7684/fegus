@@ -10,7 +10,10 @@
     <Folder Include="Auth\" />
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\ConnetionFactory\" />
+    <Folder Include="Persistence\Ingestion\" />
     <Folder Include="Persistence\Repositories\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Storage\Ingestion\" />
   </ItemGroup>
 
   <ItemGroup>

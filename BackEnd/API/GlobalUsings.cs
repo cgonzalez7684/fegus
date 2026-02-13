@@ -18,3 +18,5 @@ global using Application;
 global using efGate.WebAPI;
 global using Infrastructure;
 global using Domain.DTOs.Auth;
+global using API.Options;
+global using Application.Feactures.Ingestion.ReceiveStream;

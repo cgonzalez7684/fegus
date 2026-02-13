@@ -3,8 +3,8 @@ using System;
 namespace Domain.DTOs.Auth;
 
 public sealed record AuthUser(
-    int UserId,
-    int ClientId,
+    int IdUser,
+    int IdCliente,
     string Username,
     string Email,
     IReadOnlyList<string> Roles,

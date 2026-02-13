@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Entities\Ingestion\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Interfaces\Ingestion\" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 ﻿
 using System.Text;
 using Infrastructure.Auth;
+using Infrastructure.Storage.Ingestion;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace efGate.WebAPI;
@@ -66,8 +68,9 @@ public static class DependencyInjection
                 policy.RequireAuthenticatedUser());
 
             // Ejemplo de policy fija
-            options.AddPolicy("CREDIT_VIEW", policy =>
-                policy.RequireClaim("perm", "CREDIT_VIEW"));
+            options.AddPolicy("Ingestion", policy =>
+                policy.RequireRole("ingestion.agent")                
+               );
 
             // Aquí puedes registrar más policies
         });
@@ -95,6 +98,22 @@ public static class DependencyInjection
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 });
+        });
+
+        services.Configure<IngestionStorageOptions>(
+        configuration.GetSection("IngestionStorage"));
+
+        services.AddSingleton<TempFileStorage>(sp =>
+        {
+            var options = sp
+                .GetRequiredService<IOptions<IngestionStorageOptions>>()
+                .Value;
+
+            if (string.IsNullOrWhiteSpace(options.TempStoragePath))
+                throw new InvalidOperationException(
+                    "Ingestion:TempStoragePath is not configured");
+
+            return new TempFileStorage(options.TempStoragePath);
         });
 
 

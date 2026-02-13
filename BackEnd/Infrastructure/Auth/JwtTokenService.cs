@@ -24,8 +24,8 @@ public sealed class JwtTokenService : IJwtTokenService
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-            new("client_id", user.ClientId.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.IdUser.ToString()),
+            new("idcliente", user.IdCliente.ToString()),
             new("username", user.Username),
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

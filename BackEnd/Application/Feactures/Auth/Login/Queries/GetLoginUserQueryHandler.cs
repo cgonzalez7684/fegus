@@ -66,8 +66,8 @@ public sealed class GetLoginUserQueryHandler : IQueryHandler<GetLoginUserQuery, 
             ct);
 
         var authUser = new AuthUser(
-            UserId: user.iduser,
-            ClientId: user.idcliente,
+            IdUser: user.iduser,
+            IdCliente: user.idcliente,
             Username: user.user_name,
             Email: user.user_email,
             Roles: roles,

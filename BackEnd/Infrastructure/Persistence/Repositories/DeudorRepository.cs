@@ -1,4 +1,6 @@
 
+using Infrastructure.Interfaces;
+
 namespace Infrastructure.Persistence.Repositories;
 
 public class DeudorRepository : IDeudorRepository

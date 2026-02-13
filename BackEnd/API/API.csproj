@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastEndpoints" Version="7.2.0-beta.10" />
-    <PackageReference Include="FastEndpoints.Swagger" Version="7.2.0-beta.10" />
+    <PackageReference Include="FastEndpoints" Version="8.0.0-beta.9" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="8.0.0-beta.9" />
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
@@ -29,7 +29,9 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\Auth\" />
+    <Folder Include="Endpoints\Ingestion\" />
     <Folder Include="Middleware\" />
+    <Folder Include="Options\" />
   </ItemGroup>
 
 </Project>
