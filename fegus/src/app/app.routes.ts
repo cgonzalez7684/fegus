@@ -15,7 +15,12 @@ export const routes: Routes = [
     path: '',   
     loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent), 
     canActivate: [AuthGuard],     
-    children: [           
+    children: [   
+       {
+        
+        path: 'crediticio',
+        loadChildren: () => import('./views/Crediticio/routes').then((m) => m.routes)
+      },        
       {
         path: 'dashboard',
         loadChildren: () => import('./views/dashboard/routes').then((m) => m.routes)

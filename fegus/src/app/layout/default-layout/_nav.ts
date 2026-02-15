@@ -25,108 +25,47 @@ export const navItems: INavData[] = [
     linkProps: { fragment: 'headings' },
     iconComponent: { name: 'cil-pencil' }
   },
+   {
+    name: 'Integración de datos',
+    title: true
+  },
+  {
+    name: 'Carga de datos',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' }   
+  },
   {
     name: 'Clase de datos Credito',
     title: true
   },
   {
     name: 'Deudores',
-    url: '/base',
+    url: '/crediticio',
     iconComponent: { name: 'cil-puzzle' },
     children: [
       {
-        name: 'Configuraciones',
-        url: '/base/accordion',
-        icon: 'nav-icon-bullet'
+        name: 'Gestión de datos',
+        url: '/crediticio/deudores/gestion-datos',
+        icon: 'nav-icon-bullet'        
       },
       {
-        name: 'Mantenimientos',
-        url: '/base/breadcrumbs',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Validaciones',
+        name: 'Validaciones Sugef',
         url: '/base/breadcrumbs',
         icon: 'nav-icon-bullet'
       },
       {
         name: 'Generación de XML',
-        url: 'https://coreui.io/angular/docs/components/calendar/',
-        icon: 'nav-icon-bullet'      
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
       },
       {
-        name: 'Aprobacion de cambios',
-        url: '/base/cards',
-        icon: 'nav-icon-bullet'
-      }
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
       
     ]
   },
-  {
-    name: 'Creditos',
-    iconComponent: { name: 'cil-star' },
-    url: '/icons',
-    children: [
-      {
-        name: 'Configuraciones',
-        url: '/base/accordion',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Mantenimientos',
-        url: '/base/breadcrumbs',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Validaciones',
-        url: '/base/breadcrumbs',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Generación de XML',
-        url: 'https://coreui.io/angular/docs/components/calendar/',
-        icon: 'nav-icon-bullet'      
-      },
-      {
-        name: 'Aprobacion de cambios',
-        url: '/base/cards',
-        icon: 'nav-icon-bullet'
-      }
-    ]
-  },
-  {
-    name: 'Garantias',
-    url: '/notifications',
-    iconComponent: { name: 'cil-bell' },
-    children: [
-      {
-        name: 'Configuraciones',
-        url: '/base/accordion',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Mantenimientos',
-        url: '/base/breadcrumbs',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Validaciones',
-        url: '/base/breadcrumbs',
-        icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Generación de XML',
-        url: 'https://coreui.io/angular/docs/components/calendar/',
-        icon: 'nav-icon-bullet'      
-      },
-      {
-        name: 'Aprobacion de cambios',
-        url: '/base/cards',
-        icon: 'nav-icon-bullet'
-      }
-    ]
-  },
-  
   {
     name: 'Charts',
     iconComponent: { name: 'cil-chart-pie' },
@@ -134,34 +73,180 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Reportes'
+    name: 'CLASE DE DATOS GARANTIAS'
   },
   {
-    name: 'Mensual',
-    url: '/login',
-    iconComponent: { name: 'cil-star' },
+    name: 'Polizas',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
-        name: 'Estimación',
-        url: '/login',
+        name: 'Gestión de datos',
+        url: '/base/accordion',
+        icon: 'nav-icon-bullet'        
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Mitigadores',
-        url: '/register',
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Segmentos',
-        url: '/404',
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
+  },
+  {
+    name: 'Cartas Crédito',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Gestión de datos',
+        url: '/base/accordion',
+        icon: 'nav-icon-bullet'        
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
         icon: 'nav-icon-bullet'
       },
       {
-        name: 'Cartera SBD',
-        url: '/500',
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
         icon: 'nav-icon-bullet'
-      }
-    ]
+      },
+      {
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
+  },
+  {
+    name: 'Facturas Cedidas',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Gestión de datos',
+        url: '/base/accordion',
+        icon: 'nav-icon-bullet'        
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
+  },
+  {
+    name: 'Fiduciarias',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Gestión de datos',
+        url: '/base/accordion',
+        icon: 'nav-icon-bullet'        
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
+  },
+  {
+    name: 'Reales',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Gestión de datos',
+        url: '/base/accordion',
+        icon: 'nav-icon-bullet'        
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
+  },
+  {
+    name: 'Valores',
+    url: '/base',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Gestión de datos',        
+        icon: 'nav-icon-bullet'             
+      },
+      {
+        name: 'Validaciones Sugef',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Generación de XML',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Gestión de cambios',
+        url: '/base/breadcrumbs',
+        icon: 'nav-icon-bullet'      
+      }      
+      
+    ],
+    
   },
   {
     title: true,
