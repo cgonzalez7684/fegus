@@ -8,8 +8,9 @@
     [paginationPageSize]="pageSize"
     [paginationPageSizeSelector]="[10, 20, 50, 100]"
     [defaultColDef]="defaultColDef"
-    [rowSelection]="{ mode: 'singleRow' }"
+    [rowSelection]="{ mode: 'multiRow' }"
     (gridReady)="onGridReady($event)"
-    (rowSelected)="onRowSelectedEvent($event)">
+    (rowSelected)="onRowSelectedEvent($event)"
+    (selectionChanged)="onSelectionChangedEvent()">
   </ag-grid-angular>
 </div>

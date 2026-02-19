@@ -12,7 +12,7 @@ public sealed class GetSaludoDeudorEndpoint
 
     public override void Configure()
     {
-        Get("/deudores/saludo");
+        Get("/crediticio/deudores/saludo");
         AllowAnonymous();
     }
 

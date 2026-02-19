@@ -14,7 +14,7 @@ export const routes: Routes = [
       },
       {
         path: 'deudores/gestion-datos',
-        loadComponent: () => import('./Deudores/gestion-datos/gestion-datos.component').then(m => m.GestionDatosComponent),
+        loadComponent: () => import('./pages/gestion-datos/gestion-datos.component').then(m => m.GestionDatosComponent),
         data: {
           title: 'Gestion de datos'
         }

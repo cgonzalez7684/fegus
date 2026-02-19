@@ -19,7 +19,7 @@ export const routes: Routes = [
        {
         
         path: 'crediticio',
-        loadChildren: () => import('./views/Crediticio/routes').then((m) => m.routes)
+        loadChildren: () => import('./feactures/clase-crediticio/deudores/deudores.routes').then((m) => m.routes)
       },        
       {
         path: 'dashboard',

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Feactures\Deudores\Commands\" />
+    <Folder Include="Feactures\Deudores\Queries\GetDeudores\" />
     <Folder Include="Feactures\Ingestion\" />
     <Folder Include="Feactures\Ingestion\CommitSession\" />
     <Folder Include="Feactures\Ingestion\CreateSession\" />

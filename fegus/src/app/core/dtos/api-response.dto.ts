@@ -1,7 +1,8 @@
-import { DeudorValue } from "./DeudorValue.dto";
+
 
 export interface ApiResponse<T> {
-  value: DeudorValue<T>;
+  //value: DeudorValue<T>;
+  value: T | null;
   isSuccess: boolean;
   isFailure: boolean;
   error: string | null;

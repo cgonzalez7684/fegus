@@ -5,7 +5,7 @@ using MediatR;
 namespace Application.Feactures.Deudores.Queries;
 
 
-public sealed record GetSaludoDeudorResponse(string Saludo);
+public sealed record GetSaludoDeudorResponse(string result);
 public sealed record GetSaludoDeudorQuery() : IQuery<GetSaludoDeudorResponse>;
 
 

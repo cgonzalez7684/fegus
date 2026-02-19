@@ -1,0 +1,28 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Button</strong> <small>Disabled state</small>
+      </c-card-header>
+      <c-card-body>
+        <button cButton color="primary" (click)="GetDeudores()">Obtener deudores</button>
+        <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="idCliente"
+            placeholder="Ingrese Id Cliente">
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+<app-grid-z 
+      [gridConfig]="gridConfig"         		  
+		  [rowData]="rowData"
+		  [pagination]="true"
+		  [pageSize]="10"
+		  [height]="'500px'"         
+      [selectionMode]="'multiple'" 
+      [enableCheckboxSelection]="false" 
+		  (rowSelected)="onRowSelected($event)"
+      (selectionChanged)="onSelectionChanged($event)">
+</app-grid-z>    

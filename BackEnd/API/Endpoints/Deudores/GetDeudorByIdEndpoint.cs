@@ -11,7 +11,7 @@ public class GetDeudorByIdEndpoint : Endpoint<GetDeudorByIdQuery,Result<GetDeudo
     }
     public override void Configure()
     {
-        Get("/deudores/{idCliente:int}/{idDeudor}");
+        Get("/crediticio/deudores/{idCliente:int}/{idDeudor}");
         Policies("AuthenticatedUser");
         //AllowAnonymous();
         Summary(s =>
