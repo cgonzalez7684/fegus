@@ -37,10 +37,10 @@ export class GridZComponent implements OnChanges {
   @Input() selectionMode: 'single' | 'multiple' = 'single';
   @Input() enableCheckboxSelection: boolean = false;
 
- /* @Input() rowSelection: RowSelectionOptions = {
+  @Input() rowSelection: RowSelectionOptions = {
     mode: 'singleRow',
     enableClickSelection: true
-  };*/
+  };
   
   @Output() rowSelected = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<any[]>();
