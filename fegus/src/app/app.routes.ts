@@ -4,7 +4,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 export const routes: Routes = [
  
   {
-    path: 'login',    
+    path: '',    
     loadComponent: () => import('./views/pages/login/login.component').then(m => m.LoginComponent),
     data: {
       title: 'Login Page'

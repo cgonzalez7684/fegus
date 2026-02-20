@@ -16,13 +16,13 @@
   </c-col>
 </c-row>
 <app-grid-z 
-      [gridConfig]="gridConfig"         		  
+      [columns]="columns"         		  
 		  [rowData]="rowData"
 		  [pagination]="true"
 		  [pageSize]="10"
 		  [height]="'500px'"         
       [selectionMode]="'multiple'" 
-      [enableCheckboxSelection]="false" 
+      [enableCheckboxSelection]="true" 
 		  (rowSelected)="onRowSelected($event)"
       (selectionChanged)="onSelectionChanged($event)">
 </app-grid-z>    

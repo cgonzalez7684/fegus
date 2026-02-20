@@ -19,158 +19,136 @@ import { GridColumnConfig } from '../../models/grid-column-config.model';
   selector: 'app-grid-z',
   standalone: true,
   imports: [CommonModule, AgGridAngular],
-  templateUrl: './grid-z.component.html',
-  styleUrls: ['./grid-z.component.scss']
+  templateUrl: './grid-z.component.html'
 })
 export class GridZComponent implements OnChanges {
 
-  private gridApi!: GridApi;
-  public theme = themeQuartz;
+  // ==============================
+  // INPUTS (Metadata Driven)
+  // ==============================
 
-  @Input() columnDefs: ColDef[] = [];
+  @Input() columns: GridColumnConfig[] = [];
   @Input() rowData: any[] = [];
-  @Input() pagination: boolean = true;
-  @Input() pageSize: number = 10;
-  @Input() height: string = '500px';
-  @Input() gridConfig?: GridColumnConfig[];
 
   @Input() selectionMode: 'single' | 'multiple' = 'single';
   @Input() enableCheckboxSelection: boolean = false;
 
-  @Input() rowSelection: RowSelectionOptions = {
-    mode: 'singleRow',
-    enableClickSelection: true
-  };
-  
+  @Input() pagination: boolean = true;
+  @Input() pageSize: number = 10;
+  @Input() height: string = '500px';
+
+  // ==============================
+  // OUTPUTS
+  // ==============================
+
   @Output() rowSelected = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<any[]>();
 
- defaultColDef: ColDef = {
+  // ==============================
+  // GRID INTERNAL
+  // ==============================
+
+  internalColumnDefs: ColDef[] = [];
+  rowSelection: any;
+  gridApi: any;
+
+  defaultColDef: ColDef = {
     sortable: true,
-    resizable: true,
     filter: true,
+    resizable: true,
     minWidth: 120
   };
 
- // rowSelection!: RowSelectionOptions;
+  // ==============================
+  // LIFECYCLE
+  // ==============================
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes['gridConfig'] && this.gridConfig?.length) {
-      this.columnDefs = this.buildColumnDefsFromConfig(this.gridConfig);
-    }
-
-    if (changes['rowData'] && this.gridApi) {
-      this.gridApi.setGridOption('rowData', this.rowData);
-      setTimeout(() => {
-        this.gridApi.autoSizeAllColumns();
-      }, 0);
-    }
-
-    this.configureRowSelection();
-
+  ngOnChanges(changes: SimpleChanges): void {
+    this.buildColumns();
+    this.configureSelection();
   }
 
-  private configureRowSelection(): void {
+  // ==============================
+  // BUILD COLUMNS FROM METADATA
+  // ==============================
 
-    this.rowSelection = {
-      mode: this.selectionMode === 'multiple'
-        ? 'multiRow'
-        : 'singleRow',
-      enableClickSelection: true
-    };
+  private buildColumns(): void {
 
-    if (this.enableCheckboxSelection && this.selectionMode === 'multiple') {
-      this.defaultColDef = {
-        ...this.defaultColDef,
-        headerCheckboxSelection: true,
-        checkboxSelection: false
+    this.internalColumnDefs = this.columns.map(col => {
+
+      const base: ColDef = {
+        field: col.field,
+        headerName: col.header,
+        hide: col.hide ?? false,
+        width: col.width,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        checkboxSelection: false,
+        headerCheckboxSelection: false
       };
-    }
+
+      if (col.type === 'number') {
+        base.filter = 'agNumberColumnFilter';
+      }
+
+      if (col.type === 'date') {
+        base.filter = 'agDateColumnFilter';
+      }
+
+      return base;
+    });
+
   }
 
-  onGridReady(event: GridReadyEvent) {
-    this.gridApi = event.api;
+  // ==============================
+  // SELECTION CONFIG
+  // ==============================
+
+  private configureSelection(): void {
+
+    const isMultiple = this.selectionMode === 'multiple';
+
+    // Construir columnas SIEMPRE limpias (sin checkbox por columna)
+    this.buildColumns();
+
+    // Control total desde RowSelectionOptions (AG Grid v33+)
+    this.rowSelection = {
+      mode: isMultiple ? 'multiRow' : 'singleRow',
+      enableClickSelection: true,
+
+      // ✅ esto controla si aparece checkbox en la primera columna
+      checkboxes: this.enableCheckboxSelection,
+
+      // ✅ solo tiene sentido en multi
+      headerCheckbox: isMultiple && this.enableCheckboxSelection
+    };
+  }
+  
+
+
+  // ==============================
+  // EVENTS
+  // ==============================
+
+  onGridReady(params: any): void {
+    this.gridApi = params.api;
+
     setTimeout(() => {
       this.gridApi.autoSizeAllColumns();
-      // Si el grid queda con espacio sobrante
-      this.gridApi.sizeColumnsToFit();
     }, 0);
-    //console.log('ColumnDefs:', this.columnDefs);
-    //console.log('RowData:', this.rowData);
   }
 
-  onRowSelectedEvent(event: any):void {
+  onRowSelectedEvent(event: any): void {
     if (event.node.selected) {
-      this.rowSelected.emit(event);
+      this.rowSelected.emit(event.data);
     }
   }
 
   onSelectionChangedEvent(): void {
-
     if (this.selectionMode === 'multiple' && this.gridApi) {
-      const selectedRows = this.gridApi.getSelectedRows();
-      this.selectionChanged.emit(selectedRows);
+      const selected = this.gridApi.getSelectedRows();
+      this.selectionChanged.emit(selected);
     }
   }
-
-  private buildColumnDefsFromConfig(config: GridColumnConfig[]): ColDef[] {
-
-    return config.map(c => ({
-
-      field: c.field,
-      headerName: c.header,
-      width: c.width,
-      hide: c.hide ?? false,
-      sortable: c.sortable ?? true,
-      filter: this.resolveFilterType(c.type),
-      valueFormatter: this.resolveFormatter(c.type)
-
-    }));
-  }
-
-private resolveFilterType(type?: string): string | boolean {
-
-  switch (type) {
-    case 'number':
-    case 'currency':
-      return 'agNumberColumnFilter';
-
-    case 'date':
-      return 'agDateColumnFilter';
-
-    case 'boolean':
-      return 'agSetColumnFilter';
-
-    default:
-      return 'agTextColumnFilter';
-  }
-}
-
-private resolveFormatter(type?: string) {
-
-  switch (type) {
-
-    case 'currency':
-      return (params: any) =>
-        params.value == null
-          ? ''
-          : new Intl.NumberFormat('es-CR', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            }).format(params.value);
-
-    case 'date':
-      return (params: any) =>
-        params.value
-          ? new Date(params.value).toLocaleDateString('es-CR')
-          : '';
-
-    default:
-      return undefined;
-  }
-}
-
-
-
 }

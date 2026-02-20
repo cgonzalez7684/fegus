@@ -1,17 +1,14 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../../../core/auth/auth.guard';
 
-export const routes: Routes = [
+export const routes: Routes = [   
   {
     path: '',
     data: {
       title: 'Crediticio'
     },
-    children: [
-      {
-        path: '',
-        redirectTo: 'crediticio',
-        pathMatch: 'full'
-      },
+    canActivate: [AuthGuard],
+    children: [     
       {
         path: 'deudores/gestion-datos',
         loadComponent: () => import('./pages/gestion-datos/gestion-datos.component').then(m => m.GestionDatosComponent),
@@ -20,5 +17,10 @@ export const routes: Routes = [
         }
       }
     ]
-}
+  },
+  {
+        path: '**',
+        redirectTo: '/'
+        
+  }
 ]

@@ -32,13 +32,10 @@ export class GestionDatosComponent {
   deudorData: ApiResponse<DeudorValue<DeudorDto>> | null = null;
   listadeudorData: ApiResponse<DeudorValue<DeudorDto[]>> | null = null;
   rowData: DeudorDto[] = [];
-  gridConfig = DEUDOR_GRID_CONFIG;
+  columns = DEUDOR_GRID_CONFIG;
   idCliente: string = '';
 
-  /*rowSelection = {
-    mode: 'multiRow',   
-    enableClickSelection: true
-  };*/
+  
 
   GetDeudor(): void {
     console.log('Botón "Consumir API" clickeado');
