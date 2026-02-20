@@ -21,8 +21,8 @@
 		  [pagination]="true"
 		  [pageSize]="10"
 		  [height]="'500px'"         
-      [selectionMode]="'multiple'" 
-      [enableCheckboxSelection]="true" 
+      [selectionMode]="'single'" 
+      [enableCheckboxSelection]="false" 
 		  (rowSelected)="onRowSelected($event)"
       (selectionChanged)="onSelectionChanged($event)">
 </app-grid-z>    
