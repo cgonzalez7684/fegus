@@ -1,3 +1,5 @@
+import { SUGEF_CATALOGS } from "../catalogs/sugef-catalogs";
+
 export type GridColumnType =
   | 'text'
   | 'number'
@@ -13,4 +15,6 @@ export interface GridColumnConfig {
   hide?: boolean;
   sortable?: boolean;
   filter?: boolean;
+  catalog?: keyof typeof SUGEF_CATALOGS;
+  editable?: boolean;
 }

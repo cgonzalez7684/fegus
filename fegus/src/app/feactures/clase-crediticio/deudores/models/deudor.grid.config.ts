@@ -9,7 +9,12 @@ export const DEUDOR_GRID_CONFIG: GridColumnConfig[] = [
 
   { field: 'idCliente', header: 'Cliente', type: 'number', width: 120 },
   { field: 'idDeudor', header: 'Identificación', type: 'text', width: 160 },
-  { field: 'tipoPersonaDeudor', header: 'Tipo Persona', type: 'number' },
+  { field: 'tipoPersonaDeudor', 
+    header: 'Tipo Persona', 
+    type: 'number',
+    catalog: 'TIPO_PERSONA',
+    editable: true 
+  },
   { field: 'tipoDeudorSFN', header: 'Tipo Deudor SFN', type: 'number' },
 
   // =========================

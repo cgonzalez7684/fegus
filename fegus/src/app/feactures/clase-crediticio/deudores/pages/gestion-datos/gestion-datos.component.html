@@ -22,7 +22,9 @@
 		  [pageSize]="10"
 		  [height]="'500px'"         
       [selectionMode]="'single'" 
-      [enableCheckboxSelection]="false" 
+      [enableCheckboxSelection]="true" 
 		  (rowSelected)="onRowSelected($event)"
-      (selectionChanged)="onSelectionChanged($event)">
+      (selectionChanged)="onSelectionChanged($event)"
+      (cellValueChanged)="onCellChanged($event)"
+      >
 </app-grid-z>    

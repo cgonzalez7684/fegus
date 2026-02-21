@@ -13,6 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { GridApi } from 'ag-grid-community';
 import { GridColumnConfig } from '../../models/grid-column-config.model';
+import { SUGEF_CATALOGS } from '../../catalogs/sugef-catalogs';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class GridZComponent implements OnChanges {
 
   @Output() rowSelected = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<any[]>();
+  @Output() cellValueChanged = new EventEmitter<any>();
 
   // ==============================
   // GRID INTERNAL
@@ -84,9 +86,47 @@ export class GridZComponent implements OnChanges {
         sortable: true,
         filter: true,
         resizable: true,
+        editable: col.editable ?? false,
         checkboxSelection: false,
         headerCheckboxSelection: false
       };
+
+      // 🔥 Si tiene catálogo → agregar tooltip automático
+    if (col.catalog) {
+
+      const catalog = SUGEF_CATALOGS[col.catalog];
+
+      const catalogEntries = Object.entries(catalog);
+
+      // Tooltip
+      base.tooltipValueGetter = (params) => {
+        const value = params.value;
+        return catalog?.[value as keyof typeof catalog] ?? 'Sin descripción';
+      };
+
+      // Mostrar descripción en celda
+      base.valueFormatter = (params) => {
+        const value = params.value;
+        return catalog?.[value as keyof typeof catalog]
+          ? `${value} - ${catalog?.[value as keyof typeof catalog]}`
+          : value;
+      };
+
+      // 🔥 Editor dropdown mostrando texto completo
+      base.editable = true;
+      base.cellEditor = 'agSelectCellEditor';
+      base.cellEditorParams = {
+        values: catalogEntries.map(([key, desc]) => `${key} - ${desc}`)
+      };
+
+      // 🔥 Convertir texto seleccionado nuevamente a número
+      base.valueParser = (params) => {
+        const selected = params.newValue;
+        const numericValue = selected.split(' - ')[0];
+        return Number(numericValue);
+      };
+
+    }
 
       if (col.type === 'number') {
         base.filter = 'agNumberColumnFilter';
@@ -151,4 +191,10 @@ export class GridZComponent implements OnChanges {
       this.selectionChanged.emit(selected);
     }
   }
+
+  onCellValueChanged(event: any): void {  
+    this.cellValueChanged.emit(event);
+  }  
+
+
 }

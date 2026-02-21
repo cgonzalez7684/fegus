@@ -10,6 +10,8 @@
     [rowSelection]="rowSelection"
     (gridReady)="onGridReady($event)"
     (rowSelected)="onRowSelectedEvent($event)"
-    (selectionChanged)="onSelectionChangedEvent()">
+    (selectionChanged)="onSelectionChangedEvent()"
+    (cellValueChanged)="onCellValueChanged($event)"
+    >
   </ag-grid-angular>
 </div>

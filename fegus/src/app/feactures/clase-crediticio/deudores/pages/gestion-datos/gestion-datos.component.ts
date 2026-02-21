@@ -103,6 +103,12 @@ export class GestionDatosComponent {
     }
   }
 
+  onCellChanged(event: any) {
+    console.log('Valor anterior:', event.oldValue);
+    console.log('Valor nuevo:', event.newValue);
+    console.log('Fila afectada:', event.data);
+  }
+
   ngOnInit() {
     //this.consumirAPI();
     console.log('Datos:', this.rowData);
