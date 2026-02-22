@@ -14,7 +14,7 @@ public class GetSaludoDeudorQueryHandler : IQueryHandler<GetSaludoDeudorQuery, G
 {
     public async Task<Result<GetSaludoDeudorResponse>> Handle(GetSaludoDeudorQuery request, CancellationToken cancellationToken)
     {
-        return Result<GetSaludoDeudorResponse>.Success(new GetSaludoDeudorResponse("¡Hola, Mundo!"));        
+        return Result<GetSaludoDeudorResponse>.Success(new GetSaludoDeudorResponse("¡Hola, Mundosss!"));        
     }
 
  
