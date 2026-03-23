@@ -16,10 +16,16 @@ export const routes: Routes = [
     loadComponent: () => import('./layout').then(m => m.DefaultLayoutComponent), 
     canActivate: [AuthGuard],     
     children: [   
-       {
+      {
         
         path: 'crediticio',
         loadChildren: () => import('./feactures/clase-crediticio/deudores/deudores.routes').then((m) => m.routes)
+      }, 
+      {
+        
+        path: 'fegusconfig',
+        loadChildren: () => import('./feactures/fegusconfig/boxdataload/boxdataload.routes').then((m) => m.routes)
+        
       },        
       {
         path: 'dashboard',

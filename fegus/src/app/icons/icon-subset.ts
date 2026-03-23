@@ -97,10 +97,13 @@ import {
   cilUserUnfollow
 } from '@coreui/icons';
 
+import { fegusLogo } from './fegus-logo';
+
 import { signet } from './signet';
 import { logo } from './logo';
 
 export const iconSubset = {
+  fegusLogo,
   cibCcAmex,
   cibCcApplePay,
   cibCcMastercard,

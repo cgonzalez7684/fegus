@@ -38,7 +38,7 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
                 .CreateConnectionAsync(cancellationToken);
 
         const string copySql = """
-            COPY fegusdata.ingestion_deudores_raw
+            COPY fegusconfig.fe_ingestion_deudores_raw
             (session_id, id_cliente, seq, payload)
             FROM STDIN (FORMAT BINARY)
         """;
@@ -62,21 +62,6 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
         }
 
         await importer.CompleteAsync(cancellationToken);
-
-        /*try
-        {
-            await importer.CompleteAsync(cancellationToken);
-        }
-        catch (PostgresException ex)
-        {
-            _logger.LogError(
-                "COPY error: SqlState={SqlState}, Message={Message}, Detail={Detail}",
-                ex.SqlState,
-                ex.MessageText,
-                ex.Detail);
-
-            throw;
-        }*/
 
         session.UpdateLastSequence(seq);
     }

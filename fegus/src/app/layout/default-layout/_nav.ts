@@ -24,15 +24,22 @@ export const navItems: INavData[] = [
     url: '/theme/typography',
     linkProps: { fragment: 'headings' },
     iconComponent: { name: 'cil-pencil' }
-  },
-   {
+  },  
+  {
     name: 'Integración de datos',
     title: true
   },
   {
-    name: 'Carga de datos',
-    url: '/base',
-    iconComponent: { name: 'cil-puzzle' }   
+    name: 'BoxDataLoad',
+    url: '/fegusconfig',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Carga de datos',
+        url: '/fegusconfig/boxdataload/mant-boxdataload',
+        icon: 'nav-icon-bullet'        
+      }
+    ]
   },
   {
     name: 'Clase de datos Credito',

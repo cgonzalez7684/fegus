@@ -5,7 +5,7 @@ namespace FegusDAgent.Domain.Entities;
 public class Deudor
 {
     // --- Clave primaria compuesta ---
-    public int IdCliente { get; set; }
+    public int id_load_local { get; set; }
     public decimal TipoPersonaDeudor { get; set; }
     public string IdDeudor { get; set; } = default!;
 
@@ -52,6 +52,8 @@ public class Deudor
     public int? NumDiasAtraso1516 { get; set; }
 
     // --- Auditoría ---
-    public DateTime FechaUltGestion { get; set; }
-    public string? CodUsuarioUltGestion { get; set; }
+    public DateTime created_at_utc { get; set; }
+
+    public DateTime updated_at_utc { get; set; }
+    
 }

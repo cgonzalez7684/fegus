@@ -17,6 +17,9 @@ export class DeudorApiService extends BaseApiService {
 
   getDeudores(idCliente: string): Observable<ApiResponse<DeudorValue<DeudorDto[]>>> {
     const endpoint = `crediticio/deudores/${idCliente}`;
+
+    console.log('Endpoint getDeudores construido:', endpoint);
+
     return this.get<ApiResponse<DeudorValue<DeudorDto[]>>>(endpoint);
   }
 

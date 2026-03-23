@@ -45,6 +45,7 @@ export class GridZComponent implements OnChanges {
   @Output() rowSelected = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<any[]>();
   @Output() cellValueChanged = new EventEmitter<any>();
+  @Output() rowDoubleClicked = new EventEmitter<any>();
 
   // ==============================
   // GRID INTERNAL
@@ -171,6 +172,10 @@ export class GridZComponent implements OnChanges {
   // EVENTS
   // ==============================
 
+  onRowDoubleClicked(event: any) {
+   this.rowDoubleClicked.emit(event.data);
+  }
+
   onGridReady(params: any): void {
     this.gridApi = params.api;
 
@@ -180,13 +185,19 @@ export class GridZComponent implements OnChanges {
   }
 
   onRowSelectedEvent(event: any): void {
-    if (event.node.selected) {
-      this.rowSelected.emit(event.data);
+    //console.log('Row selected event:', event);
+    if (event.node && event.node.isSelected()) {
+      //console.log('2.Row selected event:', event);
+      //this.rowSelected.emit(event.data);
+      this.rowSelected.emit(event);
     }
   }
 
   onSelectionChangedEvent(): void {
-    if (this.selectionMode === 'multiple' && this.gridApi) {
+    //console.log('1.Selection changed event',this.selectionMode);
+    //console.log('2.Selection changed event',this.gridApi);
+    if (this.gridApi) {
+      //console.log('3.Selection changed event');
       const selected = this.gridApi.getSelectedRows();
       this.selectionChanged.emit(selected);
     }

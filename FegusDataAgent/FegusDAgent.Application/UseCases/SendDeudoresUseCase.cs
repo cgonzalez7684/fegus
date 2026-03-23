@@ -2,7 +2,7 @@ using System;
 using FegusDAgent.Domain.Entities;
 using FegusDAgent.Domain.Interfaces;
 
-namespace FegusDAgent.Application.UseCases.Deudores;
+namespace FegusDAgent.Application.UseCases;
 
 public sealed class SendDeudoresUseCase
 {
@@ -23,12 +23,13 @@ public sealed class SendDeudoresUseCase
         _checkpointStore = checkpointStore;
     }
 
-    public async Task ExecuteAsync(        
-        CancellationToken cancellationToken)
+    public async Task ExecuteAsync(
+        int idLoadLocal = 0,
+        CancellationToken cancellationToken = default)
     {
         // 1️⃣ Crear sesión de ingestión
         var session = await _sessionClient.CreateSessionAsync(
-            dataset: "deudores",            
+            dataset: "deudores",
             cancellationToken);
 
         // 2️⃣ Recuperar último checkpoint
@@ -37,7 +38,7 @@ public sealed class SendDeudoresUseCase
 
         // 3️⃣ Obtener snapshot completo de deudores
         var deudoresStream = _source
-            .StreamAsync(cancellationToken);
+            .StreamAsync(idLoadLocal, cancellationToken);
 
         // 4️⃣ Enviar datos por streaming
         await _streamSender.StreamAsync(
@@ -52,4 +53,3 @@ public sealed class SendDeudoresUseCase
             cancellationToken);
     }
 }
-

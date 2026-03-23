@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Dapper;
 using FegusDAgent.Domain.Entities;
 using FegusDAgent.Domain.Interfaces;
 using FegusDAgent.Infrastructure.Interfaces;
@@ -17,7 +18,9 @@ public class DeudoresSource : IEntitySource<Deudor>
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
-    public async IAsyncEnumerable<Deudor> StreamAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<Deudor> StreamAsync(
+        int idLoadLocal = 0,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         await using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
 
@@ -26,20 +29,24 @@ public class DeudoresSource : IEntitySource<Deudor>
         command.CommandText = @"
             SELECT
             *
-            FROM fegusdata.obtener_deudores_lista()            
-            order by iddeudor desc
+            FROM feguslocal.obtener_deudores_lista(@id_load_local)                        
             ";
-       
-        
+
+        var idLoadLocalParam = new NpgsqlParameter("id_load_local", NpgsqlDbType.Integer)
+        {
+            Value = idLoadLocal
+        };
+        command.Parameters.Add(idLoadLocalParam);
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        
         
 
         while (await reader.ReadAsync(cancellationToken))
         {
             yield return new Deudor
             {
-                IdCliente = reader.GetInt32(reader.GetOrdinal("idcliente")),
+                id_load_local = reader.GetInt32(reader.GetOrdinal("id_load_local")),
                 TipoPersonaDeudor = reader.GetDecimal(reader.GetOrdinal("tipopersonadeudor")),
                 IdDeudor = reader.GetString(reader.GetOrdinal("iddeudor")),
                 TipoDeudorSFN = reader.IsDBNull(reader.GetOrdinal("tipodeudorsfn")) ? null : reader.GetInt32(reader.GetOrdinal("tipodeudorsfn")),
@@ -72,8 +79,8 @@ public class DeudoresSource : IEntitySource<Deudor>
                 NumMesesMoratoriaMayor1516 = reader.IsDBNull(reader.GetOrdinal("nummesesmoramayor1516")) ? null : reader.GetInt32(reader.GetOrdinal("nummesesmoramayor1516")),
                 NumDiasAtraso1421 = reader.IsDBNull(reader.GetOrdinal("numdiasatraso1421")) ? null : reader.GetInt32(reader.GetOrdinal("numdiasatraso1421")),
                 NumDiasAtraso1516 = reader.IsDBNull(reader.GetOrdinal("numdiasatraso1516")) ? null : reader.GetInt32(reader.GetOrdinal("numdiasatraso1516")),
-                FechaUltGestion = reader.GetDateTime(reader.GetOrdinal("fechaultgestion")),
-                CodUsuarioUltGestion = reader.IsDBNull(reader.GetOrdinal("codusuarioultgestion")) ? null : reader.GetString(reader.GetOrdinal("codusuarioultgestion"))
+                created_at_utc = reader.GetDateTime(reader.GetOrdinal("created_at_utc")),
+                updated_at_utc = reader.GetDateTime(reader.GetOrdinal("updated_at_utc"))
             };
            
         }
