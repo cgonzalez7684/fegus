@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Entities;
 using FegusDAgent.Domain.Interfaces;
 using FegusDAgent.Infrastructure.Interfaces;
@@ -15,15 +16,50 @@ namespace FegusDAgent.Infrastructure.Persistence;
 public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
+    private readonly IEventLogger<OperacionCreditoSource> _logger;
 
-    public OperacionCreditoSource(IDbConnectionFactory dbConnectionFactory)
+    public OperacionCreditoSource(
+        IDbConnectionFactory dbConnectionFactory,
+        IEventLogger<OperacionCreditoSource> logger)
     {
         _dbConnectionFactory = dbConnectionFactory;
+        _logger = logger;
     }
 
-    public async IAsyncEnumerable<OperacionCredito> StreamAsync(
+    public async IAsyncEnumerable<OperacionCredito> GetDataStreamAsync(
         int idLoadLocal = 0,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        // C# disallows yield inside a try-with-catch, so we advance the enumerator
+        // inside try-catch and yield the result outside.
+        await using var enumerator = ReadFromDatabaseAsync(idLoadLocal, cancellationToken)
+            .GetAsyncEnumerator(cancellationToken);
+
+        while (true)
+        {
+            bool hasNext;
+            try
+            {
+                hasNext = await enumerator.MoveNextAsync();
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Failed to stream OperacionesCredito for idLoadLocal={idLoadLocal}.", ex);
+                throw;
+            }
+
+            if (!hasNext) break;
+            yield return enumerator.Current;
+        }
+    }
+
+    private async IAsyncEnumerable<OperacionCredito> ReadFromDatabaseAsync(
+        int idLoadLocal,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
 

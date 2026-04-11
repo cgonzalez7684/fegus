@@ -11,5 +11,5 @@ public interface IBoxDataRepository
     Task<ExecutionResult<bool>> DeleteFeBoxDataLoadAsync(int idCliente, long idLoad, CancellationToken ct);
     Task<ExecutionResult<IEnumerable<FeBoxDataLoad>>> GetFeBoxDataLoadAsync(int idCliente, long? idLoad, CancellationToken ct);
 
-    Task<ExecutionResult<FeBoxDataLoad>> GetNexFeBoxDataLoadAsync(int idCliente,CancellationToken cancellationToken);
+    Task<ExecutionResult<FeBoxDataLoad>> GetNextFeBoxDataLoadAsync(int idCliente,CancellationToken cancellationToken);
 }

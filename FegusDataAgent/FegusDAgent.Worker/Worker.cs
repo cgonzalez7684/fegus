@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using FegusDAgent.Application.UseCases;
+using FegusDAgent.Infrastructure.FegusApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -8,9 +9,11 @@ namespace FegusDAgent.Worker;
 public class Worker(
     ILogger<Worker> logger,
     IServiceScopeFactory scopeFactory,
-    IOptions<SaludoWorkerOptions> options) : BackgroundService
+    IOptions<SaludoWorkerOptions> options,
+    IOptions<FegusApiOptions> fegusOptions) : BackgroundService
 {
     private long _jobSequence;
+    private readonly SemaphoreSlim _jobGate = new(1, 1);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -28,7 +31,10 @@ public class Worker(
         if (opts.ChannelCapacity < 1)
             throw new InvalidOperationException($"{SaludoWorkerOptions.SectionName}:{nameof(SaludoWorkerOptions.ChannelCapacity)} debe ser >= 1.");
 
-        var channel = Channel.CreateBounded<SaludoJob>(new BoundedChannelOptions(opts.ChannelCapacity)
+        if (!int.TryParse(fegusOptions.Value.IdCliente, out var idCliente) || idCliente <= 0)
+            throw new InvalidOperationException("FegusApi:IdCliente must be a valid positive integer.");
+
+        var channel = Channel.CreateBounded<DataLoadJob>(new BoundedChannelOptions(opts.ChannelCapacity)
         {
             FullMode = BoundedChannelFullMode.Wait,
             SingleReader = false,
@@ -42,7 +48,7 @@ public class Worker(
         for (var i = 0; i < opts.ConsumerCount; i++)
         {
             var workerId = i;
-            consumerTasks.Add(RunConsumerAsync(workerId, reader, stoppingToken));
+            consumerTasks.Add(RunConsumerAsync(workerId, idCliente, reader, stoppingToken));
         }
 
         try
@@ -51,7 +57,7 @@ public class Worker(
             {
                 for (var j = 0; j < opts.ParallelJobsPerTick; j++)
                 {
-                    var job = new SaludoJob(Interlocked.Increment(ref _jobSequence));
+                    var job = new DataLoadJob(Interlocked.Increment(ref _jobSequence));
                     await writer.WriteAsync(job, stoppingToken).ConfigureAwait(false);
                 }
 
@@ -73,7 +79,8 @@ public class Worker(
 
     private async Task RunConsumerAsync(
         int workerId,
-        ChannelReader<SaludoJob> reader,
+        int idCliente,
+        ChannelReader<DataLoadJob> reader,
         CancellationToken stoppingToken)
     {
         try
@@ -83,25 +90,30 @@ public class Worker(
                 try
                 {
                     await using var scope = scopeFactory.CreateAsyncScope();
-                    var getSaludo = scope.ServiceProvider.GetRequiredService<GetSaludoDeudorUseCase>();
+                    var orchestration = scope.ServiceProvider
+                        .GetRequiredService<DataLoadOrchestrationUseCase>();
 
-                    var saludo = await getSaludo.ExecuteAsync(stoppingToken).ConfigureAwait(false);
-
-                    if (saludo is not null)
+                    await _jobGate.WaitAsync(stoppingToken).ConfigureAwait(false);
+                    bool workDone;
+                    try
                     {
+                        workDone = await orchestration
+                            .ExecuteAsync(idCliente, stoppingToken)
+                            .ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _jobGate.Release();
+                    }
+
+                    if (workDone)
                         logger.LogInformation(
-                            "Worker {WorkerId} job {JobId}: saludo API = {Saludo}",
-                            workerId,
-                            job.Id,
-                            saludo);
-                    }
+                            "Worker {WorkerId} job {JobId}: data load completed for idCliente={IdCliente}.",
+                            workerId, job.Id, idCliente);
                     else
-                    {
-                        logger.LogWarning(
-                            "Worker {WorkerId} job {JobId}: no se obtuvo respuesta válida del API.",
-                            workerId,
-                            job.Id);
-                    }
+                        logger.LogDebug(
+                            "Worker {WorkerId} job {JobId}: no NEW box available.",
+                            workerId, job.Id);
                 }
                 catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
                 {
@@ -109,7 +121,9 @@ public class Worker(
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Worker {WorkerId} job {JobId}: error al ejecutar GetSaludoDeudor.", workerId, job.Id);
+                    logger.LogError(ex,
+                        "Worker {WorkerId} job {JobId}: error during data load orchestration.",
+                        workerId, job.Id);
                 }
             }
         }
@@ -119,5 +133,5 @@ public class Worker(
         }
     }
 
-    private readonly record struct SaludoJob(long Id);
+    private readonly record struct DataLoadJob(long Id);
 }

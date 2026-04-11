@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Software/Fegus/BackEnd -name \"*.csproj\" -exec grep -l \"TargetFramework\" {} \\\\;)"
+    ]
+  }
+}

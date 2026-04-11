@@ -32,7 +32,7 @@ public sealed class GetIngestionSessionStatusEndpoint
         {
             SessionId = session.Value!.SessionId,
             Dataset = session.Value.Dataset!,
-            Status = session.Value.Status.ToString(),
+            SessionStateCode = session.Value.SessionStateCode!,
             LastSequencePersisted = session.Value.LastSequencePersisted
         });
     }
@@ -42,6 +42,6 @@ public sealed record IngestionSessionStatusResponse
 {
     public Guid SessionId { get; init; }
     public string Dataset { get; init; } = default!;
-    public string Status { get; init; } = default!;
+    public string SessionStateCode { get; init; } = default!;
     public long LastSequencePersisted { get; init; }
 }

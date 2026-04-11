@@ -68,6 +68,7 @@ public sealed class BoxDataRepository : IBoxDataRepository
             FROM fegusconfig.fn_box_data_load_update(
                 @p_id_cliente,
                 @p_id_load,
+                @p_id_load_local,
                 @p_state_code,
                 @p_is_active                
             );
@@ -83,6 +84,7 @@ public sealed class BoxDataRepository : IBoxDataRepository
                 {
                     p_id_cliente = dataLoad.IdCliente,
                     p_id_load = dataLoad.IdLoad,
+                    p_id_load_local = dataLoad.IdLoadLocal,
                     p_state_code = dataLoad.StateCode,
                     p_is_active = dataLoad.IsActive                    
                 },
@@ -188,7 +190,7 @@ public sealed class BoxDataRepository : IBoxDataRepository
         };
     }
 
-    public async Task<ExecutionResult<FeBoxDataLoad>> GetNexFeBoxDataLoadAsync(
+    public async Task<ExecutionResult<FeBoxDataLoad>> GetNextFeBoxDataLoadAsync(
     int idCliente,    
     CancellationToken cancellationToken)
     {

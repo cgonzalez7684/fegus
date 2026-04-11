@@ -1,11 +1,19 @@
-using System;
-
 namespace Domain.Enums;
 
-public enum IngestionSessionStatus
+public sealed class IngestionSessionStatus
 {
-    Created = 1,
-    Receiving = 2,
-    Completed = 3,
-    Failed = 4
+    public string Value { get; }
+
+    private IngestionSessionStatus(string value)
+    {
+        Value = value;
+    }
+
+    public static readonly IngestionSessionStatus Created = new("CREATED");
+    public static readonly IngestionSessionStatus Receiving = new("RECEIVING");
+    public static readonly IngestionSessionStatus Completed = new("COMPLETED");
+    public static readonly IngestionSessionStatus Failed = new("FAILED");
+    
+
+    public override string ToString() => Value;
 }

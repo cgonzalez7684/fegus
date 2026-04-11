@@ -5,9 +5,10 @@ namespace FegusDAgent.Domain.Interfaces;
 
 public interface IIngestionStreamSender
 {
-    Task StreamAsync<T>(
+    Task SendStreamAsync<T>(
         IngestionSession session,
         IAsyncEnumerable<T> data,
         long startSequence,
+        string token,
         CancellationToken cancellationToken);
 }

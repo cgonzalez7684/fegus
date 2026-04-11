@@ -12,10 +12,29 @@ using FegusDAgent.Infrastructure.Ingestion;
 using Microsoft.Extensions.Http;
 using FegusDAgent.Infrastructure.Checkpoints;
 using FegusDAgent.Infrastructure.FegusApi;
+using FegusDAgent.Application.UseCases.Fegus;
+using FegusDAgent.Application.UseCases.FegusLocal;
+using FegusDAgent.Application.UseCases.Ingestion;
+using FegusDAgent.Application.Logging;
+using FegusDAgent.Infrastructure.Logging;
+using NLog.Extensions.Logging;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 var configuration = builder.Configuration;
+
+// ==============================
+// Logging — NLog
+// ==============================
+builder.Logging.ClearProviders();
+builder.Logging.AddNLog();
+
+// ==============================
+// EventLog options + IEventLogger<>
+// ==============================
+builder.Services.Configure<EventLogOptions>(
+    configuration.GetSection(EventLogOptions.SectionName));
+builder.Services.AddTransient(typeof(IEventLogger<>), typeof(EventLogger<>));
 
 builder.Services.Configure<SaludoWorkerOptions>(
     configuration.GetSection(SaludoWorkerOptions.SectionName));
@@ -31,12 +50,38 @@ builder.Services.AddHostedService<Worker>();
 builder.Services.AddScoped<SendDeudoresUseCase>();
 builder.Services.AddScoped<SendOperacionCreditoUseCase>();
 builder.Services.AddScoped<GetSaludoDeudorUseCase>();
+builder.Services.AddScoped<GetNextBoxDataLoadUseCase>();
+builder.Services.AddScoped<AuthenticateUseCase>();
+builder.Services.AddScoped<UpdateFeBoxDataLoadUseCase>();
+builder.Services.AddScoped<CreateBoxDataLoadLocalUseCase>();
+builder.Services.AddScoped<DataLoadOrchestrationUseCase>();
+
+
+
+builder.Services.Configure<FegusApiOptions>(configuration.GetSection(FegusApiOptions.SectionName));
+builder.Services.AddSingleton<FegusApiTokenProvider>();
+builder.Services.AddSingleton<IFegusAuthClient>(sp => sp.GetRequiredService<FegusApiTokenProvider>());
+builder.Services.AddHttpClient("FegusApiAuth", client =>
+{
+    client.BaseAddress = new Uri(configuration["FegusApi:BaseUrl"]!.TrimEnd('/') + "/");
+});
+builder.Services.AddHttpClient<IFegusConfigClient, HttpFegusConfigClient>(client =>
+{
+    client.BaseAddress = new Uri(configuration["FegusApi:BaseUrl"]!.TrimEnd('/') + "/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 
 // ==============================
 // Infrastructure – Database
 // ==============================
 builder.Services.AddSingleton<IDbConnectionFactory,NpgsqlConnectionFactory>();
     
+
+// ==============================
+// Infrastructure – Local Repository
+// ==============================
+builder.Services.AddScoped<IFegusLocalRepository, FegusLocalRepository>();
 
 // ==============================
 // Infrastructure – Sources

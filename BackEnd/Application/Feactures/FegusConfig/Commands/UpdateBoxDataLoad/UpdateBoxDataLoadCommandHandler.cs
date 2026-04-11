@@ -16,18 +16,9 @@ public sealed class UpdateBoxDataLoadCommandHandler
     public async Task<Result<bool>> Handle(
         UpdateBoxDataLoadCommand request,
         CancellationToken cancellationToken)
-    {
-        var entity = new FeBoxDataLoad
-        {
-            IdCliente = request.IdCliente,
-            IdLoad = request.IdLoad,
-            StateCode = request.StateCode,
-            IsActive = request.IsActive,
-            UpdatedAtUtc = DateTime.UtcNow
-        };
-
+    {        
         ExecutionResult<bool> result =
-            await _repository.UpdateFeBoxDataLoadAsync(entity, cancellationToken);
+            await _repository.UpdateFeBoxDataLoadAsync(request.pFeBoxDataLoad, cancellationToken);
 
         if (result.SqlCode != 0)
         {

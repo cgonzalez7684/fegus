@@ -25,8 +25,9 @@ public sealed class CreateIngestionSessionCommandHandler
         var session = new IngestionSession(
             Guid.NewGuid(),
             command.IdCliente,
+            command.IdLoad,
             command.Dataset,
-            (int)IngestionSessionStatus.Created,
+            IngestionSessionStatus.Created.ToString(),
             0L);
 
         await _repository.AddAsync(session, cancellationToken);

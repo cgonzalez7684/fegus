@@ -28,7 +28,7 @@ public sealed class CreateIngestionSessionEndpoint
             .First(c => c.Type == "idcliente").Value);
 
         var sessionId = await _sender.Send(
-            new CreateIngestionSessionCommand(idCliente, req.Dataset),
+            new CreateIngestionSessionCommand(idCliente, req.IdLoad, req.Dataset),
             ct);
 
         await Send.ResponseAsync(new CreateIngestionSessionResponse
@@ -39,7 +39,8 @@ public sealed class CreateIngestionSessionEndpoint
     }
 }
 
-public sealed record CreateIngestionSessionRequest(
+public sealed record CreateIngestionSessionRequest(    
+    int IdLoad,
     string Dataset
 );
 

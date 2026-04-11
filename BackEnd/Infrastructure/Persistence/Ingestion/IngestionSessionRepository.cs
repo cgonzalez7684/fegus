@@ -14,8 +14,9 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
     private sealed record IngestionSessionDbRow(
     Guid SessionId,
     int IdCliente,
+    int IdLoad,
     string Dataset,
-    int Status,
+    string SessionStateCode,
     long LastSequencePersisted,
     DateTime CreatedAtUtc
     );
@@ -32,8 +33,8 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
     {
         const string sql = """
             INSERT INTO fegusconfig.fe_ingestion_sessions
-            (id_cliente,session_id, dataset, status, last_sequence, created_at_utc)
-            VALUES (@IdCliente, @SessionId, @Dataset, @Status, @LastSequence, @CreatedAtUtc)
+            (id_cliente, id_load, session_id, dataset, session_state_code, last_sequence, created_at_utc)
+            VALUES (@IdCliente, @IdLoad, @SessionId, @Dataset, @Session_state_code, @LastSequence, @CreatedAtUtc)
         """;
 
         await using var conn =
@@ -43,9 +44,10 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
             new CommandDefinition(sql, new
             {
                 session.IdCliente,
+                session.IdLoad,
                 session.SessionId,
                 session.Dataset,
-                Status = Convert.ToInt32(session.Status),
+                Session_state_code = session.SessionStateCode,
                 LastSequence = session.LastSequencePersisted,
                 session.CreatedAtUtc
             }, cancellationToken: cancellationToken));
@@ -79,18 +81,19 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         var session = new IngestionSession(
             row.SessionId,                 // Guid
             row.IdCliente,                 // int
+            row.IdLoad,
             row.Dataset,                    // string
-            row.Status,
+            row.SessionStateCode,                     // int
             row.LastSequencePersisted
         );
         session.UpdateLastSequence((long)row.LastSequencePersisted);
 
-         if (row.Status == (int)Domain.Enums.IngestionSessionStatus.Completed)
+         if (row.SessionStateCode == Domain.Enums.IngestionSessionStatus.Completed.ToString())
                 session.MarkCompleted();
-            else if (row.Status == (int)Domain.Enums.IngestionSessionStatus.Failed)
+            else if (row.SessionStateCode == Domain.Enums.IngestionSessionStatus.Failed.ToString())
                 session.MarkFailed();
 
-        /*if (Enum.TryParse(row.Status, out Domain.Enums.IngestionSessionStatus status))
+        /*if (Enum.TryParse(row.SessionStateCode, out Domain.Enums.IngestionSessionStatus status))
         {
             if (status == Domain.Enums.IngestionSessionStatus.Completed)
                 session.MarkCompleted();
@@ -120,7 +123,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         await conn.ExecuteAsync(
             new CommandDefinition(sql, new
             {                
-                Status = Convert.ToInt32(session.Status),
+                SessionStateCode = session.SessionStateCode,
                 LastSequence = session.LastSequencePersisted,
                 session.IdCliente,
                 session.SessionId,
