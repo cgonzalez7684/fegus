@@ -27,15 +27,22 @@ public sealed class CreateIngestionSessionEndpoint
         var idCliente = int.Parse(User.Claims
             .First(c => c.Type == "idcliente").Value);
 
-        var sessionId = await _sender.Send(
+        var result = await _sender.Send(
             new CreateIngestionSessionCommand(idCliente, req.Dataset),
             ct);
 
+        if (result.IsFailure)
+        {
+            AddError(result.Error!);
+            await SendErrorsAsync(ct);
+            return;
+        }
+
         await Send.ResponseAsync(new CreateIngestionSessionResponse
         {
-            SessionId = sessionId
+            SessionId = result.Value
         });
-      
+
     }
 }
 
@@ -45,6 +52,6 @@ public sealed record CreateIngestionSessionRequest(
 
 public sealed record CreateIngestionSessionResponse
 {
-    public Result<Guid>? SessionId { get; init; }
+    public Guid SessionId { get; init; }
 }
 

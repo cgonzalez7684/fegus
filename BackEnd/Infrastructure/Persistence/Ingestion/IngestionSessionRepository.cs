@@ -31,7 +31,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         CancellationToken cancellationToken)
     {
         const string sql = """
-            INSERT INTO fegusdata.ingestion_sessions
+            INSERT INTO fegusconfig.fe_ingestion_sessions
             (id_cliente,session_id, dataset, status, last_sequence, created_at_utc)
             VALUES (@IdCliente, @SessionId, @Dataset, @Status, @LastSequence, @CreatedAtUtc)
         """;
@@ -63,7 +63,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
                 status          AS Status,
                 last_sequence   AS LastSequencePersisted,
                 created_at_utc  AS CreatedAtUtc
-            FROM fegusdata.ingestion_sessions
+            FROM fegusconfig.fe_ingestion_sessions
             WHERE session_id = @SessionId
         """;
 
@@ -106,7 +106,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         CancellationToken cancellationToken)
     {
         const string sql = """
-            UPDATE fegusdata.ingestion_sessions
+            UPDATE fegusconfig.fe_ingestion_sessions
             SET
                 status = @Status,
                 last_sequence = @LastSequence

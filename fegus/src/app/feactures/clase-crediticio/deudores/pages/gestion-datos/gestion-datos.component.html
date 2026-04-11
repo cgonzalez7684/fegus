@@ -26,5 +26,241 @@
 		  (rowSelected)="onRowSelected($event)"
       (selectionChanged)="onSelectionChanged($event)"
       (cellValueChanged)="onCellChanged($event)"
+      (rowDoubleClicked)="openModal($event)"
       >
 </app-grid-z>    
+
+
+<c-modal #verticallyCenteredModal alignment="center" id="verticallyCenteredModal" size="xl"
+[visible]="modalVisible"
+  (visibleChange)="modalVisible = $event"
+>
+  <c-modal-header>
+    <h5 cModalTitle>Gestión de datos - Deudor</h5>
+    <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <ng-container *ngIf="editDeudor as d; else noSelection">
+      <div class="mb-2">
+        <strong>Id Deudor:</strong> {{ d.idDeudor }} &nbsp;|&nbsp;
+        <strong>Id Cliente:</strong> {{ d.idCliente }}
+      </div>
+
+      <c-tabs [activeItemKey]="0">
+        <c-tabs-list variant="tabs" class="mb-3">
+          <button cTab [itemKey]="0">Identificación</button>
+          <button cTab [itemKey]="1">Riesgo y calificación</button>
+          <button cTab [itemKey]="2">Segmentación / Vinculación</button>
+          <button cTab [itemKey]="3">Comportamiento / SBD</button>
+          <button cTab [itemKey]="4">Ingresos / Mora / Gestión</button>
+        </c-tabs-list>
+        <c-tabs-content>
+          <c-tab-panel [itemKey]="0" class="p-2">
+            <form class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Id Cliente</label>
+                <input class="form-control" type="number" name="idCliente" [(ngModel)]="d.idCliente" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Id Deudor</label>
+                <input class="form-control" type="text" name="idDeudor" [(ngModel)]="d.idDeudor" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Tipo persona deudor</label>
+                <input class="form-control" type="number" name="tipoPersonaDeudor" [(ngModel)]="d.tipoPersonaDeudor" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Tipo deudor SFN</label>
+                <input class="form-control" type="number" name="tipoDeudorSFN" [(ngModel)]="d.tipoDeudorSFN" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Código sector económico</label>
+                <input class="form-control" type="number" name="codigoSectorEconomico" [(ngModel)]="d.codigoSectorEconomico" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Actividad económica</label>
+                <input class="form-control" type="text" name="tipoActividadEconomicaDeudor" [(ngModel)]="d.tipoActividadEconomicaDeudor" />
+              </div>
+            </form>
+          </c-tab-panel>
+
+          <c-tab-panel [itemKey]="1" class="p-2">
+            <form class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Fecha calificación riesgo</label>
+                <input class="form-control" type="date" name="fechaCalificacionRiesgo" [(ngModel)]="d.fechaCalificacionRiesgo" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Tipo asignación calificación</label>
+                <input class="form-control" type="number" name="tipoAsignacionCalificacion" [(ngModel)]="d.tipoAsignacionCalificacion" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Categoría calificación</label>
+                <input class="form-control" type="number" name="categoriaCalificacion" [(ngModel)]="d.categoriaCalificacion" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Calificación riesgo</label>
+                <input class="form-control" type="text" name="calificacionRiesgo" [(ngModel)]="d.calificacionRiesgo" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Código empresa calificadora</label>
+                <input class="form-control" type="number" name="codigoEmpresaCalificadora" [(ngModel)]="d.codigoEmpresaCalificadora" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Tipo capacidad de pago</label>
+                <input class="form-control" type="number" name="tipoCapacidadPago" [(ngModel)]="d.tipoCapacidadPago" />
+              </div>
+            </form>
+          </c-tab-panel>
+
+          <c-tab-panel [itemKey]="2" class="p-2">
+            <form class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Saldo total segmentación</label>
+                <input class="form-control" type="number" name="saldoTotalSegmentacion" [(ngModel)]="d.saldoTotalSegmentacion" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Condición especial deudor</label>
+                <input class="form-control" type="number" name="tipoCondicionEspecialDeudor" [(ngModel)]="d.tipoCondicionEspecialDeudor" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Indicador generador divisas</label>
+                <input class="form-control" type="number" name="tipoIndicadorGeneradorDivisas" [(ngModel)]="d.tipoIndicadorGeneradorDivisas" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Vinculado entidad</label>
+                <input class="form-control" type="number" name="indicadorVinculadoEntidad" [(ngModel)]="d.indicadorVinculadoEntidad" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Vinculado grupo financiero</label>
+                <input class="form-control" type="number" name="indicadorVinculadoGrupoFinanciero" [(ngModel)]="d.indicadorVinculadoGrupoFinanciero" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Grupo de interés económico</label>
+                <input class="form-control" type="number" name="idGrupoInteresEconomico" [(ngModel)]="d.idGrupoInteresEconomico" />
+              </div>
+            </form>
+          </c-tab-panel>
+
+          <c-tab-panel [itemKey]="3" class="p-2">
+            <form class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Comportamiento pago</label>
+                <input class="form-control" type="number" name="tipoComportamientoPago" [(ngModel)]="d.tipoComportamientoPago" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Comportamiento pago SBD</label>
+                <input class="form-control" type="number" name="tipoComportamientoPagoSBD" [(ngModel)]="d.tipoComportamientoPagoSBD" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Beneficiario SBD</label>
+                <input class="form-control" type="number" name="tipoBeneficiarioSBD" [(ngModel)]="d.tipoBeneficiarioSBD" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Operaciones reestructuradas SBD</label>
+                <input class="form-control" type="number" name="totalOperacionesReestructuradasSBD" [(ngModel)]="d.totalOperacionesReestructuradasSBD" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Indicador gen. divisas SBD</label>
+                <input class="form-control" type="number" name="tipoIndicadorGeneradorDivisasSBD" [(ngModel)]="d.tipoIndicadorGeneradorDivisasSBD" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Riesgo cambiario</label>
+                <input class="form-control" type="number" name="riesgoCambiarioDeudor" [(ngModel)]="d.riesgoCambiarioDeudor" />
+              </div>
+            </form>
+          </c-tab-panel>
+
+          <c-tab-panel [itemKey]="4" class="p-2">
+            <form class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Monto ingreso total</label>
+                <input class="form-control" type="number" name="montoIngresoTotalDeudor" [(ngModel)]="d.montoIngresoTotalDeudor" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Carga mensual CSD</label>
+                <input class="form-control" type="number" name="totalCargaMensualCSD" [(ngModel)]="d.totalCargaMensualCSD" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Indicador CSD</label>
+                <input class="form-control" type="number" name="indicadorCSD" [(ngModel)]="d.indicadorCSD" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Saldo mora 14-21</label>
+                <input class="form-control" type="number" name="saldoMoratoriaMayorUltMeses1421" [(ngModel)]="d.saldoMoratoriaMayorUltMeses1421" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Meses mora 14-21</label>
+                <input class="form-control" type="number" name="numMesesMoratoriaMayor1421" [(ngModel)]="d.numMesesMoratoriaMayor1421" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Saldo mora 15-16</label>
+                <input class="form-control" type="number" name="saldoMoratoriaMayorUltMeses1516" [(ngModel)]="d.saldoMoratoriaMayorUltMeses1516" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Meses mora 15-16</label>
+                <input class="form-control" type="number" name="numMesesMoratoriaMayor1516" [(ngModel)]="d.numMesesMoratoriaMayor1516" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Días atraso 14-21</label>
+                <input class="form-control" type="number" name="numDiasAtraso1421" [(ngModel)]="d.numDiasAtraso1421" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Días atraso 15-16</label>
+                <input class="form-control" type="number" name="numDiasAtraso1516" [(ngModel)]="d.numDiasAtraso1516" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Fecha última gestión</label>
+                <input class="form-control" type="date" name="fechaUltGestion" [(ngModel)]="d.fechaUltGestion" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Usuario última gestión</label>
+                <input class="form-control" type="text" name="codUsuarioUltGestion" [(ngModel)]="d.codUsuarioUltGestion" />
+              </div>
+            </form>
+          </c-tab-panel>
+        </c-tabs-content>
+      </c-tabs>
+    </ng-container>
+
+    <ng-template #noSelection>
+      <div class="text-muted">No hay un registro seleccionado para editar.</div>
+    </ng-template>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">
+      Close
+    </button>
+    <button [cModalToggle]="verticallyCenteredModal.id" cButton color="primary">Aceptar</button>
+  </c-modal-footer>
+</c-modal>

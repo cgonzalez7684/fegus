@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IDeudorRepository,DeudorRepository>();
         services.AddScoped<IIngestionStreamWriter, PostgresCopyStreamWriter>();
         services.AddScoped<IIngestionSessionRepository, IngestionSessionRepository>();        
+        services.AddScoped<IBoxDataRepository, BoxDataRepository>();
         services.AddSingleton<NdjsonStreamReader>();
 
         return services;

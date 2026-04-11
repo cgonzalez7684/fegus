@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonDirective,
   ColComponent,  
   CardBodyComponent,
   CardComponent,
   CardHeaderComponent,  
-  RowComponent  
+  RowComponent,
+  ButtonCloseDirective,
+  ModalBodyComponent,
+  ModalComponent,
+  ModalFooterComponent,
+  ModalHeaderComponent,
+  ModalTitleDirective,
+  ModalToggleDirective,
+  TabsComponent,
+  TabsListComponent,
+  TabsContentComponent,
+  TabPanelComponent,
+  TabDirective
  } from '@coreui/angular';
 import { ColDef } from 'ag-grid-community';
 import { GridZComponent } from '../../../../../shared/components/grid-z/grid-z.component';
@@ -22,7 +34,10 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-gestion-datos',
   standalone: true,
-  imports: [CommonModule,FormsModule,ButtonDirective,GridZComponent, CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent],
+  imports: [CommonModule,FormsModule,ButtonDirective,GridZComponent, CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent,
+  ButtonCloseDirective, ModalBodyComponent, ModalComponent, ModalFooterComponent, ModalHeaderComponent, ModalTitleDirective, ModalToggleDirective,
+  TabsComponent, TabsListComponent, TabsContentComponent, TabPanelComponent, TabDirective
+  ],
   templateUrl: './gestion-datos.component.html',
   styleUrl: './gestion-datos.component.scss',
 })
@@ -34,18 +49,32 @@ export class GestionDatosComponent {
   rowData: DeudorDto[] = [];
   columns = DEUDOR_GRID_CONFIG;
   idCliente: string = '';
+  @ViewChild('verticallyCenteredModal') modal!: ModalComponent;
+  modalVisible = false;
+  selectedRow: any;
+  editDeudor: DeudorDto | null = null;
 
-  
+   openModal(row: any) {
+    console.log("Double click row:", row);    
+
+    // guardamos el registro seleccionado
+    this.selectedRow = row;
+    const data = row?.data ?? row;
+    this.editDeudor = data ? ({ ...data } as DeudorDto) : null;
+    this.modal?.show;
+    // abrimos el modal
+    this.modalVisible = true;
+  }
 
   GetDeudor(): void {
-    console.log('Botón "Consumir API" clickeado');
+    //console.log('Botón "Consumir API" clickeado');
     this.apiService.getDeudor(this.idCliente, '782245869').subscribe({
       next: response => {
         if (response.isSuccess) {
           this.rowData = response.value?.result ? [response.value.result] : [];
           this.deudorData = response;
-          console.log('Deudor cargado:', this.deudorData);
-          console.log('Respuesta API recibida:', this.deudorData.value?.result);
+          //console.log('Deudor cargado:', this.deudorData);
+          //console.log('Respuesta API recibida:', this.deudorData.value?.result);
 
           // Ejemplo: convertir fechas a Date si lo necesitas
          /* this.deudorData.fechaUltGestion = new Date(
@@ -65,15 +94,15 @@ export class GestionDatosComponent {
   }
 
   GetDeudores(): void {
-    console.log('Botón "Consumir API GetDeudores" clickeado');
+    //console.log('Botón "Consumir API GetDeudores" clickeado');
     this.apiService.getDeudores(this.idCliente).subscribe({
       next: response => {
         if (response.isSuccess) {
           this.rowData = response.value?.result || [];
 
           this.listadeudorData = response;
-          console.log('Lista de deudores cargada:', this.listadeudorData);
-          console.log('Respuesta API recibida:', this.listadeudorData.value?.result);
+          //console.log('Lista de deudores cargada:', this.listadeudorData);
+          //console.log('Respuesta API recibida:', this.listadeudorData.value?.result);
 
           // Ejemplo: convertir fechas a Date si lo necesitas
          /* this.deudorData.fechaUltGestion = new Date(
@@ -93,25 +122,25 @@ export class GestionDatosComponent {
   }
 
   onSelectionChanged(selected: DeudorDto[]): void {
-    console.log('Filas seleccionadas:', selected);
+    //console.log('Filas seleccionadas:', selected);
+    
   }
 
    onRowSelected(event: any): void {
-    console.log('llegaaaa');
-    if (event.node.selected) {
-      console.log('Fila seleccionada:', event.data);
-    }
+    //console.log('llegaaaa');
+    //console.log('Fila seleccionada:', event.data);
+   
   }
 
   onCellChanged(event: any) {
-    console.log('Valor anterior:', event.oldValue);
-    console.log('Valor nuevo:', event.newValue);
-    console.log('Fila afectada:', event.data);
+    //console.log('Valor anterior:', event.oldValue);
+    //console.log('Valor nuevo:', event.newValue);
+    //console.log('Fila afectada:', event.data);
   }
 
   ngOnInit() {
     //this.consumirAPI();
-    console.log('Datos:', this.rowData);
+    //console.log('Datos:', this.rowData);
   }
 }
 

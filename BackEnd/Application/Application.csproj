@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Dto\" />
     <Folder Include="Feactures\Deudores\Commands\" />
     <Folder Include="Feactures\Deudores\Queries\GetDeudores\" />
+    <Folder Include="Feactures\FegusConfig\Commands\DeleteBoxDataLoad\" />
+    <Folder Include="Feactures\FegusConfig\Commands\UpdateBoxDataLoad\" />
+    <Folder Include="Feactures\FegusConfig\Queries\GetNextBoxDataLoad\" />
     <Folder Include="Feactures\Ingestion\" />
     <Folder Include="Feactures\Ingestion\CommitSession\" />
     <Folder Include="Feactures\Ingestion\CreateSession\" />

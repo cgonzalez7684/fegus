@@ -1,0 +1,71 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">    
+        <c-card-body>
+        <button cButton color="primary" (click)="openCreateModal()">Nueva carga</button>        
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+<app-grid-z 
+    [columns]="columns"         		  
+    [rowData]="rowData"
+    [pagination]="true"
+    [pageSize]="10"
+    [height]="'500px'"         
+    [selectionMode]="'single'" 
+    [enableCheckboxSelection]="true" 
+    (rowSelected)="onRowSelected($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (cellValueChanged)="onCellChanged($event)"
+    >
+</app-grid-z> 
+
+<c-modal
+  #verticallyCenteredModal
+  alignment="center"
+  id="verticallyCenteredModal"
+  size="lg"
+  [visible]="modalVisible"
+  (visibleChange)="onModalVisibleChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>Nueva carga - Box Data Load</h5>
+    <button [cModalToggle]="verticallyCenteredModal.id" cButtonClose></button>
+  </c-modal-header>
+
+  <c-modal-body>
+    <form class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Id Cliente</label>
+        <input class="form-control" type="number" name="idCliente" [(ngModel)]="createCommand.idCliente" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">State Code</label>
+        <input class="form-control" type="text" name="stateCode" [(ngModel)]="createCommand.stateCode" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Activo (Y/N)</label>
+        <input class="form-control" type="text" name="isActive" [(ngModel)]="createCommand.isActive" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">As of date</label>
+        <input class="form-control" type="date" name="asofDate" [(ngModel)]="createCommand.asofDate" />
+      </div>
+
+      <div class="col-12" *ngIf="createError" >
+        <div class="text-danger">{{ createError }}</div>
+      </div>
+    </form>
+  </c-modal-body>
+
+  <c-modal-footer>
+    <button type="button" [cModalToggle]="verticallyCenteredModal.id" cButton color="secondary">Cerrar</button>
+    <button type="button" cButton color="primary" (click)="createBoxDataLoad()" [disabled]="creating">
+      {{ creating ? 'Creando...' : 'Crear' }}
+    </button>
+  </c-modal-footer>
+</c-modal>
