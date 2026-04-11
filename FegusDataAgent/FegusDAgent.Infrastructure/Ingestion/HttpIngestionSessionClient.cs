@@ -26,13 +26,15 @@ public sealed class HttpIngestionSessionClient : IIngestionSessionClient
         response.EnsureSuccessStatusCode();
 
         var dto = await response.Content
-            .ReadFromJsonAsync<IngestionSession>(cancellationToken);
+            .ReadFromJsonAsync<CreateSessionResponseDto>(cancellationToken);
 
         return new IngestionSession(
-            dto!.SessionId,
-            dto.UploadUrl,
-            dto.RecommendedChunkSize);
+            dto!.SessionId.ToString(),
+            string.Empty,
+            0);
     }
+
+    private sealed record CreateSessionResponseDto(Guid SessionId);
 
     public async Task CommitAsync(
         string sessionId,
