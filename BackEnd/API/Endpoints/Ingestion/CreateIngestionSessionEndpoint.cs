@@ -34,8 +34,7 @@ public sealed class CreateIngestionSessionEndpoint
         if (result.IsFailure)
         {
             AddError(result.Error!);
-            await SendErrorsAsync(ct);
-            return;
+            ThrowIfAnyErrors();
         }
 
         await Send.ResponseAsync(new CreateIngestionSessionResponse

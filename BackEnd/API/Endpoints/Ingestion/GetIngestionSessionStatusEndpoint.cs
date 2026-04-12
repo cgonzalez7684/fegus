@@ -2,6 +2,8 @@ using Application.Feactures.Ingestion.Queries;
 using FastEndpoints;
 using MediatR;
 
+
+
 namespace API.Endpoints.Ingestion;
 
 public sealed class GetIngestionSessionStatusEndpoint
@@ -27,6 +29,8 @@ public sealed class GetIngestionSessionStatusEndpoint
         var session = await _sender.Send(
             new GetIngestionSessionStatusQuery(sessionId),
             ct);
+
+        
 
         await Send.ResponseAsync(new IngestionSessionStatusResponse
         {
