@@ -27,7 +27,7 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
     }
 
     public async IAsyncEnumerable<OperacionCredito> GetDataStreamAsync(
-        int idLoadLocal = 0,
+        long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         // C# disallows yield inside a try-with-catch, so we advance the enumerator
@@ -58,7 +58,7 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
     }
 
     private async IAsyncEnumerable<OperacionCredito> ReadFromDatabaseAsync(
-        int idLoadLocal,
+        long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);

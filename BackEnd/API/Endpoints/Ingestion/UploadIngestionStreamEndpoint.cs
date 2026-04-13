@@ -44,13 +44,17 @@ public sealed class UploadIngestionStreamEndpoint
             ThrowError("No se recibió ningún stream en el cuerpo de la solicitud");
        
 
-        await _sender.Send(
+        var result = await _sender.Send(
             new ReceiveIngestionStreamCommand(
                 sessionId,
                 stream),
-            ct);         
+            ct);
 
-
+        if (result.IsFailure)
+        {
+            AddError(result.Error!);
+            ThrowIfAnyErrors();
+        }
 
         await Send.OkAsync();
 

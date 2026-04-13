@@ -23,7 +23,7 @@ public class DeudoresSource : IEntitySource<Deudor>
     }
 
     public async IAsyncEnumerable<Deudor> GetDataStreamAsync(
-        int idLoadLocal = 0,
+        long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         // C# disallows yield inside a try-with-catch, so we advance the enumerator
@@ -53,8 +53,11 @@ public class DeudoresSource : IEntitySource<Deudor>
         }
     }
 
+  
+
+
     private async IAsyncEnumerable<Deudor> ReadFromDatabaseAsync(
-        int idLoadLocal,
+        long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
@@ -66,9 +69,9 @@ public class DeudoresSource : IEntitySource<Deudor>
             FROM feguslocal.obtener_deudores_lista(@id_load_local)
             ";
 
-        command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Integer)
+        command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Bigint)
         {
-            Value = idLoadLocal
+            Value = idLoadLocal.HasValue ? (object)idLoadLocal.Value : DBNull.Value
         });
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);

@@ -4,6 +4,7 @@ using System.Text.Json;
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Interfaces;
 using FegusDAgent.Domain.Values;
+using Microsoft.Extensions.Options;
 
 namespace FegusDAgent.Infrastructure.Ingestion.Streaming;
 
@@ -11,13 +12,18 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
 {
     private readonly HttpClient _httpClient;
     private readonly IEventLogger<HttpIngestionStreamSender> _logger;
+    private readonly IngestionApiOptions _options;
+
 
     public HttpIngestionStreamSender(
         HttpClient httpClient,
-        IEventLogger<HttpIngestionStreamSender> logger)
+        IEventLogger<HttpIngestionStreamSender> logger,
+        IOptions<IngestionApiOptions> options)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _options = options.Value;
+
     }
 
     public async Task SendStreamAsync<T>(
@@ -35,7 +41,7 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-ndjson");
             content.Headers.ContentEncoding.Add("gzip");
 
-            using var request = new HttpRequestMessage(HttpMethod.Post, session.UploadUrl);
+            using var request = new HttpRequestMessage(HttpMethod.Post, $"{_options.StreamPath}/{session.SessionId}/stream");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             request.Content = content;
 

@@ -9,20 +9,17 @@ public sealed class SendDeudoresUseCase
     private readonly IEntitySource<Deudor> _source;
     private readonly IIngestionSessionClient _sessionClient;
     private readonly IIngestionStreamSender _streamSender;
-    private readonly ICheckpointStore _checkpointStore;
     private readonly IEventLogger<SendDeudoresUseCase> _logger;
 
     public SendDeudoresUseCase(
         IEntitySource<Deudor> source,
         IIngestionSessionClient sessionClient,
         IIngestionStreamSender streamSender,
-        ICheckpointStore checkpointStore,
         IEventLogger<SendDeudoresUseCase> logger)
     {
         _source = source;
         _sessionClient = sessionClient;
         _streamSender = streamSender;
-        _checkpointStore = checkpointStore;
         _logger = logger;
     }
 
@@ -40,11 +37,16 @@ public sealed class SendDeudoresUseCase
                 token,
                 cancellationToken);
 
-            // 2️⃣ Recuperar último checkpoint
-            var lastSequence = await _checkpointStore
-                .GetLastSequenceAsync(session.SessionId, cancellationToken);
+            // 2️⃣ Recuperar último checkpoint desde la sesión remota
+            var sessionStatus = await _sessionClient.GetStatusAsync(
+                session.SessionId,
+                token,
+                cancellationToken);
+            
+            var lastSequence = sessionStatus.LastSequencePersisted;
 
-            // 3️⃣ Obtener snapshot completo de deudores
+            // 3️⃣ Obtener snapshot completo de deudores, esto no es un API
+            //     es la ejecucion local de la funcion de pgsql que obtiene los datos de deudores para el idLoadLocal dado. El resultado se devuelve como un stream asincrono.
             var deudoresStream = _source
                 .GetDataStreamAsync(box.IdLoadLocal, cancellationToken);
 
@@ -68,7 +70,7 @@ public sealed class SendDeudoresUseCase
         }
         catch (Exception ex)
         {
-            _logger.Error($"SendDeudores failed for idLoadLocal={idLoadLocal}.", ex);
+            _logger.Error($"SendDeudores failed for idLoadLocal={box.IdLoadLocal}.", ex);
             throw;
         }
     }

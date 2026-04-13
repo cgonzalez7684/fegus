@@ -33,12 +33,13 @@ public sealed class SendOperacionCreditoUseCase
 
     public async Task ExecuteAsync(
         string token,
-        int? idLoadLocal = 0,
+        FeBoxDataLoad box,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var session = await _sessionClient.CreateSessionAsync(
+                box.IdLoadLocal,
                 dataset: DatasetName,
                 token,
                 cancellationToken);
@@ -46,7 +47,7 @@ public sealed class SendOperacionCreditoUseCase
             var lastSequence = await _checkpointStore
                 .GetLastSequenceAsync(session.SessionId, cancellationToken);
 
-            var stream = _source.GetDataStreamAsync(idLoadLocal, cancellationToken);
+            var stream = _source.GetDataStreamAsync(box.IdLoadLocal, cancellationToken);
 
             await _streamSender.SendStreamAsync(
                 session,
@@ -66,7 +67,7 @@ public sealed class SendOperacionCreditoUseCase
         }
         catch (Exception ex)
         {
-            _logger.Error($"SendOperacionCredito failed for idLoadLocal={idLoadLocal}.", ex);
+            _logger.Error($"SendOperacionCredito failed for idLoadLocal={box.IdLoadLocal}.", ex);
             throw;
         }
     }

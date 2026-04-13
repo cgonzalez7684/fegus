@@ -92,6 +92,7 @@ builder.Services.AddScoped<IEntitySource<OperacionCredito>, OperacionCreditoSour
 // ==============================
 // Infrastructure – Ingestion API
 // ==============================
+builder.Services.Configure<IngestionApiOptions>(configuration.GetSection(IngestionApiOptions.SectionName));
 builder.Services.AddHttpClient<IIngestionSessionClient, HttpIngestionSessionClient>(client =>
 {
     client.BaseAddress = new Uri(configuration["IngestionApi:BaseUrl"]!);

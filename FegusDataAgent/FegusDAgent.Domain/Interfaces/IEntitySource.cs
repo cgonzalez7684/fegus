@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using FegusDAgent.Domain.Entities;
 
 namespace FegusDAgent.Domain.Interfaces;
@@ -6,6 +7,8 @@ namespace FegusDAgent.Domain.Interfaces;
 public interface IEntitySource<T>
 {
     IAsyncEnumerable<T> GetDataStreamAsync(        
-        int? idLoadLocal,
+        long? idLoadLocal,
         CancellationToken cancellationToken);
+
+      
 }

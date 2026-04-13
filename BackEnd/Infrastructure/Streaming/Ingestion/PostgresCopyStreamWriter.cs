@@ -1,4 +1,5 @@
 using System;
+using System.IO.Compression;
 using System.Text.Json;
 using Domain.Entities.Ingestion;
 using Domain.Interfaces.Ingestion;
@@ -48,7 +49,9 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
 
         long seq = session.LastSequencePersisted;
 
-        await foreach (var line in _reader.ReadLinesAsync(stream, cancellationToken))
+        await using var decompressed = new GZipStream(stream, CompressionMode.Decompress, leaveOpen: true);
+
+        await foreach (var line in _reader.ReadLinesAsync(decompressed, cancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 

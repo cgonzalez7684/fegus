@@ -14,7 +14,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
     private sealed record IngestionSessionDbRow(
     Guid SessionId,
     int IdCliente,
-    int IdLoad,
+    long IdLoad,
     string Dataset,
     string SessionStateCode,
     long LastSequencePersisted,
@@ -60,9 +60,10 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         const string sql = """
             SELECT
                 session_id      AS SessionId,
-                id_cliente       AS IdCliente,                
+                id_cliente       AS IdCliente, 
+                id_load          AS IdLoad,               
                 dataset         AS Dataset,
-                status          AS Status,
+                session_state_code AS SessionStateCode,
                 last_sequence   AS LastSequencePersisted,
                 created_at_utc  AS CreatedAtUtc
             FROM fegusconfig.fe_ingestion_sessions
@@ -79,11 +80,11 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
             return null;
 
         var session = new IngestionSession(
-            row.SessionId,                 // Guid
-            row.IdCliente,                 // int
-            row.IdLoad,
-            row.Dataset,                    // string
-            row.SessionStateCode,                     // int
+            row.SessionId,
+            row.IdCliente,
+            (int)row.IdLoad,
+            row.Dataset,
+            row.SessionStateCode,
             row.LastSequencePersisted
         );
         session.UpdateLastSequence((long)row.LastSequencePersisted);
@@ -111,7 +112,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         const string sql = """
             UPDATE fegusconfig.fe_ingestion_sessions
             SET
-                status = @Status,
+                session_state_code = @SessionStateCode,
                 last_sequence = @LastSequence
             WHERE 
                 id_cliente = @IdCliente AND session_id = @SessionId
@@ -125,8 +126,8 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
             {                
                 SessionStateCode = session.SessionStateCode,
                 LastSequence = session.LastSequencePersisted,
-                session.IdCliente,
-                session.SessionId,
+                IdCliente = session.IdCliente,
+                SessionId = session.SessionId,
             }, cancellationToken: cancellationToken));
     }
 }

@@ -1,5 +1,9 @@
 namespace FegusDAgent.Domain.Values;
 public sealed record IngestionSessionStatus(
-    string SessionId,
-    long LastSequencePersisted,
-    string Status);
+    Guid SessionId,
+    int idCliente,
+    long idLoad,
+    string Dataset,
+    string SessionStateCode,
+    long LastSequencePersisted
+    );

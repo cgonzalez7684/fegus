@@ -39,7 +39,7 @@ public sealed class DataLoadOrchestrationUseCase(
 
         // 1. Returns early if no box was found or its state is not one that allows a new ingestion to start.
         var box = await getNextBox.ExecuteAsync(idCliente, cancellationToken);
-        if (box is null || NotAllowedInitialStates.Contains(box.StateCode!))
+        if (box is null || box.StateCode is null || NotAllowedInitialStates.Contains(box.StateCode!))
         {
             logger.Info($"No box available for idCliente={idCliente}.");
             return false;
@@ -93,7 +93,7 @@ public sealed class DataLoadOrchestrationUseCase(
         {
             await Task.WhenAll(
                 sendDeudores.ExecuteAsync(token, box, cancellationToken)
-                //sendOperacionCredito.ExecuteAsync(token, idLoadLocal, cancellationToken)
+                //sendOperacionCredito.ExecuteAsync(token, box, cancellationToken)
                 );
         }
         catch (Exception ex)
