@@ -56,6 +56,14 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
 
             // 3️⃣ Esperamos la respuesta HTTP
             var response = await postTask;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync(cancellationToken);
+                _logger.Error(
+                    $"Stream endpoint returned {(int)response.StatusCode} for sessionId='{session.SessionId}'. Body: {body}");
+            }
+
             response.EnsureSuccessStatusCode();
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)

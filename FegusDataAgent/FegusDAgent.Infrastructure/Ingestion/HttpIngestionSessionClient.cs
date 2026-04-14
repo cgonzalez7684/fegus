@@ -1,5 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using FegusDAgent.Application.Common.Models;
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Interfaces;
 using FegusDAgent.Domain.Values;
@@ -9,6 +11,11 @@ namespace FegusDAgent.Infrastructure.Ingestion;
 
 public sealed class HttpIngestionSessionClient : IIngestionSessionClient
 {
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
     private readonly HttpClient _httpClient;
     private readonly IEventLogger<HttpIngestionSessionClient> _logger;
     private readonly IngestionApiOptions _options;
@@ -32,20 +39,32 @@ public sealed class HttpIngestionSessionClient : IIngestionSessionClient
         try
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, _options.CreateSessionPath);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            //request.Content = JsonContent.Create(new { dataset });
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);            
             request.Content = JsonContent.Create(new { idLoad, dataset });
 
             var response = await _httpClient.SendAsync(request, cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var dto = await response.Content
-                .ReadFromJsonAsync<CreateSessionResponseDto>(cancellationToken);
+                .ReadFromJsonAsync<ApiResponse<IngestionSession>>(cancellationToken);
 
-            return new IngestionSession(
+            return dto!.Value!;
+
+            /*return new IngestionSession(
+                SessionId: dto!.SessionId,
+                IdCliente: 0, // estos campos no los devuelve el API, se podrían eliminar o dejar como opcionales
+                IdLoad: idLoad ?? 0,
+                Dataset: dataset,
+                SessionStateCode: null,
+                LastSequencePersisted: 0,
+                CreatedAtUtc: DateTime.UtcNow,
+                UpdatedAtUtc: DateTime.UtcNow,
+                ErrorMessage: null
+            );*/
+            /*return new IngestionSession(
                 dto!.SessionId.ToString(),
                 string.Empty,
-                0);
+                0);*/
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -61,7 +80,7 @@ public sealed class HttpIngestionSessionClient : IIngestionSessionClient
     private sealed record CreateSessionResponseDto(Guid SessionId);
 
     public async Task CommitAsync(
-        string sessionId,
+        Guid sessionId,
         string token,
         CancellationToken cancellationToken)
     {
@@ -85,7 +104,7 @@ public sealed class HttpIngestionSessionClient : IIngestionSessionClient
     }
 
     public async Task<IngestionSessionStatus> GetStatusAsync(
-        string sessionId,
+        Guid sessionId,
         string token,
         CancellationToken cancellationToken)
     {

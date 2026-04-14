@@ -8,7 +8,7 @@ using MediatR;
 namespace Application.Feactures.Ingestion.CreateSession;
 
 public sealed class CreateIngestionSessionCommandHandler
-    : ICommandHandler<CreateIngestionSessionCommand, Guid>
+    : ICommandHandler<CreateIngestionSessionCommand, IngestionSession>
 {
     private readonly IIngestionSessionRepository _repository;
 
@@ -18,7 +18,7 @@ public sealed class CreateIngestionSessionCommandHandler
         _repository = repository;
     }
 
-    public async Task<Result<Guid>> Handle(
+    public async Task<Result<IngestionSession>> Handle(
         CreateIngestionSessionCommand command,
         CancellationToken cancellationToken)
     {
@@ -30,9 +30,9 @@ public sealed class CreateIngestionSessionCommandHandler
             IngestionSessionStatus.Created.ToString(),
             0L);
 
-        await _repository.AddAsync(session, cancellationToken);
+        var aux = await _repository.AddAsync(session, cancellationToken);
 
-        return Result<Guid>.Success(session.SessionId);
+        return Result<IngestionSession>.Success(aux);
         
 
         

@@ -2,6 +2,7 @@ using System;
 using System.IO.Compression;
 using System.Text.Json;
 using Domain.Entities.Ingestion;
+using Domain.Enums;
 using Domain.Interfaces.Ingestion;
 using Infrastructure.Ingestion.Streaming;
 using Infrastructure.Interfaces;
@@ -34,15 +35,11 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
     Stream stream,
     CancellationToken cancellationToken)
     {
+        var copySql = GetCopySql(session.Dataset!);
+
         await using var conn =
             (NpgsqlConnection)await _connectionFactory
                 .CreateConnectionAsync(cancellationToken);
-
-        const string copySql = """
-            COPY fegusconfig.fe_ingestion_deudores_raw
-            (session_id, id_cliente, seq, payload)
-            FROM STDIN (FORMAT BINARY)
-        """;
 
         await using var importer =
             await conn.BeginBinaryImportAsync(copySql, cancellationToken);
@@ -58,14 +55,42 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
             seq++;
 
             await importer.StartRowAsync(cancellationToken);
-            await importer.WriteAsync(session.SessionId, cancellationToken);
-            await importer.WriteAsync(session.IdCliente, cancellationToken);
-            await importer.WriteAsync(seq, cancellationToken);
-            await importer.WriteAsync(line, NpgsqlTypes.NpgsqlDbType.Jsonb, cancellationToken);
+            await importer.WriteAsync(session.SessionId,  NpgsqlTypes.NpgsqlDbType.Uuid,   cancellationToken);
+            await importer.WriteAsync(session.IdCliente,  NpgsqlTypes.NpgsqlDbType.Integer, cancellationToken);
+            await importer.WriteAsync(seq,                NpgsqlTypes.NpgsqlDbType.Bigint,  cancellationToken);
+            await importer.WriteAsync(line,               NpgsqlTypes.NpgsqlDbType.Jsonb,   cancellationToken);
+            await importer.WriteAsync(session.IdLoad,    NpgsqlTypes.NpgsqlDbType.Integer, cancellationToken);
         }
 
         await importer.CompleteAsync(cancellationToken);
 
         session.UpdateLastSequence(seq);
     }
+
+    private static string GetCopySql(string dataset)
+    {
+        if (dataset == DataSetNameIngestion.Deudores.Value)
+            return """
+                COPY fegusconfig.fe_ingestion_deudores_raw
+                (session_id, id_cliente, seq, payload, id_load)
+                FROM STDIN (FORMAT BINARY)
+            """;
+
+        if (dataset == DataSetNameIngestion.OperacionesCredito.Value)
+            return """
+                COPY fegusconfig.fe_ingestion_operaciones_credito_raw
+                (session_id, id_cliente, seq, payload, id_load)
+                FROM STDIN (FORMAT BINARY)
+            """;
+
+        if (dataset == DataSetNameIngestion.GarantiasOperacion.Value)
+            return """
+                COPY fegusconfig.fe_ingestion_garantias_raw
+                (session_id, id_cliente, seq, payload, id_load)
+                FROM STDIN (FORMAT BINARY)
+            """;
+
+        throw new NotSupportedException($"Dataset '{dataset}' is not supported.");
+    }
+
 }

@@ -5,7 +5,7 @@ namespace Domain.Interfaces.Ingestion;
 
 public interface IIngestionSessionRepository
 {
-    Task AddAsync(
+    Task<IngestionSession> AddAsync(
         IngestionSession session,
         CancellationToken cancellationToken);
 

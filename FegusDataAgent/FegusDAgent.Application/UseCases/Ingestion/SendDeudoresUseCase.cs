@@ -1,5 +1,6 @@
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Entities;
+using FegusDAgent.Domain.Enums;
 using FegusDAgent.Domain.Interfaces;
 
 namespace FegusDAgent.Application.UseCases.Ingestion;
@@ -33,7 +34,7 @@ public sealed class SendDeudoresUseCase
             // 1️⃣ Crear sesión de ingestión
             var session = await _sessionClient.CreateSessionAsync(
                 idLoad: box.IdLoad,
-                dataset: "deudores",
+                dataset: DataSetNameIngestion.Deudores.ToString(),
                 token,
                 cancellationToken);
 

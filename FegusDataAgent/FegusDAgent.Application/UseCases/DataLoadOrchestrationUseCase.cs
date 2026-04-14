@@ -92,8 +92,8 @@ public sealed class DataLoadOrchestrationUseCase(
         try
         {
             await Task.WhenAll(
-                sendDeudores.ExecuteAsync(token, box, cancellationToken)
-                //sendOperacionCredito.ExecuteAsync(token, box, cancellationToken)
+                sendDeudores.ExecuteAsync(token, box, cancellationToken),
+                sendOperacionCredito.ExecuteAsync(token, box, cancellationToken)
                 );
         }
         catch (Exception ex)

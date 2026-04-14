@@ -27,7 +27,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         _connectionFactory = connectionFactory;
     }
 
-    public async Task AddAsync(
+    public async Task<IngestionSession> AddAsync(
         IngestionSession session,
         CancellationToken cancellationToken)
     {
@@ -51,6 +51,8 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
                 LastSequence = session.LastSequencePersisted,
                 session.CreatedAtUtc
             }, cancellationToken: cancellationToken));
+
+        return session;    
     }
 
     public async Task<IngestionSession?> GetByIdAsync(

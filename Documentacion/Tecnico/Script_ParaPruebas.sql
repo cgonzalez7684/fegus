@@ -62,11 +62,21 @@ select * from feguslocal.fe_box_data_load
 
 select * from feguslocal.deudores
 
+select count(1) from feguslocal.deudores
 
+select count(1) from feguslocal.operacionescredito
 
 select * from fegusconfig.fe_ingestion_sessions	
 
 select * from fegusconfig.fe_ingestion_deudores_raw
+
+select * from fegusconfig.fe_ingestion_operaciones_raw
+
+select count(1) from fegusconfig.fe_ingestion_deudores_raw
+
+select * from fegusconfig.fe_ingestion_deudores_raw
+
+select * from fegusconfig.fe_ingestion_operaciones_raw
 
 -------------------------------------------------------------
 

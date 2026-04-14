@@ -12,12 +12,12 @@ public interface IIngestionSessionClient
         CancellationToken cancellationToken);
 
     Task CommitAsync(
-        string sessionId,
+        Guid sessionId,
         string token,
         CancellationToken cancellationToken);
 
     Task<IngestionSessionStatus> GetStatusAsync(
-        string sessionId,
+        Guid sessionId,
         string token,
         CancellationToken cancellationToken);
 }

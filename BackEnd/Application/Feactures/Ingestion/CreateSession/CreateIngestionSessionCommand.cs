@@ -1,4 +1,5 @@
 using System;
+using Domain.Entities.Ingestion;
 
 namespace Application.Feactures.Ingestion.CreateSession;
 
@@ -6,4 +7,4 @@ public sealed record CreateIngestionSessionCommand(
     int IdCliente,
     int IdLoad,
     string Dataset
-) : ICommand<Guid>;
+) : ICommand<IngestionSession>;
