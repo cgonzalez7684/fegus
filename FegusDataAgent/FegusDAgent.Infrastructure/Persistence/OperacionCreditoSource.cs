@@ -72,7 +72,7 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
 
         command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Integer)
         {
-            Value = idLoadLocal
+            Value = idLoadLocal.HasValue ? (object)idLoadLocal.Value : DBNull.Value
         });
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);

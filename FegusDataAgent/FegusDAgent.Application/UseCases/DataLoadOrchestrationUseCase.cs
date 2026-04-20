@@ -56,13 +56,13 @@ public sealed class DataLoadOrchestrationUseCase(
         }
 
         
+
         if (box.StateCode!.Contains(DataLoadState.New.ToString()))
         {
             // 3. Persist box locally — returns box with IdLoadLocal populated
             FeBoxDataLoad localBox;
             try
-            {
-                box.StateCode = DataLoadState.Created.ToString(); // Update state before local creation
+            {                
                 localBox = await createLocalBox.ExecuteAsync(box, cancellationToken);
             }
             catch (Exception ex)
@@ -73,18 +73,22 @@ public sealed class DataLoadOrchestrationUseCase(
 
             box.IdLoadLocal = localBox.IdLoadLocal; // Ensure we have the local ID for the next step
 
-            // 4. Update remote state, passing the local box (which carries IdLoadLocal)
-            var updated = await updateBox.ExecuteAsync(token, box, cancellationToken);
-            if (!updated)
-            {
-                logger.Error($"Failed to update remote box state for idCliente={idCliente}.");
-                return false;
-            }
+            
 
         }
         else
         {
             logger.Info($"Box {box.IdLoad} for the LocalBox {box.IdLoadLocal} for idCliente={idCliente}, AsofDate={box.AsofDate} is already in state '{box.StateCode}'. Skipping creation and update steps.");
+        }
+
+        box.StateCode = DataLoadState.Created.ToString(); // Update state before local creation
+
+        // 4. Update remote state, passing the local box (which carries IdLoadLocal)
+        var updated = await updateBox.ExecuteAsync(token, box, cancellationToken);
+        if (!updated)
+        {
+            logger.Error($"Failed to update remote box state for idCliente={idCliente}.");
+            return false;
         }
 
         // 5. Stream datasets in parallel       

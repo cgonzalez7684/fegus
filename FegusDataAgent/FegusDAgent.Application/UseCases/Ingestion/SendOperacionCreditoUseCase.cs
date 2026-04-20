@@ -38,7 +38,7 @@ public sealed class SendOperacionCreditoUseCase
             
             // 1️⃣ Crear sesión de ingestión
             var session = await _sessionClient.CreateSessionAsync(
-                box.IdLoadLocal,
+                box.IdLoad,
                 dataset: DataSetNameIngestion.OperacionesCredito.ToString(),
                 token,
                 cancellationToken);

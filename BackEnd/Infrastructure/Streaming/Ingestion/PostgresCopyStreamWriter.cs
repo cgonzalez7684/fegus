@@ -59,7 +59,7 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
             await importer.WriteAsync(session.IdCliente,  NpgsqlTypes.NpgsqlDbType.Integer, cancellationToken);
             await importer.WriteAsync(seq,                NpgsqlTypes.NpgsqlDbType.Bigint,  cancellationToken);
             await importer.WriteAsync(line,               NpgsqlTypes.NpgsqlDbType.Jsonb,   cancellationToken);
-            await importer.WriteAsync(session.IdLoad,    NpgsqlTypes.NpgsqlDbType.Integer, cancellationToken);
+            await importer.WriteAsync(session.IdLoad,    NpgsqlTypes.NpgsqlDbType.Bigint,  cancellationToken);
         }
 
         await importer.CompleteAsync(cancellationToken);
@@ -78,7 +78,7 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
 
         if (dataset == DataSetNameIngestion.OperacionesCredito.Value)
             return """
-                COPY fegusconfig.fe_ingestion_operaciones_credito_raw
+                COPY fegusconfig.fe_ingestion_operaciones_raw
                 (session_id, id_cliente, seq, payload, id_load)
                 FROM STDIN (FORMAT BINARY)
             """;

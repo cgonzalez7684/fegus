@@ -14,8 +14,7 @@ namespace FegusDAgent.Infrastructure.FegusApi;
 /// <c>PUT /fegusconfig/box</c> (con Bearer token) del API Fegus.
 /// </summary>
 public sealed class HttpFegusConfigClient(
-    HttpClient httpClient,
-    FegusApiTokenProvider tokenProvider,
+    HttpClient httpClient,    
     ILogger<HttpFegusConfigClient> logger) : IFegusConfigClient
 {
     private static readonly JsonSerializerOptions JsonOptions = new()

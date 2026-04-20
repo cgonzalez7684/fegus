@@ -30,18 +30,33 @@ select * from fegusconfig.fn_box_data_load_update(
 
 ---------------PRUEBAS DE CARGA DE DATOS DEUDORES
 
----inicializar pruebas borras estas tablas
+---inicializar pruebas borras estas tablas, aplicar en feguslocal
 
 update feguslocal.deudores
-set id_load_local = -1
+set id_load_local = -1;
 
---delete from feguslocal.fe_box_data_load
+update feguslocal.operacionescredito
+set id_load_local = -1;
 
---delete from fegusconfig.fe_ingestion_deudores_raw
+--aplicar en nube
+DO $$
+BEGIN
+    DELETE FROM fegusconfig.fe_ingestion_deudores_raw;
+    RAISE NOTICE 'DELETE fe_ingestion_deudores_raw completado';
 
---delete from fegusconfig.fe_ingestion_sessions	
+    DELETE FROM fegusconfig.fe_ingestion_operaciones_raw;
+    RAISE NOTICE 'DELETE fe_ingestion_operaciones_raw completado';
 
---delete from fegusconfig.fe_box_data_load
+    DELETE FROM fegusconfig.fe_ingestion_sessions;
+    RAISE NOTICE 'DELETE fe_ingestion_sessions completado';
+
+    DELETE FROM fegusconfig.fe_box_data_load;
+    RAISE NOTICE 'DELETE fe_box_data_load completado';
+END $$;
+
+update fegusconfig.fe_box_data_load
+set state_code = 'RELOADING'
+WHERE ID_LOAD = 28;
 
 --fin inicializar
 
@@ -58,19 +73,36 @@ TO_DATE('12/04/2026', 'DD/MM/YYYY')::timestamp
 
 select * from fegusconfig.fe_box_data_load
 
+
+
 select * from feguslocal.fe_box_data_load
 
 select * from feguslocal.deudores
 
+
+select * from feguslocal.operacionescredito
+
 select count(1) from feguslocal.deudores
+--60000
+
+select count(1) from feguslocal.operacionescredito
+--180434
 
 select count(1) from feguslocal.operacionescredito
 
 select * from fegusconfig.fe_ingestion_sessions	
+order by created_at_utc desc
+
+select * from fegusconfig.fe_ingestion_deudores_raw
+where sessio
 
 select * from fegusconfig.fe_ingestion_deudores_raw
 
+select count(1) from fegusconfig.fe_ingestion_deudores_raw
+
 select * from fegusconfig.fe_ingestion_operaciones_raw
+
+select count(1) from fegusconfig.fe_ingestion_operaciones_raw
 
 select count(1) from fegusconfig.fe_ingestion_deudores_raw
 

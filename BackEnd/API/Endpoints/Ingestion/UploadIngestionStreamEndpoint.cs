@@ -21,21 +21,7 @@ public sealed class UploadIngestionStreamEndpoint
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        /*var sessionId = Route<Guid>("sessionId");
-
-        if (Files.Count == 0)
-            ThrowError("No se recibió archivo");
-
-        var file = Files[0];
-
-        await using var stream = file.OpenReadStream();       
-
-        await _sender.Send(
-            new ReceiveIngestionStreamCommand(
-                sessionId,
-                stream),
-            ct);   */
-
+       
         var sessionId = Route<Guid>("sessionId");
 
         var stream = HttpContext.Request.Body;

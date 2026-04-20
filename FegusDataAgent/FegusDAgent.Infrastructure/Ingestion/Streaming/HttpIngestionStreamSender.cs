@@ -72,7 +72,7 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
         }
         catch (Exception ex)
         {
-            _logger.Error($"Failed to stream data to sessionId='{session.SessionId}', uploadUrl='{session.UploadUrl}'.", ex);
+            _logger.Error($"Failed to stream data to sessionId='{session.SessionId}', IdLoad='{session.IdLoad}'.", ex);
             throw;
         }
     }

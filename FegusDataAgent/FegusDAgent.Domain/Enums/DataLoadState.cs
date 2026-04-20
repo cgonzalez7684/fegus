@@ -20,5 +20,7 @@ public sealed class DataLoadState
     public static readonly DataLoadState Created = new("CREATED");
     public static readonly DataLoadState New = new("NEW");
 
+    public static readonly DataLoadState ReLoading = new("RELOADING");
+
     public override string ToString() => Value;
 }

@@ -31,7 +31,14 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         IngestionSession session,
         CancellationToken cancellationToken)
     {
-        const string sql = """
+        const string findExistingSessionSql = """
+            SELECT session_id AS SessionId
+            FROM fegusconfig.fe_ingestion_sessions
+            WHERE id_cliente = @IdCliente AND id_load = @IdLoad AND dataset = @Dataset
+            LIMIT 1
+        """;
+
+        const string insertSessionSql = """
             INSERT INTO fegusconfig.fe_ingestion_sessions
             (id_cliente, id_load, session_id, dataset, session_state_code, last_sequence, created_at_utc)
             VALUES (@IdCliente, @IdLoad, @SessionId, @Dataset, @Session_state_code, @LastSequence, @CreatedAtUtc)
@@ -40,20 +47,69 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         await using var conn =
             await _connectionFactory.CreateConnectionAsync(cancellationToken);
 
-        await conn.ExecuteAsync(
-            new CommandDefinition(sql, new
+        await using var tx = await conn.BeginTransactionAsync(cancellationToken);
+
+        var existingSessionId = await conn.QuerySingleOrDefaultAsync<Guid?>(
+            new CommandDefinition(findExistingSessionSql, new
             {
                 session.IdCliente,
                 session.IdLoad,
-                session.SessionId,
-                session.Dataset,
-                Session_state_code = session.SessionStateCode,
-                LastSequence = session.LastSequencePersisted,
-                session.CreatedAtUtc
-            }, cancellationToken: cancellationToken));
+                session.Dataset
+            }, transaction: tx, cancellationToken: cancellationToken));
+        
+        /*
+        if (existingSessionId.HasValue)
+        {
+            var rawTable = GetRawTableName(session.Dataset!);
 
-        return session;    
+            var deleteRawSql = $"""
+                DELETE FROM {rawTable}
+                WHERE id_cliente = @IdCliente AND id_load = @IdLoad AND session_id = @SessionId
+            """;
+
+            const string deleteSessionSql = """
+                DELETE FROM fegusconfig.fe_ingestion_sessions
+                WHERE id_cliente = @IdCliente AND id_load = @IdLoad AND session_id = @SessionId
+            """;
+
+            await conn.ExecuteAsync(new CommandDefinition(deleteRawSql, new
+            {
+                session.IdCliente,
+                session.IdLoad,
+                SessionId = existingSessionId.Value
+            }, transaction: tx, cancellationToken: cancellationToken));
+
+            await conn.ExecuteAsync(new CommandDefinition(deleteSessionSql, new
+            {
+                session.IdCliente,
+                session.IdLoad,
+                SessionId = existingSessionId.Value
+            }, transaction: tx, cancellationToken: cancellationToken));
+        }*/
+
+        await conn.ExecuteAsync(new CommandDefinition(insertSessionSql, new
+        {
+            session.IdCliente,
+            session.IdLoad,
+            session.SessionId,
+            session.Dataset,
+            Session_state_code = session.SessionStateCode,
+            LastSequence = session.LastSequencePersisted,
+            session.CreatedAtUtc
+        }, transaction: tx, cancellationToken: cancellationToken));
+
+        await tx.CommitAsync(cancellationToken);
+
+        return session;
     }
+
+    private static string GetRawTableName(string dataset) => dataset switch
+    {
+        "Deudores"          => "fegusconfig.fe_ingestion_deudores_raw",
+        "OperacionesCredito" => "fegusconfig.fe_ingestion_operaciones_raw",
+        "GarantiasOperacion" => "fegusconfig.fe_ingestion_garantias_raw",
+        _ => throw new NotSupportedException($"Dataset '{dataset}' is not supported.")
+    };
 
     public async Task<IngestionSession?> GetByIdAsync(
         Guid sessionId,

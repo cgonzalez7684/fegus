@@ -219,6 +219,7 @@ public sealed class BoxDataRepository : IBoxDataRepository
             {
                 IdCliente = (int)r.id_cliente,
                 IdLoad = (int)r.id_load,
+                IdLoadLocal = (int)r.id_load_local,
                 StateCode = r.state_code,
                 IsActive = r.is_active,
                 AsofDate = r.asofdate,
