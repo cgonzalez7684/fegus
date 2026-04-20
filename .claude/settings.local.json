@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Software/Fegus/BackEnd -name \"*.csproj\" -exec grep -l \"TargetFramework\" {} \\\\;)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Software\\\\Fegus\\\\BackEnd\" -Name \"*.log\" -Recurse)",
+      "Bash(Select-Object -First 10)"
+    ]
+  }
+}

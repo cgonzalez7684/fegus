@@ -5,6 +5,8 @@ namespace Domain.Entities.FegusConfig;
 {
     public int? IdCliente { get; set; }
     public int? IdLoad { get; set; }
+
+    public int? IdLoadLocal { get; set; }
     public string? StateCode { get; set; }
     public string? IsActive { get; set; }
     public DateTime? AsofDate { get; set; }

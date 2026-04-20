@@ -2,6 +2,8 @@ using Application.Feactures.Ingestion.Queries;
 using FastEndpoints;
 using MediatR;
 
+
+
 namespace API.Endpoints.Ingestion;
 
 public sealed class GetIngestionSessionStatusEndpoint
@@ -28,11 +30,13 @@ public sealed class GetIngestionSessionStatusEndpoint
             new GetIngestionSessionStatusQuery(sessionId),
             ct);
 
+        
+
         await Send.ResponseAsync(new IngestionSessionStatusResponse
         {
             SessionId = session.Value!.SessionId,
             Dataset = session.Value.Dataset!,
-            Status = session.Value.Status.ToString(),
+            SessionStateCode = session.Value.SessionStateCode!,
             LastSequencePersisted = session.Value.LastSequencePersisted
         });
     }
@@ -42,6 +46,6 @@ public sealed record IngestionSessionStatusResponse
 {
     public Guid SessionId { get; init; }
     public string Dataset { get; init; } = default!;
-    public string Status { get; init; } = default!;
+    public string SessionStateCode { get; init; } = default!;
     public long LastSequencePersisted { get; init; }
 }

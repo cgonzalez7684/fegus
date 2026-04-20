@@ -1,10 +1,11 @@
 using System;
 using Application.Feactures.Ingestion.CreateSession;
+using Domain.Entities.Ingestion;
 
 namespace API.Endpoints.Ingestion;
 
 public sealed class CreateIngestionSessionEndpoint
-    : Endpoint<CreateIngestionSessionRequest, CreateIngestionSessionResponse>
+    : Endpoint<CreateIngestionSessionRequest, Result<IngestionSession>>
 {
     private readonly ISender _sender;
 
@@ -24,29 +25,36 @@ public sealed class CreateIngestionSessionEndpoint
         CreateIngestionSessionRequest req,
         CancellationToken ct)
     {
+        
+        int statusHttpCode = 200; // OK
+
         var idCliente = int.Parse(User.Claims
             .First(c => c.Type == "idcliente").Value);
 
         var result = await _sender.Send(
-            new CreateIngestionSessionCommand(idCliente, req.Dataset),
+            new CreateIngestionSessionCommand(idCliente, req.IdLoad, req.Dataset),
             ct);
 
-        if (result.IsFailure)
+        /*if (result.IsFailure)
         {
             AddError(result.Error!);
-            await SendErrorsAsync(ct);
-            return;
-        }
+            ThrowIfAnyErrors();
+        }*/
 
-        await Send.ResponseAsync(new CreateIngestionSessionResponse
+        statusHttpCode = result.IsSuccess ? 200 : 400; // OK : BadRequest
+
+        await Send.ResponseAsync(result,statusHttpCode, cancellation: ct);
+
+       /* await Send.ResponseAsync(new CreateIngestionSessionResponse
         {
             SessionId = result.Value
-        });
+        });*/
 
     }
 }
 
-public sealed record CreateIngestionSessionRequest(
+public sealed record CreateIngestionSessionRequest(    
+    int IdLoad,
     string Dataset
 );
 

@@ -1,6 +1,7 @@
 using System;
 using Common.Share;
 using Domain.Interfaces.Ingestion;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Feactures.Ingestion.ReceiveStream;
 
@@ -9,13 +10,16 @@ public sealed class ReceiveIngestionStreamCommandHandler
 {
     private readonly IIngestionSessionRepository _repository;
     private readonly IIngestionStreamWriter _streamWriter;
+    private readonly ILogger<ReceiveIngestionStreamCommandHandler> _logger;
 
     public ReceiveIngestionStreamCommandHandler(
         IIngestionSessionRepository repository,
-        IIngestionStreamWriter streamWriter)
+        IIngestionStreamWriter streamWriter,
+        ILogger<ReceiveIngestionStreamCommandHandler> logger)
     {
         _repository = repository;
         _streamWriter = streamWriter;
+        _logger = logger;
     }
 
     public async Task<Result> Handle(
@@ -48,6 +52,10 @@ public sealed class ReceiveIngestionStreamCommandHandler
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex,
+                "Stream write failed for SessionId={SessionId} IdCliente={IdCliente}: {Message}",
+                command.SessionId, session.IdCliente, ex.Message);
+
             session.MarkFailed();
             await _repository.UpdateAsync(session, cancellationToken);
 

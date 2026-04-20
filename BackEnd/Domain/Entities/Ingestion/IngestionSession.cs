@@ -5,32 +5,40 @@ namespace Domain.Entities.Ingestion;
 public sealed class IngestionSession
 {
     public int IdCliente { get; private set; }  
+
+    public int IdLoad { get; private set; }
     public Guid SessionId { get; private set; }
     public string? Dataset { get; private set; }
-    public int Status { get; private set; }
+    public string? SessionStateCode { get; private set; }
     public long LastSequencePersisted { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
+
+    public DateTime UpdatedAtUtc { get; private set; }
+
+    public string? ErrorMessage { get; private set; }
 
     private IngestionSession() { }
 
     public IngestionSession(
         Guid sessionId,
         int idCliente,
+        int idLoad,
         string dataset,
-        int status,
+        string sessionStateCode,
         long lastSequencePersisted)
     {
         SessionId = sessionId;
         IdCliente = idCliente;
+        IdLoad = idLoad;
         Dataset = dataset;
-        Status = status;
+        SessionStateCode = sessionStateCode;
         LastSequencePersisted = lastSequencePersisted;
         CreatedAtUtc = DateTime.UtcNow;
     }
 
     public void MarkReceiving()
     {
-        Status = (int)IngestionSessionStatus.Receiving;
+        SessionStateCode = IngestionSessionStatus.Receiving.ToString();
     }
 
     public void UpdateLastSequence(long sequence)
@@ -41,12 +49,12 @@ public sealed class IngestionSession
 
     public void MarkCompleted()
     {
-        Status = (int)IngestionSessionStatus.Completed;
+        SessionStateCode = IngestionSessionStatus.Completed.ToString();
     }
 
     public void MarkFailed()
     {
-        Status = (int)IngestionSessionStatus.Failed;
+        SessionStateCode = IngestionSessionStatus.Failed.ToString();
     }
 }
 

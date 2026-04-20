@@ -18,7 +18,7 @@ public sealed class GetNextBoxDataLoadQueryHandler
         CancellationToken cancellationToken)
     {
         ExecutionResult<FeBoxDataLoad> result =
-            await _repository.GetNexFeBoxDataLoadAsync(
+            await _repository.GetNextFeBoxDataLoadAsync(
                 request.IdCliente,                
                 cancellationToken);
 
