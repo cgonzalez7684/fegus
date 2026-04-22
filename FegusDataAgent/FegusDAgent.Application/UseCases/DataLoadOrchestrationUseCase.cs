@@ -21,6 +21,8 @@ public sealed class DataLoadOrchestrationUseCase(
     IEventLogger<DataLoadOrchestrationUseCase> logger)
 {
     private const string StateNew = "NEW";
+
+    private bool boxUpdated = false; // Track if we've updated the box state to avoid redundant updates
     private HashSet<string> NotAllowedInitialStates = 
     new() {  
             DataLoadState.Validating.ToString()
@@ -81,11 +83,11 @@ public sealed class DataLoadOrchestrationUseCase(
             logger.Info($"Box {box.IdLoad} for the LocalBox {box.IdLoadLocal} for idCliente={idCliente}, AsofDate={box.AsofDate} is already in state '{box.StateCode}'. Skipping creation and update steps.");
         }
 
-        box.StateCode = DataLoadState.Created.ToString(); // Update state before local creation
+        box.StateCode = DataLoadState.Staging.ToString(); // Update state before local creation
 
         // 4. Update remote state, passing the local box (which carries IdLoadLocal)
-        var updated = await updateBox.ExecuteAsync(token, box, cancellationToken);
-        if (!updated)
+        boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
+        if (!boxUpdated)
         {
             logger.Error($"Failed to update remote box state for idCliente={idCliente}.");
             return false;
@@ -99,9 +101,22 @@ public sealed class DataLoadOrchestrationUseCase(
                 sendDeudores.ExecuteAsync(token, box, cancellationToken),
                 sendOperacionCredito.ExecuteAsync(token, box, cancellationToken)
                 );
+
+            box.StateCode = DataLoadState.Completed.ToString();
+            boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
+            if (!boxUpdated)
+            {
+                logger.Error($"Failed to update remote box state for idCliente={idCliente}.");
+                return false;
+            }
+
         }
         catch (Exception ex)
         {
+
+            box.StateCode = DataLoadState.Error.ToString();
+            boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
+
             logger.Error($"Dataset streaming failed for idLoadLocal={box.IdLoadLocal}.", ex);
             throw;
         }

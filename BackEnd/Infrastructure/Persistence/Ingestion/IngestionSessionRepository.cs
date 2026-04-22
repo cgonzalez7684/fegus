@@ -171,7 +171,8 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
             UPDATE fegusconfig.fe_ingestion_sessions
             SET
                 session_state_code = @SessionStateCode,
-                last_sequence = @LastSequence
+                last_sequence = @LastSequence,
+                updated_at_utc = NOW()
             WHERE 
                 id_cliente = @IdCliente AND session_id = @SessionId
         """;
