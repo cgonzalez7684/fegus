@@ -71,10 +71,7 @@ select * from fegusconfig.fn_box_data_load_insert(
 TO_DATE('12/04/2026', 'DD/MM/YYYY')::timestamp 
 )
 
-select * from fegusconfig.fe_box_data_load
-
-
-
+--VERIFICACION SELECTS LOCALES
 select * from feguslocal.fe_box_data_load
 
 select * from feguslocal.deudores
@@ -90,11 +87,12 @@ select count(1) from feguslocal.operacionescredito
 
 select count(1) from feguslocal.operacionescredito
 
+---SELECTS REVISION EN NUBE
+
+select * from fegusconfig.fe_box_data_load
+
 select * from fegusconfig.fe_ingestion_sessions	
 order by created_at_utc desc
-
-select * from fegusconfig.fe_ingestion_deudores_raw
-where sessio
 
 select * from fegusconfig.fe_ingestion_deudores_raw
 
@@ -103,12 +101,6 @@ select count(1) from fegusconfig.fe_ingestion_deudores_raw
 select * from fegusconfig.fe_ingestion_operaciones_raw
 
 select count(1) from fegusconfig.fe_ingestion_operaciones_raw
-
-select count(1) from fegusconfig.fe_ingestion_deudores_raw
-
-select * from fegusconfig.fe_ingestion_deudores_raw
-
-select * from fegusconfig.fe_ingestion_operaciones_raw
 
 -------------------------------------------------------------
 
