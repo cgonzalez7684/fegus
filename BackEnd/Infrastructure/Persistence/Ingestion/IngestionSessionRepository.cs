@@ -163,6 +163,76 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         return session;
     }
 
+    public async Task<IngestionSession?> GetInFlightByBoxAsync(
+        int idCliente,
+        int idLoad,
+        string dataset,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            SELECT
+                session_id         AS SessionId,
+                id_cliente         AS IdCliente,
+                id_load            AS IdLoad,
+                dataset            AS Dataset,
+                session_state_code AS SessionStateCode,
+                last_sequence      AS LastSequencePersisted,
+                created_at_utc     AS CreatedAtUtc
+            FROM fegusconfig.fe_ingestion_sessions
+            WHERE id_cliente = @IdCliente
+              AND id_load    = @IdLoad
+              AND dataset    = @Dataset
+              AND session_state_code IN ('CREATED','RECEIVING')
+            ORDER BY created_at_utc DESC
+            LIMIT 1
+        """;
+
+        await using var conn =
+            await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var row = await conn.QuerySingleOrDefaultAsync<IngestionSessionDbRow>(
+            new CommandDefinition(sql, new
+            {
+                IdCliente = idCliente,
+                IdLoad = idLoad,
+                Dataset = dataset
+            }, cancellationToken: cancellationToken));
+
+        if (row is null) return null;
+
+        var session = new IngestionSession(
+            row.SessionId,
+            row.IdCliente,
+            (int)row.IdLoad,
+            row.Dataset,
+            row.SessionStateCode,
+            row.LastSequencePersisted);
+
+        session.UpdateLastSequence(row.LastSequencePersisted);
+        return session;
+    }
+
+    public async Task<int> ReapOrphanSessionsAsync(
+        TimeSpan olderThan,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            UPDATE fegusconfig.fe_ingestion_sessions
+            SET session_state_code = 'FAILED',
+                updated_at_utc     = NOW()
+            WHERE session_state_code IN ('CREATED','RECEIVING')
+              AND created_at_utc < NOW() - @OlderThan::interval
+        """;
+
+        await using var conn =
+            await _connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        return await conn.ExecuteAsync(new CommandDefinition(
+            sql,
+            new { OlderThan = $"{(int)olderThan.TotalSeconds} seconds" },
+            cancellationToken: cancellationToken));
+    }
+
     public async Task UpdateAsync(
         IngestionSession session,
         CancellationToken cancellationToken)

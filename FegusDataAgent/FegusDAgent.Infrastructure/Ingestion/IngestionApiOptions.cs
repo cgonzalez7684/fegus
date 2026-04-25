@@ -10,4 +10,6 @@ public sealed class IngestionApiOptions
     public string CommitPath { get; set; } = "/ingestion/sessions";
 
     public string StreamPath { get; set; } = "/ingestion/sessions";
+
+    public string InFlightSessionPath { get; set; } = "/ingestion/sessions/by-box";
 }

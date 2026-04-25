@@ -70,7 +70,9 @@ public sealed class BoxDataRepository : IBoxDataRepository
                 @p_id_load,
                 @p_id_load_local,
                 @p_state_code,
-                @p_is_active                
+                @p_is_active,
+                @p_attempt_count,
+                @p_last_error_message
             );
         """;
 
@@ -86,7 +88,9 @@ public sealed class BoxDataRepository : IBoxDataRepository
                     p_id_load = dataLoad.IdLoad,
                     p_id_load_local = dataLoad.IdLoadLocal,
                     p_state_code = dataLoad.StateCode,
-                    p_is_active = dataLoad.IsActive                    
+                    p_is_active = dataLoad.IsActive,
+                    p_attempt_count = dataLoad.AttemptCount,
+                    p_last_error_message = dataLoad.LastErrorMessage
                 },
                 cancellationToken: cancellationToken
             )
@@ -177,7 +181,9 @@ public sealed class BoxDataRepository : IBoxDataRepository
                 IsActive = r.is_active,
                 AsofDate = r.asofdate,
                 CreatedAtUtc = r.created_at_utc,
-                UpdatedAtUtc = r.updated_at_utc
+                UpdatedAtUtc = r.updated_at_utc,
+                AttemptCount = r.attempt_count is null ? null : (int)r.attempt_count,
+                LastErrorMessage = r.last_error_message
             })
             .ToList();
 
@@ -224,7 +230,9 @@ public sealed class BoxDataRepository : IBoxDataRepository
                 IsActive = r.is_active,
                 AsofDate = r.asofdate,
                 CreatedAtUtc = r.created_at_utc,
-                UpdatedAtUtc = r.updated_at_utc
+                UpdatedAtUtc = r.updated_at_utc,
+                AttemptCount = r.attempt_count is null ? null : (int)r.attempt_count,
+                LastErrorMessage = r.last_error_message
             })
             .ToList();
 
