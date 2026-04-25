@@ -35,13 +35,15 @@ public sealed class SendOperacionCreditoUseCase
     {
         try
         {
-            
-            // 1️⃣ Crear sesión de ingestión
-            var session = await _sessionClient.CreateSessionAsync(
-                box.IdLoad,
-                dataset: DataSetNameIngestion.OperacionesCredito.ToString(),
-                token,
-                cancellationToken);
+            var dataset = DataSetNameIngestion.OperacionesCredito.ToString();
+
+            // 1️⃣ Reutilizar sesión en curso si existe (resume real); si no, crear una nueva.
+            var session = await _sessionClient.GetInFlightSessionAsync(
+                              box.IdLoad, dataset, token, cancellationToken)
+                          ?? await _sessionClient.CreateSessionAsync(
+                              box.IdLoad, dataset, token, cancellationToken);
+
+            _logger.Info($"SendOperacionCredito using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad}.");
 
             // 2️⃣ Recuperar último checkpoint desde la sesión remota
             var sessionStatus = await _sessionClient.GetStatusAsync(
@@ -49,7 +51,7 @@ public sealed class SendOperacionCreditoUseCase
                 token,
                 cancellationToken);
 
-            var lastSequence = sessionStatus.LastSequencePersisted;    
+            var lastSequence = sessionStatus.LastSequencePersisted;
 
             // 3️⃣ Obtener snapshot completo de deudores, esto no es un API
             //     es la ejecucion local de la funcion de pgsql que obtiene los datos de deudores para el idLoadLocal dado. El resultado se devuelve como un stream asincrono.

@@ -1,3 +1,4 @@
+using FegusDAgent.Application.Common.Options;
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Application.UseCases.Fegus;
 using FegusDAgent.Domain.Entities;
@@ -18,8 +19,10 @@ public sealed class DataLoadOrchestrationUseCase(
     UpdateFeBoxDataLoadUseCase updateBox,
     SendDeudoresUseCase sendDeudores,
     SendOperacionCreditoUseCase sendOperacionCredito,
+    OrchestrationOptions orchestrationOptions,
     IEventLogger<DataLoadOrchestrationUseCase> logger)
 {
+    private const int ErrorMessageMaxLength = 1024;
     private const string StateNew = "NEW";
 
     private bool boxUpdated = false; // Track if we've updated the box state to avoid redundant updates
@@ -47,13 +50,27 @@ public sealed class DataLoadOrchestrationUseCase(
             return false;
         }
 
-        logger.Info($"Processing box for idCliente={idCliente}, AsofDate={box.AsofDate}, IdLoad={box.IdLoad}.");
+        logger.Info($"Processing box for idCliente={idCliente}, AsofDate={box.AsofDate}, IdLoad={box.IdLoad}, AttemptCount={box.AttemptCount}.");
 
         // 2. Authenticate
         var token = await authenticate.ExecuteAsync(cancellationToken);
         if (string.IsNullOrWhiteSpace(token))
         {
             logger.Error($"Authentication failed for idCliente={idCliente}. Aborting cycle.");
+            return false;
+        }
+
+        // 2.b Circuit-breaker per box: if we've already failed N times, mark ERROR and stop retrying.
+        // Effective only once BackEnd persists AttemptCount (Pass 2). Until then the value
+        // round-trips as 0 and this branch never fires.
+        if (box.AttemptCount >= orchestrationOptions.MaxAttemptsPerBox)
+        {
+            box.StateCode = DataLoadState.Error.ToString();
+            box.LastErrorMessage = Truncate(
+                $"Max attempts ({orchestrationOptions.MaxAttemptsPerBox}) exceeded. Last error: {box.LastErrorMessage ?? "(unknown)"}",
+                ErrorMessageMaxLength);
+            await updateBox.ExecuteAsync(token, box, cancellationToken);
+            logger.Error($"Box idLoad={box.IdLoad} moved to ERROR after {box.AttemptCount} attempts.");
             return false;
         }
 
@@ -84,6 +101,7 @@ public sealed class DataLoadOrchestrationUseCase(
         }
 
         box.StateCode = DataLoadState.Staging.ToString(); // Update state before local creation
+        box.AttemptCount += 1; // Persisted by BackEnd once Pass 2 lands; harmless until then.
 
         // 4. Update remote state, passing the local box (which carries IdLoadLocal)
         boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
@@ -93,7 +111,7 @@ public sealed class DataLoadOrchestrationUseCase(
             return false;
         }
 
-        // 5. Stream datasets in parallel       
+        // 5. Stream datasets in parallel
 
         try
         {
@@ -103,6 +121,7 @@ public sealed class DataLoadOrchestrationUseCase(
                 );
 
             box.StateCode = DataLoadState.Completed.ToString();
+            box.LastErrorMessage = null;
             boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
             if (!boxUpdated)
             {
@@ -113,15 +132,25 @@ public sealed class DataLoadOrchestrationUseCase(
         }
         catch (Exception ex)
         {
+            box.LastErrorMessage = Truncate(ex.Message, ErrorMessageMaxLength);
 
-            box.StateCode = DataLoadState.Error.ToString();
+            // Only move to ERROR if we've exhausted attempts; otherwise leave in STAGING
+            // so the next poll picks the box up and retries.
+            if (box.AttemptCount >= orchestrationOptions.MaxAttemptsPerBox)
+            {
+                box.StateCode = DataLoadState.Error.ToString();
+            }
+
             boxUpdated = await updateBox.ExecuteAsync(token, box, cancellationToken);
 
-            logger.Error($"Dataset streaming failed for idLoadLocal={box.IdLoadLocal}.", ex);
+            logger.Error($"Dataset streaming failed for idLoadLocal={box.IdLoadLocal} on attempt {box.AttemptCount}/{orchestrationOptions.MaxAttemptsPerBox}.", ex);
             throw;
         }
 
         logger.Info($"Data load cycle completed for idCliente={idCliente}, idLoadLocal={box.IdLoadLocal}.");
         return true;
     }
+
+    private static string Truncate(string value, int max) =>
+        value.Length <= max ? value : value[..max];
 }

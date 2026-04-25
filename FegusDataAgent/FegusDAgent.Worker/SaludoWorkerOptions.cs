@@ -18,4 +18,7 @@ public sealed class SaludoWorkerOptions
 
     /// <summary>Capacidad del canal acotado (cola máxima antes de que el productor espere).</summary>
     public int ChannelCapacity { get; set; } = 64;
+
+    /// <summary>Máximo de intentos por box antes de marcarlo en estado ERROR.</summary>
+    public int MaxAttemptsPerBox { get; set; } = 5;
 }

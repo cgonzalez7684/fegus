@@ -11,6 +11,13 @@ set state_code = 'NEW',
     updated_at_utc = null
 WHERE id_load = 2
 
+--recargar
+
+update fegusconfig.fe_box_data_load
+set state_code = 'RELOADING',
+    updated_at_utc = null
+WHERE id_load = 34
+
 
 select * from feguslocal.fn_box_data_load_insert(
 1001::integer,

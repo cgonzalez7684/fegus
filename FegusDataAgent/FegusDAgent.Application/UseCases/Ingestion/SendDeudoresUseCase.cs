@@ -31,19 +31,24 @@ public sealed class SendDeudoresUseCase
     {
         try
         {
-            // 1️⃣ Crear sesión de ingestión
-            var session = await _sessionClient.CreateSessionAsync(
-                idLoad: box.IdLoad,
-                dataset: DataSetNameIngestion.Deudores.ToString(),
-                token,
-                cancellationToken);
+            var dataset = DataSetNameIngestion.Deudores.ToString();
+
+            // 1️⃣ Reutilizar sesión en curso si existe (resume real); si no, crear una nueva.
+            //     Si el endpoint by-box no existe en BackEnd (404) o no hay sesión activa (204),
+            //     GetInFlightSessionAsync devuelve null y caemos al CreateSessionAsync de siempre.
+            var session = await _sessionClient.GetInFlightSessionAsync(
+                              box.IdLoad, dataset, token, cancellationToken)
+                          ?? await _sessionClient.CreateSessionAsync(
+                              box.IdLoad, dataset, token, cancellationToken);
+
+            _logger.Info($"SendDeudores using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad}.");
 
             // 2️⃣ Recuperar último checkpoint desde la sesión remota
             var sessionStatus = await _sessionClient.GetStatusAsync(
                 session.SessionId,
                 token,
                 cancellationToken);
-            
+
             var lastSequence = sessionStatus.LastSequencePersisted;
 
             // 3️⃣ Obtener snapshot completo de deudores, esto no es un API

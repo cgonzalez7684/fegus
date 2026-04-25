@@ -1,5 +1,6 @@
 ﻿
 using System.Text;
+using API.HostedServices;
 using Infrastructure.Auth;
 using Infrastructure.Storage.Ingestion;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -102,6 +103,11 @@ public static class DependencyInjection
 
         services.Configure<IngestionStorageOptions>(
         configuration.GetSection("IngestionStorage"));
+
+        services.Configure<IngestionReaperOptions>(
+            configuration.GetSection("IngestionReaper"));
+
+        services.AddHostedService<IngestionSessionReaperHostedService>();
 
         services.AddSingleton<TempFileStorage>(sp =>
         {

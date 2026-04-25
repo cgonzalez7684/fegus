@@ -12,4 +12,7 @@ namespace Domain.Entities.FegusConfig;
     public DateTime? AsofDate { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime? UpdatedAtUtc { get; set; }
+
+    public int? AttemptCount { get; set; }
+    public string? LastErrorMessage { get; set; }
 }
