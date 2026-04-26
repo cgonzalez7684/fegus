@@ -1,30 +1,25 @@
--- FUNCTION: fegusconfig.fn_box_data_load_update(integer, bigint, bigint, character varying, character varying, integer, text)
-
--- DROP FUNCTION IF EXISTS fegusconfig.fn_box_data_load_update(integer, bigint, bigint, character varying, character varying, integer, text);
+DROP FUNCTION IF EXISTS fegusconfig.fn_box_data_load_update(
+    integer, bigint, bigint, text, text);
 
 CREATE OR REPLACE FUNCTION fegusconfig.fn_box_data_load_update(
-	p_id_cliente integer,
-	p_id_load bigint,
-	p_id_load_local bigint,
-	p_state_code character varying,
-	p_is_active character varying,
-	p_attempt_count integer DEFAULT NULL::integer,
-	p_last_error_message text DEFAULT NULL::text)
-    RETURNS TABLE(psqlcode text, psqlmessage text, pqty integer) 
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-    ROWS 1000
-
-AS $BODY$
+    p_id_cliente            integer,
+    p_id_load               bigint,
+    p_id_load_local         bigint,
+    p_state_code            text,
+    p_is_active             text,
+    p_attempt_count         integer DEFAULT NULL,
+    p_last_error_message    text    DEFAULT NULL
+)
+RETURNS TABLE (
+    pqty        integer,
+    psqlcode    integer,
+    psqlmessage text
+)
+LANGUAGE plpgsql
+AS $$
 DECLARE
-    v_rowcount integer := 0;
+    v_qty integer := 0;
 BEGIN
-
-    pSqlCode    := 0;
-    pSqlMessage := NULL;
-    pQty        := 0;
-
     UPDATE fegusconfig.fe_box_data_load
     SET id_load_local       = COALESCE(p_id_load_local,      id_load_local),
         state_code          = COALESCE(p_state_code,         state_code),
@@ -39,21 +34,10 @@ BEGIN
     WHERE id_cliente = p_id_cliente
       AND id_load    = p_id_load;
 
-    GET DIAGNOSTICS v_rowcount = ROW_COUNT;
+    GET DIAGNOSTICS v_qty = ROW_COUNT;
 
-    pQty := v_rowcount;
-
-    RETURN NEXT;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        pSqlCode    := SQLSTATE;
-        pSqlMessage := SQLERRM;
-        pQty        := 0;
-
-        RETURN NEXT;
+    RETURN QUERY SELECT v_qty, 0, 'OK'::text;
+EXCEPTION WHEN OTHERS THEN
+    RETURN QUERY SELECT 0, SQLSTATE::int, SQLERRM;
 END;
-$BODY$;
-
-ALTER FUNCTION fegusconfig.fn_box_data_load_update(integer, bigint, bigint, character varying, character varying, integer, text)
-    OWNER TO postgres;
+$$;
