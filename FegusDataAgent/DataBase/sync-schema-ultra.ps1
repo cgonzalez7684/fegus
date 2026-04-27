@@ -91,7 +91,7 @@ foreach ($type in $patterns.Keys) {
 # =============================
 # STEP 5: Git auto
 # =============================
-Write-Host "`nSincronizando con Git..." -ForegroundColor Green
+<#Write-Host "`nSincronizando con Git..." -ForegroundColor Green
 
 Set-Location "C:\Software\Fegus\FegusDataAgent"
 
@@ -105,5 +105,5 @@ if ($changes) {
 } else {
     Write-Host "No hay cambios."
 }
-
+#>
 Write-Host "`n==== COMPLETADO ====" -ForegroundColor Green
