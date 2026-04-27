@@ -4,13 +4,13 @@
 $DB_NAME = "FegusApp"
 $DB_USER = "postgres"
 $DB_HOST = "localhost"
-$DB_PORT = "5432"
+$DB_PORT = "5433"
 $SCHEMA  = "feguslocal"
 
 $BASE_PATH = "C:\Software\Fegus\FegusDataAgent\DataBase\Schemas\feguslocal"
-$TEMP_FILE = "$env:TEMP\fegus_tmp.sql"
+$TEMP_FILE = "$env:TEMP\fegus_feguslocal_tmp.sql"
 
-$env:PGPASSWORD = "tu_password"
+$env:PGPASSWORD = "Car7684$"
 
 # Detectar pgFormatter
 $PGFORMAT = Get-Command pg_format -ErrorAction SilentlyContinue
@@ -192,7 +192,7 @@ foreach ($s in $sequences) {
 # ==========================================
 # GIT AUTO
 # ==========================================
-Write-Host "`nSincronizando con Git..." -ForegroundColor Green
+<#Write-Host "`nSincronizando con Git..." -ForegroundColor Green
 
 Set-Location "C:\Software\Fegus\FegusDataAgent"
 
@@ -205,7 +205,7 @@ if ($changes) {
     Write-Host "Commit realizado." -ForegroundColor Green
 } else {
     Write-Host "No hay cambios." -ForegroundColor Yellow
-}
+}#>
 
 Write-Host "`n=====================================" -ForegroundColor Cyan
 Write-Host "SYNC COMPLETADO (ULTRA FINAL)" -ForegroundColor Cyan
