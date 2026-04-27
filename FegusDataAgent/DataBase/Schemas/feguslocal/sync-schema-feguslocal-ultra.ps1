@@ -60,8 +60,8 @@ $patterns = @{
     Tables     = "(?ms)(CREATE TABLE .*?;)"
     Sequences  = "(?ms)(CREATE SEQUENCE .*?;)"
 
-    Functions  = "(?ms)(CREATE\s+(OR\s+REPLACE\s+)?FUNCTION.*?\$[^\$]*\$.*?\$[^\$]*\$\s+LANGUAGE\s+\w+.*?;)"
-    Procedures = "(?ms)(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE.*?\$[^\$]*\$.*?\$[^\$]*\$\s+LANGUAGE\s+\w+.*?;)"
+    Functions  = "(?ms)(CREATE\s+(OR\s+REPLACE\s+)?FUNCTION.*?AS\s+\$.*?\$.*?\$.*?\$;)"
+	Procedures = "(?ms)(CREATE\s+(OR\s+REPLACE\s+)?PROCEDURE.*?AS\s+\$.*?\$.*?\$.*?\$;)"
 }
 
 # ==========================================
