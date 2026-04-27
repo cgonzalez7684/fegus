@@ -1,4 +1,4 @@
-﻿CREATE TABLE feguslocal.bienesrealizablesnoreportados (
+﻿CREATE TABLE feguslocal.bienesrealizablesnoreportados2 (
     id_load_local bigint NOT NULL,
     idbienrealizable character varying(50) NOT NULL,
     indicadorgarantia character varying(1) NOT NULL,

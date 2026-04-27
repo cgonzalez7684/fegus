@@ -1,13 +1,6 @@
--- SEQUENCE: feguslocal.seq_deudor
-
--- DROP SEQUENCE IF EXISTS feguslocal.seq_deudor;
-
-CREATE SEQUENCE IF NOT EXISTS feguslocal.seq_deudor
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
+﻿CREATE SEQUENCE feguslocal.seq_deudor
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
-
-ALTER SEQUENCE feguslocal.seq_deudor
-    OWNER TO postgres;
