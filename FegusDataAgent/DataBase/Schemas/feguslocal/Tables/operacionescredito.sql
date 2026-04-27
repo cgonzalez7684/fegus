@@ -1,0 +1,134 @@
+﻿--
+-- PostgreSQL database dump
+--
+\restrict kDHrDfyPl0auf2miskMNthjoN8fPUcNaAV03lzHSt8T1s0zgrHrqjEHjY9nllFS
+-- Dumped from database version 17.6
+-- Dumped by pg_dump version 17.6
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+SET default_tablespace = '';
+SET default_table_access_method = heap;
+--
+-- Name: operacionescredito; Type: TABLE; Schema: feguslocal; Owner: postgres
+--
+CREATE TABLE feguslocal.operacionescredito (
+    id_load_local bigint NOT NULL,
+    "TipoOperacionSFN" numeric(1,0) NOT NULL,
+    "TipoPersonaDeudor" numeric(2,0) NOT NULL,
+    "IdDeudor" character varying(30) NOT NULL,
+    "IdOperacionCredito" character varying(25) NOT NULL,
+    "IdLineaCredito" character varying(25),
+    "IndicadorOperacionModificada" character varying(1),
+    "IndicadorPresentaCodeudores" character varying(1),
+    "TipoEnfoque" numeric(2,0),
+    "TipoSegmento" numeric(2,0),
+    "CodigoEtapa" numeric(2,0),
+    "CodigoCategoriaRiesgo" numeric(2,0),
+    "TasaIncumplimiento" numeric(5,2),
+    "LGDMinimoCombinado" numeric(5,2),
+    "LGDPromedio" numeric(5,2),
+    "LGDRegulatorio" numeric(5,2),
+    "TipoOperacion" numeric(3,0) NOT NULL,
+    "TipoCatalogoSUGEF" numeric(3,0) NOT NULL,
+    "CodigoPaisDestinoCredito" character varying(4),
+    "CodigoProvinciaDestinoCredito" numeric(2,0),
+    "CodigoCantonDestinoCredito" numeric(2,0),
+    "CodigoDistritoDestinoCredito" numeric(4,0),
+    "CodigoProvinciaDependenciaCredito" numeric(2,0),
+    "CodigoCantonDependenciaCredito" numeric(2,0),
+    "TipoCarteraCrediticia" numeric(2,0) NOT NULL,
+    "TipoEstadoOperacionCrediticia" numeric(3,0),
+    "DiasMaximaMorosidad" numeric(4,0) NOT NULL,
+    "MontoFormalizadoOperacionCrediticia" numeric(22,2),
+    "TipoMonedaOperacion" numeric(6,0) NOT NULL,
+    "MontoOperacionAutorizado" numeric(22,2) NOT NULL,
+    "CuentaContablePrincipal" numeric(15,0),
+    "SaldoPrincipalOperacionCrediticia" numeric NOT NULL,
+    "CuentaContablePrincipalConDepositoPrevio" numeric(15,0),
+    "SaldoPrincipalConDepositoPrevio" numeric(22,2) NOT NULL,
+    "CuentaContableProductosPorCobrar" numeric(15,0),
+    "SaldoProductosPorCobrar" numeric(22,2) NOT NULL,
+    "CuentaContablePorDesembolsarConCompromiso" numeric(15,0),
+    "SaldoPorDesembolsarConCompromiso" numeric(22,2) NOT NULL,
+    "CuentaContableComisiones" numeric(15,0),
+    "SaldoComisionesOperacionesContingentes" numeric(22,2) NOT NULL,
+    "CuentaContableSaldoPendienteUtilizacionSinCompromiso" numeric(15,0),
+    "SaldoPendienteUtilizacionSinCompromiso" numeric(22,2),
+    "MontoDesembolsado" numeric(22,2) NOT NULL,
+    "FechaFormalizacion" date NOT NULL,
+    "FechaVencimiento" date NOT NULL,
+    "EAD" numeric(22,2) NOT NULL,
+    "SaldoOperacionSegmentacion" numeric(22,2),
+    "TipoFrecuenciaPagoActualPrincipal" numeric(2,0),
+    "TipoFrecuenciaPagoActualIntereses" numeric(2,0),
+    "FechaVencimientoPeriodoGraciaPrincipal" date,
+    "TasaLey7472" numeric(10,7),
+    "TasaInteresNominalVigente" numeric(5,2),
+    "IndicadorTipoTasa" character varying(2),
+    "FactorDeTiempoCalculoIntereses" character varying(1),
+    "IndicadorFormaPagoVigentePrincipal" character varying(1),
+    "IndicadorFormaPagoVigenteIntereses" character varying(1),
+    "FechaCorteOperacion" date,
+    "FechaProximoPagoPrincipal" date,
+    "FechaProximoPagoIntereses" date,
+    "FechaAmortizacionHasta" date,
+    "FechaInteresHasta" date,
+    "FechaPagoPactadoPrincipal" date,
+    "FechaPagoPactadoIntereses" date,
+    "PlazoOperacionDias" numeric(6,0) NOT NULL,
+    "TipoCuotaPrincipal" numeric(2,0),
+    "MontoCuotaPrincipalActual" numeric(22,2),
+    "MontoCuotaInteresesActual" numeric(22,2),
+    "IndicadorOperacionNueva" character varying(1),
+    "MontoRecuperacionPrincipal" numeric(22,2) NOT NULL,
+    "MontoOtrosAumentosDePrincipal" numeric(22,2) NOT NULL,
+    "MontoOtrasDisminucionesDePrincipal" numeric(22,2) NOT NULL,
+    "IndicadorBacktoBack" character varying(1) NOT NULL,
+    "IndicadorCreditoSindicado" character varying(1) NOT NULL,
+    "IndicadorOperacionEspecial" character varying(1) NOT NULL,
+    "TipoMotivoOperacionEspecial" numeric(3,0),
+    "CodigoClausulaLimiteCredito" numeric(2,0),
+    "FechaCambioTipoTasa" date,
+    "TipoFrecuenciaAjusteTasaInteresVariable" numeric(2,0),
+    "TipoParametroReferenciaTasaInteresVariable" numeric(3,0),
+    "PorcentajeComponenteVariableTasaInteresVariable" numeric(5,2),
+    "PorcentajeComponenteFijoTasaInteresVariable" numeric(5,2),
+    "LimiteInferiorTasaInteresVariable" numeric(5,2),
+    "LimiteSuperiorTasaInteresVariable" numeric(5,2),
+    "MontoEstimacionEspecifica" numeric(22,2),
+    "MontoEstimacionAvales" numeric(22,2),
+    "TipoProgramaAutorizadoSBD" numeric(5,0) NOT NULL,
+    "IndicadorCreditoGrupalSolidarioSBD" numeric(1,0) NOT NULL,
+    "TipoSectorPrioritarioDeudorSBD" numeric(2,0) NOT NULL,
+    "IdFondeadorSBD" character varying(30),
+    "TipoPersonaIdFondeadorSBD" numeric(2,0),
+    "IndicadorOperacionCedidaEnGarantia" character varying(1) NOT NULL,
+    "PorcentajePonderadorSPD" numeric(5,2) NOT NULL,
+    "PorcentajePonderadorSPC" numeric(5,2) NOT NULL,
+    "PorcentajeIndicadorLTV" numeric(5,2),
+    "IndicadorCambioClimatico" character varying(1) NOT NULL,
+    "TipoClasificacionRiesgoClimatico" numeric(2,0),
+    "TipoMetodolog├¡aClim├ítico" numeric(2,0),
+    "TipoPotencialidadImpactoClimatico" numeric(2,0),
+    created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at_utc timestamp without time zone
+);
+ALTER TABLE feguslocal.operacionescredito OWNER TO postgres;
+--
+-- Name: operacionescredito pk_operacionescredito; Type: CONSTRAINT; Schema: feguslocal; Owner: postgres
+--
+ALTER TABLE ONLY feguslocal.operacionescredito
+    ADD CONSTRAINT pk_operacionescredito PRIMARY KEY (id_load_local, "IdOperacionCredito");
+--
+-- PostgreSQL database dump complete
+--
+\unrestrict kDHrDfyPl0auf2miskMNthjoN8fPUcNaAV03lzHSt8T1s0zgrHrqjEHjY9nllFS
