@@ -4,15 +4,19 @@
 $DB_NAME = "FegusApp"
 $DB_USER = "postgres"
 $DB_HOST = "localhost"
-$DB_PORT = "5433"
+$DB_PORT = "5432"
 $SCHEMA  = "feguslocal"
 
 $BASE_PATH = "C:\Software\Fegus\FegusDataAgent\DataBase\Schemas\feguslocal"
+$TEMP_FILE = "$env:TEMP\fegus_tmp.sql"
 
-$env:PGPASSWORD = "Car7684$"
+$env:PGPASSWORD = "tu_password"
+
+# Detectar pgFormatter
+$PGFORMAT = Get-Command pg_format -ErrorAction SilentlyContinue
 
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "SYNC ULTRA PRO (pg_proc): $SCHEMA" -ForegroundColor Cyan
+Write-Host "SYNC ULTRA PRO FINAL ($SCHEMA)" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 
 # ==========================================
@@ -23,7 +27,43 @@ function Exec-Sql($query) {
 }
 
 # ==========================================
-# LIMPIAR CARPETAS
+# FORMATEO SQL (Fallback)
+# ==========================================
+function Format-Sql($sql) {
+    $sql = $sql -replace "\r\n", "`n"
+    $sql = $sql -replace "\bAS\s+\$\$", "`nAS `$\$`n"
+    $sql = $sql -replace "\$\$\s+LANGUAGE", "`n`$\$ LANGUAGE"
+    $sql = $sql -replace "\bBEGIN\b", "`nBEGIN"
+    $sql = $sql -replace "\bEND;\b", "`nEND;"
+    $sql = $sql -replace "\bDECLARE\b", "`nDECLARE"
+    $sql = $sql -replace "`n{2,}", "`n"
+    return $sql.Trim()
+}
+
+# ==========================================
+# FUNCION GUARDAR SQL (con formato)
+# ==========================================
+function Save-Sql($sql, $filePath) {
+
+    if ($PGFORMAT) {
+        $tempIn = "$env:TEMP\in.sql"
+        $tempOut = "$env:TEMP\out.sql"
+
+        $sql | Out-File -Encoding UTF8 $tempIn
+        & pg_format $tempIn > $tempOut
+
+        Get-Content $tempOut | Out-File -Encoding UTF8 $filePath
+
+        Remove-Item $tempIn,$tempOut -ErrorAction SilentlyContinue
+    }
+    else {
+        $formatted = Format-Sql $sql
+        $formatted | Out-File -Encoding UTF8 $filePath
+    }
+}
+
+# ==========================================
+# PREPARAR CARPETAS
 # ==========================================
 $folders = @("Tables","Functions","Procedures","Sequences")
 
@@ -36,7 +76,7 @@ foreach ($f in $folders) {
 }
 
 # ==========================================
-# EXPORTAR TABLAS
+# TABLES
 # ==========================================
 Write-Host "`nExportando TABLES..." -ForegroundColor Yellow
 
@@ -45,16 +85,20 @@ $tables = Exec-Sql "SELECT tablename FROM pg_tables WHERE schemaname='$SCHEMA';"
 foreach ($t in $tables) {
     $t = $t.Trim()
     if ($t -ne "") {
+
         Write-Host "  -> $t"
 
         pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME `
             -t "$SCHEMA.$t" --schema-only `
-            > "$BASE_PATH\Tables\$t.sql"
+            > $TEMP_FILE
+
+        $sql = Get-Content $TEMP_FILE -Raw
+        Save-Sql $sql "$BASE_PATH\Tables\$t.sql"
     }
 }
 
 # ==========================================
-# EXPORTAR FUNCIONES (pg_proc)
+# FUNCTIONS (pg_proc)
 # ==========================================
 Write-Host "`nExportando FUNCTIONS..." -ForegroundColor Yellow
 
@@ -83,17 +127,13 @@ foreach ($line in $functions) {
 
         $sql = Exec-Sql "SELECT pg_get_functiondef($oid);"
 
-        $filePath = "$BASE_PATH\Functions\$safeName.sql"
-
-        # DROP incluido (PRO)
         $drop = "DROP FUNCTION IF EXISTS $SCHEMA.$name($args) CASCADE;`n"
-
-        ($drop + $sql) | Out-File -Encoding UTF8 $filePath
+        Save-Sql ($drop + $sql) "$BASE_PATH\Functions\$safeName.sql"
     }
 }
 
 # ==========================================
-# EXPORTAR PROCEDURES
+# PROCEDURES
 # ==========================================
 Write-Host "`nExportando PROCEDURES..." -ForegroundColor Yellow
 
@@ -122,16 +162,13 @@ foreach ($line in $procedures) {
 
         $sql = Exec-Sql "SELECT pg_get_functiondef($oid);"
 
-        $filePath = "$BASE_PATH\Procedures\$safeName.sql"
-
         $drop = "DROP PROCEDURE IF EXISTS $SCHEMA.$name($args) CASCADE;`n"
-
-        ($drop + $sql) | Out-File -Encoding UTF8 $filePath
+        Save-Sql ($drop + $sql) "$BASE_PATH\Procedures\$safeName.sql"
     }
 }
 
 # ==========================================
-# EXPORTAR SEQUENCES
+# SEQUENCES
 # ==========================================
 Write-Host "`nExportando SEQUENCES..." -ForegroundColor Yellow
 
@@ -145,7 +182,10 @@ foreach ($s in $sequences) {
 
         pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME `
             -t "$SCHEMA.$s" --schema-only `
-            > "$BASE_PATH\Sequences\$s.sql"
+            > $TEMP_FILE
+
+        $sql = Get-Content $TEMP_FILE -Raw
+        Save-Sql $sql "$BASE_PATH\Sequences\$s.sql"
     }
 }
 
@@ -161,12 +201,12 @@ git add .
 $changes = git status --porcelain
 
 if ($changes) {
-    git commit -m "Ultra-sync pg_proc schema $SCHEMA"
+    git commit -m "Ultra-sync schema $SCHEMA"
     Write-Host "Commit realizado." -ForegroundColor Green
 } else {
     Write-Host "No hay cambios." -ForegroundColor Yellow
 }
 
 Write-Host "`n=====================================" -ForegroundColor Cyan
-Write-Host "SYNC COMPLETADO (pg_proc)" -ForegroundColor Cyan
+Write-Host "SYNC COMPLETADO (ULTRA FINAL)" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
