@@ -83,7 +83,6 @@ select * from feguslocal.fe_box_data_load
 
 select * from feguslocal.deudores
 
-
 select * from feguslocal.operacionescredito
 
 select count(1) from feguslocal.deudores
