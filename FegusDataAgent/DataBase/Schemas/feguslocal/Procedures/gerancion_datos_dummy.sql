@@ -1,0 +1,243 @@
+﻿DROP PROCEDURE IF EXISTS feguslocal.gerancion_datos_dummy CASCADE;
+CREATE PROCEDURE feguslocal.gerancion_datos_dummy(IN p_id_cliente integer, IN p_num_registros integer)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    i INT;
+	pid_load_local feguslocal.fe_box_data_load.id_load_local%Type;	
+	pCant_Operaciones int;
+
+	cur_deudores CURSOR FOR
+    SELECT *
+	FROM feguslocal.deudores;
+
+	-- Variable registro para leer fila por fila
+    --rec RECORD;		
+	rec feguslocal.deudores_type;
+	
+BEGIN
+
+	Delete from feguslocal.deudores;
+
+	SELECT COALESCE((
+	    SELECT b.id_load_local
+	    FROM feguslocal.fe_box_data_load b
+	     WHERE b.id_cliente = p_id_cliente
+	      AND b.state_code = 'CREATED'
+	      AND b.is_active = 'A'
+	    ORDER BY b.created_at_utc ASC
+	    LIMIT 1
+	    FOR UPDATE SKIP LOCKED
+	), 0)
+	INTO pid_load_local;
+
+	--AQUI DEBERIA DE IR UN PROCESO PARA ASEGURAR QUE LAS TABLAS PARA EL pid_load_local BORRA LOS REGISTROS DE TODAS LAS
+	--TABLAS A CARGAR
+
+	pid_load_local = -1;
+	 
+
+    FOR i IN 1..p_num_registros LOOP
+        INSERT INTO feguslocal.deudores (    
+			id_load_local,
+		    tipodeudorsfn,
+		    tipopersonadeudor,
+		    iddeudor,
+		    codigosectoreconomico,
+		    tipocapacidadpago,
+		    saldototalsegmentacion,
+		    tipocondicionespecialdeudor,
+		    fechacalificacionriesgo,
+		    tipoindicadorgeneradordivisas,
+		    tipoasignacioncalificacion,
+		    categoriacalificacion,
+		    calificacionriesgo,
+		    codigoempresacalificadora,
+		    indicadorvinculadoentidad,
+		    indicadorvinculadogrupofinanciero,
+		    idgrupointereseconomico,
+		    tipocomportamientopago,
+		    tipoactividadeconomicadeudor,
+		    tipocomportamientopagosbd,
+		    tipobeneficiariosbd,
+		    totaloperacionesreestructuradassbd,
+		    tipoindicadorgeneradordivisassbd,
+		    riesgocambiariodeudor,
+		    montoingresototaldeudor,
+		    totalcargamensualcsd,
+		    indicadorcsd,
+			saldomoramayorultmeses1421,
+			nummesesmoramayor1421,
+			saldomoramayorultmeses1516,
+			nummesesmoramayor1516,
+			numdiasatraso1421,
+			numdiasatraso1516,
+		    updated_at_utc    
+		)
+		VALUES (
+		    pid_load_local, 			
+		
+		    -- TipoDeudorSFN (m├ís frecuente 1 y 4)
+		    CASE 
+		        WHEN random() < 0.4 THEN 1
+		        WHEN random() < 0.7 THEN 4
+		        WHEN random() < 0.85 THEN 5
+		        WHEN random() < 0.95 THEN 6
+		        ELSE (ARRAY[7,12])[floor(random()*2+1)]
+		    END,
+		
+		    -- TipoPersonaDeudor (personas f├¡sicas m├ís comunes)
+		    CASE 
+		        WHEN random() < 0.5 THEN 1
+		        WHEN random() < 0.8 THEN 2
+		        ELSE (ARRAY[3,4,5,6,13,14,15])[floor(random()*7+1)]
+		    END,
+		
+		    lpad((trunc(random() * 900000000) + 100000000)::text, 9, '0'),
+		
+		    -- Sector econ├│mico (distribuci├│n m├ís realista)
+		    CASE 
+		        WHEN random() < 0.3 THEN 102
+		        WHEN random() < 0.5 THEN 106
+		        WHEN random() < 0.7 THEN 110
+		        ELSE (ARRAY[120,122,124])[floor(random()*3+1)]
+		    END,
+		
+		    -- Capacidad de pago (m├ís en niveles medios)
+		    CASE 
+		        WHEN random() < 0.4 THEN 2
+		        WHEN random() < 0.7 THEN 3
+		        ELSE (ARRAY[1,4])[floor(random()*2+1)]
+		    END,
+		
+		    round((random()*1000000)::numeric, 2),
+		
+		    -- ­ƒöÑ MUY IMPORTANTE: Alta probabilidad de NULL
+		    CASE 
+		        WHEN random() < 0.7 THEN NULL
+		        WHEN random() < 0.85 THEN 1
+		        WHEN random() < 0.95 THEN 4
+		        ELSE 5
+		    END,
+		
+		    (CURRENT_DATE - (random()*1825)::int),
+		
+		    -- Indicador divisas (0 domina)
+		    CASE 
+		        WHEN random() < 0.7 THEN 0
+		        ELSE (ARRAY[1,2,3,4,5,6,7,8])[floor(random()*8+1)]
+		    END,
+		
+		    -- TipoAsignacionCalificacion
+		    CASE 
+		        WHEN random() < 0.6 THEN 1
+		        WHEN random() < 0.85 THEN 2
+		        ELSE 0
+		    END,
+		
+		    -- CategoriaCalificacion (NULL muy frecuente)
+		    CASE 
+		        WHEN random() < 0.6 THEN NULL
+		        ELSE (ARRAY[0,1,2,3,4,5,6])[floor(random()*7+1)]
+		    END,
+		
+		    -- CalificacionRiesgo
+		    CASE 
+		        WHEN random() < 0.6 THEN NULL
+		        WHEN random() < 0.75 THEN 'AAA'
+		        WHEN random() < 0.85 THEN 'AA+'
+		        WHEN random() < 0.95 THEN 'BBB+'
+		        ELSE (ARRAY['BBB-','B+'])[floor(random()*2+1)]
+		    END,
+		
+		    -- Empresa calificadora
+		    CASE 
+		        WHEN random() < 0.6 THEN NULL
+		        ELSE (ARRAY[0,1,2])[floor(random()*3+1)]
+		    END,
+		
+		    -- Vinculaci├│n entidad
+		    CASE 
+		        WHEN random() < 0.6 THEN NULL
+		        WHEN random() < 0.85 THEN 'N'
+		        ELSE 'V'
+		    END,
+		
+		    -- Vinculaci├│n grupo
+		    CASE 
+		        WHEN random() < 0.6 THEN NULL
+		        WHEN random() < 0.8 THEN 'N'
+		        WHEN random() < 0.9 THEN 'V'
+		        ELSE 'F'
+		    END,
+		
+		    NULL,
+		
+		    -- Comportamiento pago
+		    CASE 
+		        WHEN random() < 0.5 THEN 1
+		        WHEN random() < 0.8 THEN 2
+		        ELSE (ARRAY[0,3])[floor(random()*2+1)]
+		    END,
+		
+		    (ARRAY['011109004','011109003','11109004','011109005','011109006','011109007'])[floor(random()*6+1)],
+		
+		    -- Comportamiento SBD
+		    CASE 
+		        WHEN random() < 0.6 THEN 0
+		        ELSE (ARRAY[1,2,3])[floor(random()*3+1)]
+		    END,
+		
+		    floor(random()*21)::int,
+		
+		    round((random()*1000000)::numeric, 2),
+		
+		    floor(random()*10)::int,
+		
+		    -- Riesgo cambiario
+		    CASE 
+		        WHEN random() < 0.7 THEN NULL
+		        ELSE (ARRAY[0,1,2])[floor(random()*3+1)]
+		    END,
+		
+		    round((random()*1000000)::numeric, 2),
+		    round((random()*1000000)::numeric, 2),
+		
+		    -- IndicadorCSD (m├ís 0)
+		    CASE WHEN random() < 0.7 THEN 0 ELSE 1 END,
+		
+		    round((random()*1000000)::numeric, 2),
+		    12,
+		    round((random()*1000000)::numeric, 2),
+		    12,
+		    0,
+		    0,
+		
+		    CURRENT_DATE
+		);
+    END LOOP;
+
+	Delete from feguslocal.operacionescredito;
+
+	OPEN cur_deudores;
+
+    LOOP
+        FETCH cur_deudores INTO rec;
+        EXIT WHEN NOT FOUND;
+
+		pCant_Operaciones = FLOOR(RANDOM() * 5 + 1)::int; --cantidad de operaciones aleatorias
+
+		CALL feguslocal.generar_operaciones_deudor(pid_load_local,rec,pCant_Operaciones);
+
+        -- Aqu├¡ procesas cada fila
+        /*RAISE NOTICE 'Cliente: %, Persona: %, Deudor: %, Fecha: %',
+            rec.id_cliente,
+            rec.TipoPersonaDeudor,
+            rec.IdDeudor,
+            to_char(rec.FechaUltGestion,'dd/mm/yyyy');*/
+    END LOOP;
+
+    CLOSE cur_deudores;
+	
+END;
+$$;

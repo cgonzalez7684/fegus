@@ -1,26 +1,4 @@
-﻿--
--- PostgreSQL database dump
---
-\restrict oh7K0DhoPKehQVBMe8eyEYRttfcqFBoEWahSFyWxQMFZBusG0CGTmOJRhnaB9Q7
--- Dumped from database version 17.6
--- Dumped by pg_dump version 17.6
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-SET default_tablespace = '';
-SET default_table_access_method = heap;
---
--- Name: bienesrealizablesnoreportados; Type: TABLE; Schema: feguslocal; Owner: postgres
---
-CREATE TABLE feguslocal.bienesrealizablesnoreportados (
+﻿CREATE TABLE feguslocal.bienesrealizablesnoreportados (
     id_load_local bigint NOT NULL,
     idbienrealizable character varying(50) NOT NULL,
     indicadorgarantia character varying(1) NOT NULL,
@@ -34,13 +12,3 @@ CREATE TABLE feguslocal.bienesrealizablesnoreportados (
     created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
     updated_at_utc timestamp without time zone
 );
-ALTER TABLE feguslocal.bienesrealizablesnoreportados OWNER TO postgres;
---
--- Name: bienesrealizablesnoreportados pk_bienesrealizablesnoreportados; Type: CONSTRAINT; Schema: feguslocal; Owner: postgres
---
-ALTER TABLE ONLY feguslocal.bienesrealizablesnoreportados
-    ADD CONSTRAINT pk_bienesrealizablesnoreportados PRIMARY KEY (id_load_local, idbienrealizable);
---
--- PostgreSQL database dump complete
---
-\unrestrict oh7K0DhoPKehQVBMe8eyEYRttfcqFBoEWahSFyWxQMFZBusG0CGTmOJRhnaB9Q7
