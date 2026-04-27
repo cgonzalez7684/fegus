@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict m4rAcSP2tsAc1MYvRbOADxWmHxeNTfH5Ve8v7TXcsRcWegADudbin4EfAB30R9U
+\restrict 1bDHmZbPOwppGiw4eARwsijxkAoQapIGGwD6NWNvTZ1lN4h5SioESWoc7ADh5Q1
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -41,4 +41,4 @@ ALTER TABLE ONLY feguslocal.garantiasmobiliarias
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict m4rAcSP2tsAc1MYvRbOADxWmHxeNTfH5Ve8v7TXcsRcWegADudbin4EfAB30R9U
+\unrestrict 1bDHmZbPOwppGiw4eARwsijxkAoQapIGGwD6NWNvTZ1lN4h5SioESWoc7ADh5Q1

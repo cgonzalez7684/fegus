@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict 3kiHvSph5XI4sHD2Y3eYnPC1O6B2NMF11kanhZ2aweTIfHsViYNNwS1p3eq2hhV
+\restrict Qz2BRfO4NGiBDnLHrGsLPVC1xvdkXWkrVkDbFoSPCPza0cC3c4nI1rNUaa4Jd2k
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -51,4 +51,4 @@ ALTER TABLE ONLY feguslocal.garantiasoperacion
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict 3kiHvSph5XI4sHD2Y3eYnPC1O6B2NMF11kanhZ2aweTIfHsViYNNwS1p3eq2hhV
+\unrestrict Qz2BRfO4NGiBDnLHrGsLPVC1xvdkXWkrVkDbFoSPCPza0cC3c4nI1rNUaa4Jd2k

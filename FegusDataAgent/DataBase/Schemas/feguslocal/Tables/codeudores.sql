@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict TB9viy6BJcNI5DtvDOkeq3F4hbLjdTeU5asn1brhiHBa0WSR0H3FEj9km8GtWCu
+\restrict HwHlHEdh5aow1hyXs7oON9lwB1zv5sg7DMy7kXeSBp8b7upMAGPEnTnKHQdVPqX
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -37,4 +37,4 @@ ALTER TABLE ONLY feguslocal.codeudores
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict TB9viy6BJcNI5DtvDOkeq3F4hbLjdTeU5asn1brhiHBa0WSR0H3FEj9km8GtWCu
+\unrestrict HwHlHEdh5aow1hyXs7oON9lwB1zv5sg7DMy7kXeSBp8b7upMAGPEnTnKHQdVPqX

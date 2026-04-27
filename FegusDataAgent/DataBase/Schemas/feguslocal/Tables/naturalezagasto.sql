@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict R2NsitS5hGvSWLY0HQ65icuxVk7kQeXn8RgaLEVkESHLcalwtpWb7oSE8wuVpMx
+\restrict HE9OMQhSvX0oa8uG4o1pZrrjggvVqytIBnS2bDMTe43g0lHdkaz6GSiU4TYmjSg
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -37,4 +37,4 @@ ALTER TABLE ONLY feguslocal.naturalezagasto
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict R2NsitS5hGvSWLY0HQ65icuxVk7kQeXn8RgaLEVkESHLcalwtpWb7oSE8wuVpMx
+\unrestrict HE9OMQhSvX0oa8uG4o1pZrrjggvVqytIBnS2bDMTe43g0lHdkaz6GSiU4TYmjSg

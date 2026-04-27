@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict AiKevxO16etkSJ3HHdrahbjPW9ysdn88uLTyWtgO5kEE8J7ZgH7IXh6CxQKt4xf
+\restrict NfqG7jF9mYNr5JKig7MPKPSng3reHXB5aI3PbDG0kvg8K4EHXRlZvLIT1Wl4JM0
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -43,4 +43,4 @@ ALTER TABLE ONLY feguslocal.gravamenes
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict AiKevxO16etkSJ3HHdrahbjPW9ysdn88uLTyWtgO5kEE8J7ZgH7IXh6CxQKt4xf
+\unrestrict NfqG7jF9mYNr5JKig7MPKPSng3reHXB5aI3PbDG0kvg8K4EHXRlZvLIT1Wl4JM0

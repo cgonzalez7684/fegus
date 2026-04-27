@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict kLZuzACHPhIDqfidxz7WebzAJ6JDhKHmzgauL8vSSnjZGzCSVAOj1KMovvzvPKU
+\restrict eST4b85eRKjo0ly312R9ge3bJUg2weFdlrNcgWFxceHz3r2ixIb7mHvXPAt5299
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -43,4 +43,4 @@ ALTER TABLE ONLY feguslocal.bienesrealizablesnoreportados7
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict kLZuzACHPhIDqfidxz7WebzAJ6JDhKHmzgauL8vSSnjZGzCSVAOj1KMovvzvPKU
+\unrestrict eST4b85eRKjo0ly312R9ge3bJUg2weFdlrNcgWFxceHz3r2ixIb7mHvXPAt5299

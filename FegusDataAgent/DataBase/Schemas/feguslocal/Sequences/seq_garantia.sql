@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict OtJ6WEoK6cquhcm3uuf0YOIIG6n3VoScFYp5de1ecvQsGQgKpHboPrPGmwAd5kI
+\restrict T7dB00GD2WRzEd4TrClhgrM6UfUkjxAk5uGkX8Xft4227hsG9ah0EaNdXnXgfDr
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -28,4 +28,4 @@ ALTER SEQUENCE feguslocal.seq_garantia OWNER TO postgres;
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict OtJ6WEoK6cquhcm3uuf0YOIIG6n3VoScFYp5de1ecvQsGQgKpHboPrPGmwAd5kI
+\unrestrict T7dB00GD2WRzEd4TrClhgrM6UfUkjxAk5uGkX8Xft4227hsG9ah0EaNdXnXgfDr

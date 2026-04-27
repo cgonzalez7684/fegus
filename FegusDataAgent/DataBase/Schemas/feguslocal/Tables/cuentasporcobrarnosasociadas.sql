@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict 9HUberal6YCKh6hvB11eWLFR2VMMOcFPBdirqGND041NxSihjhcW47xLYzfOeuz
+\restrict FBFixjmJu080TgRWD08xyTxh27ov8Ci5raejhGe9yWMkjleM46NDQrKdQUoDcGl
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -50,4 +50,4 @@ ALTER TABLE ONLY feguslocal.cuentasporcobrarnosasociadas
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict 9HUberal6YCKh6hvB11eWLFR2VMMOcFPBdirqGND041NxSihjhcW47xLYzfOeuz
+\unrestrict FBFixjmJu080TgRWD08xyTxh27ov8Ci5raejhGe9yWMkjleM46NDQrKdQUoDcGl

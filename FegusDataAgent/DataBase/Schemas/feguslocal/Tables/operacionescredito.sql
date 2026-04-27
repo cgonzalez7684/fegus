@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict kDHrDfyPl0auf2miskMNthjoN8fPUcNaAV03lzHSt8T1s0zgrHrqjEHjY9nllFS
+\restrict E1XzaueArmSBto5b379fWEEpjaf9KcKGTdHPV2QDxO7MogcCSOZJhJanUq0B1R2
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -131,4 +131,4 @@ ALTER TABLE ONLY feguslocal.operacionescredito
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict kDHrDfyPl0auf2miskMNthjoN8fPUcNaAV03lzHSt8T1s0zgrHrqjEHjY9nllFS
+\unrestrict E1XzaueArmSBto5b379fWEEpjaf9KcKGTdHPV2QDxO7MogcCSOZJhJanUq0B1R2

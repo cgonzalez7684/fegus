@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict 1g3U4SQQErtsAthq6hhmVvLbPkvrLeBrPuoLVqA3pfojaHChTk0i0MmAbUjIOvk
+\restrict 2Jrh0y1MVFMgetfQivJQrDBEqcs8MmKwl4zGZi91aJetX0beFFZPF56NwUev5tY
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -44,4 +44,4 @@ ALTER TABLE ONLY feguslocal.cuentasxcobrar
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict 1g3U4SQQErtsAthq6hhmVvLbPkvrLeBrPuoLVqA3pfojaHChTk0i0MmAbUjIOvk
+\unrestrict 2Jrh0y1MVFMgetfQivJQrDBEqcs8MmKwl4zGZi91aJetX0beFFZPF56NwUev5tY

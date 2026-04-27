@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict xnDaOuhxOeStzxB8gCIVdhA41MfLrsZ8tuhRmxSXkXbkeFjSroHOiCncJg7VrVZ
+\restrict 4yQnlRTFUjSuA6ld1nvmyQd7KwgfyJOcSCPSvpoagoE3rty2MCZ4wzqNod2cFSZ
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -38,4 +38,4 @@ ALTER TABLE ONLY feguslocal.creditossindicados
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict xnDaOuhxOeStzxB8gCIVdhA41MfLrsZ8tuhRmxSXkXbkeFjSroHOiCncJg7VrVZ
+\unrestrict 4yQnlRTFUjSuA6ld1nvmyQd7KwgfyJOcSCPSvpoagoE3rty2MCZ4wzqNod2cFSZ

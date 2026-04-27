@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict CL1uq1rylIgdKCFOTUe4dXZpeDsM2CCO98DCpKLNeniOTAOroaXvOBxeGSj4OzF
+\restrict ws9mXa9fbxbImt0gTp6Ya8hFbTRN6A7Yts7fYUVCR6bs3sfFyIdAfokfkjb0Vzb
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -41,4 +41,4 @@ ALTER TABLE ONLY feguslocal.cuotasatrasadas
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict CL1uq1rylIgdKCFOTUe4dXZpeDsM2CCO98DCpKLNeniOTAOroaXvOBxeGSj4OzF
+\unrestrict ws9mXa9fbxbImt0gTp6Ya8hFbTRN6A7Yts7fYUVCR6bs3sfFyIdAfokfkjb0Vzb

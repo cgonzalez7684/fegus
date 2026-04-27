@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict tt6KOYEabcnq0QCwAJDRGMzCXgiHqOxy99JDYxbxlHpDK7lQvCSMCnYF3S3exs7
+\restrict hP4Z2r2LeR5hLBi4kdKBRtd6ezeRc0aTjuh9ueVoM4jcjmwpD2VePxiD3qTWykU
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -28,4 +28,4 @@ ALTER SEQUENCE feguslocal.seq_operacion OWNER TO postgres;
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict tt6KOYEabcnq0QCwAJDRGMzCXgiHqOxy99JDYxbxlHpDK7lQvCSMCnYF3S3exs7
+\unrestrict hP4Z2r2LeR5hLBi4kdKBRtd6ezeRc0aTjuh9ueVoM4jcjmwpD2VePxiD3qTWykU

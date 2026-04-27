@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict i0D6TcbkKHrW2D8f4u22Ws1vzVhYMwMOr8dQeO6AqghfZeSCYbYgpI2besrk5hj
+\restrict SFYbPIDsKbHkWZwQFd0jN0WZihM5W6k0o3bhPK5yqcIzSEiMFw4vywGTsps2vaY
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -42,4 +42,4 @@ ALTER TABLE ONLY feguslocal.operacionesnoreportadas
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict i0D6TcbkKHrW2D8f4u22Ws1vzVhYMwMOr8dQeO6AqghfZeSCYbYgpI2besrk5hj
+\unrestrict SFYbPIDsKbHkWZwQFd0jN0WZihM5W6k0o3bhPK5yqcIzSEiMFw4vywGTsps2vaY

@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict C5evbWVnn1KZWbHMSDJrEXjZoJKDL03EyzSQaxOcNPG4OJOjWE98182EPjoVjN4
+\restrict TY3nghfVTVYrqgfQyig2NVsH4HEZxhC4Sdnch9KpGKQc3rRuU2IEHnQbZaWZDPW
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -37,4 +37,4 @@ ALTER TABLE ONLY feguslocal.actividadeconomica
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict C5evbWVnn1KZWbHMSDJrEXjZoJKDL03EyzSQaxOcNPG4OJOjWE98182EPjoVjN4
+\unrestrict TY3nghfVTVYrqgfQyig2NVsH4HEZxhC4Sdnch9KpGKQc3rRuU2IEHnQbZaWZDPW

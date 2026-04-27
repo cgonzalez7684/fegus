@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict AhORWfqADjfh4nvBnVaePd9tqjhgCxv5i5j0WfqyplhHa9jb1USb74qUwKtQhuy
+\restrict pIJUuWRjIAXSp6GY0WM3lsrQEwDdgsoeqjiuMWfg66HQaJj4WaxtQyVnKG4robk
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -39,4 +39,4 @@ ALTER TABLE ONLY feguslocal.fideicomiso
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict AhORWfqADjfh4nvBnVaePd9tqjhgCxv5i5j0WfqyplhHa9jb1USb74qUwKtQhuy
+\unrestrict pIJUuWRjIAXSp6GY0WM3lsrQEwDdgsoeqjiuMWfg66HQaJj4WaxtQyVnKG4robk

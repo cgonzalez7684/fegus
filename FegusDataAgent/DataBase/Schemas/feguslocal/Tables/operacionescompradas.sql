@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict 7NPCaBbq28FNoLNYbkEfD2VsnamceAQBzIsemDdoZr4sltDVOVL1zVUyyCfw71G
+\restrict VJKzqgIlRJnwhUAGyVrkQKzshUnvLiog8HxsnWUC3qZMowBcD3OfGe7zXCrgDOu
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -41,4 +41,4 @@ ALTER TABLE ONLY feguslocal.operacionescompradas
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict 7NPCaBbq28FNoLNYbkEfD2VsnamceAQBzIsemDdoZr4sltDVOVL1zVUyyCfw71G
+\unrestrict VJKzqgIlRJnwhUAGyVrkQKzshUnvLiog8HxsnWUC3qZMowBcD3OfGe7zXCrgDOu

@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict bkVKA8x1pq9v4vky9vpKnZVewRpFvdngy1sYGAXw0qsBJoHGEns8P4wT8HSdb0w
+\restrict wHb9krdhH3p6lduS52UCMFfygvdIKgnagRFDFPOpszYZotyibzW6Riks66bh8eL
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -38,4 +38,4 @@ ALTER TABLE ONLY feguslocal.operacionesbienesrealizables
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict bkVKA8x1pq9v4vky9vpKnZVewRpFvdngy1sYGAXw0qsBJoHGEns8P4wT8HSdb0w
+\unrestrict wHb9krdhH3p6lduS52UCMFfygvdIKgnagRFDFPOpszYZotyibzW6Riks66bh8eL

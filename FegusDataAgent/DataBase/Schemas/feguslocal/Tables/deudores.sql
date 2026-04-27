@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict Vmshe6jDLicJuDJccqDfYmSYh16ltd6LSkpoPRDLZEHUSrwyR7GOsEMnOASyzbB
+\restrict dCZGJdaG4sdLsXtWxc4VpzFVR93848DJ43wxcigUXP5BcO3PdhEJGggfcwrNUIK
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -71,4 +71,4 @@ CREATE INDEX idx_deudores_id_load_local_m1 ON feguslocal.deudores USING btree (i
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict Vmshe6jDLicJuDJccqDfYmSYh16ltd6LSkpoPRDLZEHUSrwyR7GOsEMnOASyzbB
+\unrestrict dCZGJdaG4sdLsXtWxc4VpzFVR93848DJ43wxcigUXP5BcO3PdhEJGggfcwrNUIK

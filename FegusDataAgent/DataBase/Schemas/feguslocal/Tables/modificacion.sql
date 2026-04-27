@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict f1RRcsb4qTXwyJk1qWokRB59ZNjWfLfe5Oh1ErQ5jYOfkEfjb3NG6lTNBbN29MF
+\restrict tsDfjvhD7pbXlaJGTkyC3I9zscTbspml1DRVZM97CP3h5i7TAoxOZM4T6kN7Qvk
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -37,4 +37,4 @@ ALTER TABLE ONLY feguslocal.modificacion
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict f1RRcsb4qTXwyJk1qWokRB59ZNjWfLfe5Oh1ErQ5jYOfkEfjb3NG6lTNBbN29MF
+\unrestrict tsDfjvhD7pbXlaJGTkyC3I9zscTbspml1DRVZM97CP3h5i7TAoxOZM4T6kN7Qvk

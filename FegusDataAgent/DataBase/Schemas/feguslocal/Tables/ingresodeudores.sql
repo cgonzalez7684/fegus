@@ -1,7 +1,7 @@
 ﻿--
 -- PostgreSQL database dump
 --
-\restrict sjguxzl767MYvEsPsqWE1jbFB5DSZreoHbAb9ysHhGfWdUmURhBWy3BiZIaexIJ
+\restrict 2kbGyZdWD1ZhlLjXmf4Uqi7jhvzxqIB6OsSjjCheFfMSxEK4WGHEVggymtleJgF
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
 SET statement_timeout = 0;
@@ -40,4 +40,4 @@ ALTER TABLE ONLY feguslocal.ingresodeudores
 --
 -- PostgreSQL database dump complete
 --
-\unrestrict sjguxzl767MYvEsPsqWE1jbFB5DSZreoHbAb9ysHhGfWdUmURhBWy3BiZIaexIJ
+\unrestrict 2kbGyZdWD1ZhlLjXmf4Uqi7jhvzxqIB6OsSjjCheFfMSxEK4WGHEVggymtleJgF
