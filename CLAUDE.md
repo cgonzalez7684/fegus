@@ -110,6 +110,39 @@ PostgreSQL function names use Spanish snake_case (`feguslocal.obtener_deudores_l
 
 The stream endpoint receives a raw gzip-compressed NDJSON body and bulk-inserts rows into `fegusconfig.fe_ingestion_deudores_raw` via PostgreSQL binary COPY (`PostgresCopyStreamWriter`). Each row carries a sequence number used by `FileCheckpointStore` on the agent side for resume-on-failure.
 
+**Resume support:** Before creating a new session, FegusDAgent calls `GET /ingestion/sessions/inflight`. If an open session exists for the same (box, dataset) pair it is reused, resuming from `LastSequencePersisted + 1`.
+
+**Orphan cleanup:** `IngestionSessionReaperHostedService` runs every 60 min and marks sessions older than 6 h as `FAILED`. Configured via `IngestionReaper:OrphanSessionTimeoutHours` and `IngestionReaper:CheckIntervalMinutes`.
+
+**Retry strategy:** Most FegusDAgent HTTP clients use Polly (4 retries, exponential backoff). The streaming sender has **no Polly retry** — a gzip pipe cannot be replayed mid-transfer; resilience is handled by session resume at the use-case level.
+
+## Configuration Quick-Reference
+
+### BackEnd (`appsettings.json`)
+
+| Key | Dev default |
+|-----|-------------|
+| `ConnectionStrings:Postgres` | `Host=localhost;Port=5433;Database=FegusApp;...` |
+| `Jwt:AccessTokenMinutes` | `15` |
+| `Jwt:Key` | Secret (min 32 chars) |
+| `Jwt:Issuer` / `Jwt:Audience` | `fegus-api` / `fegus-app` |
+| `IngestionStorage:TempStoragePath` | `C:\Fegus\TempStorage` (Linux prod: `/var/fegus/ingestion-temp`) |
+| `IngestionReaper:OrphanSessionTimeoutHours` | `6` |
+| `Cors:AllowedOrigins` | `http://localhost:4200` |
+
+### FegusDAgent (`appsettings.json`)
+
+| Key | Purpose |
+|-----|---------|
+| `ConnectionStrings:Postgres` | Local PostgreSQL (`feguslocal` schema) |
+| `FegusApi:BaseUrl` / `FegusApi:IdCliente` | BackEnd API URL and tenant ID |
+| `FegusApi:Username` / `FegusApi:Password` | Agent service account |
+| `IngestionApi:BaseUrl` | Usually same as `FegusApi:BaseUrl` |
+| `Checkpoints:Folder` | Directory for `.chk` checkpoint files |
+| `SaludoWorker:ConsumerCount` | Concurrent consumer tasks |
+| `SaludoWorker:PollIntervalSeconds` | Polling interval for new boxes |
+| `SaludoWorker:MaxAttemptsPerBox` | Before a box transitions to `ERROR` state |
+
 ## Key Non-Obvious Conventions
 
 - The application features folder is spelled **`Feactures`** (not `Features`) in `BackEnd/Application/Feactures/` — this is intentional and consistent
