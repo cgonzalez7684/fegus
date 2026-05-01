@@ -1,0 +1,22 @@
+﻿CREATE TABLE feguslocal.garantiasreales (
+    id_load_local bigint NOT NULL,
+    idgarantiareal character varying(25) NOT NULL,
+    tipobiengarantiareal numeric(5,0) NOT NULL,
+    montoultimatasacionterreno numeric(20,2) NOT NULL,
+    montoultimatasacionnoterreno numeric(20,2) NOT NULL,
+    fechaultimatasaciongarantia date NOT NULL,
+    fechaultimoseguimientogarantia date NOT NULL,
+    tipomonedatasacion numeric(6,0) NOT NULL,
+    fechaconstruccion date,
+    tipopersonatasador numeric(2,0) NOT NULL,
+    idtasador character varying(30) NOT NULL,
+    tipopersonaempresatasadora numeric(2,0),
+    idempresatasadora character varying(30),
+    indicadorpolizagarantiareal character varying(1) NOT NULL,
+    tipocolateralreal numeric(2,0) NOT NULL,
+    porcentajerecuperacioncolateralreal numeric(5,2) NOT NULL,
+    tiempo numeric(2,0) NOT NULL,
+    porcentajefactordescuentotiempo numeric(5,2) NOT NULL,
+    created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at_utc timestamp without time zone
+);
