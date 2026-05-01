@@ -1,4 +1,4 @@
-﻿CREATE TABLE feguslocal.garantiascargascredito (
+﻿CREATE TABLE feguslocal.garantiascartascredito (
     id_load_local bigint NOT NULL,
     idgarantiacartacredito character varying(25) NOT NULL,
     tipomitigadorcartacredito numeric(2,0) NOT NULL,
