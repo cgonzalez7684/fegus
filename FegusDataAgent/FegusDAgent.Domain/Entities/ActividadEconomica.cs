@@ -2,7 +2,7 @@ namespace FegusDAgent.Domain.Entities;
 
 public class ActividadEconomica
 {
-    // 🔑 Primary Key (compuesta)
+    // 🔑 Primary Key (compuestass)
     public long IdLoadLocal { get; private set; }
     public string IdOperacionCredito { get; private set; } = null!;
     public string TipoActividadEconomica { get; private set; } = null!;
