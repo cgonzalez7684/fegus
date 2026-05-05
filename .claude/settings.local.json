@@ -6,7 +6,8 @@
       "Bash(Select-Object -First 10)",
       "Bash(dotnet add *)",
       "Bash(dotnet build *)",
-      "Bash(grep -E \"\\\\.cs$\")"
+      "Bash(grep -E \"\\\\.cs$\")",
+      "PowerShell($json = Get-Content -Path \"C:\\\\Software\\\\Fegus\\\\FegusDataAgent\\\\DataBase\\\\Schemas\\\\feguslocal\\\\catalogs\\\\DataMaster.json\" -Encoding Unicode -Raw; [System.IO.File]::WriteAllText\\(\"C:\\\\Software\\\\Fegus\\\\FegusDataAgent\\\\DataBase\\\\Schemas\\\\feguslocal\\\\catalogs\\\\DataMaster.utf8.json\", $json, [System.Text.UTF8Encoding]::new\\($false\\)\\); $obj = $json | ConvertFrom-Json; $obj.PSObject.Properties | ForEach-Object { \"$\\($_.Name\\): $\\($_.Value.Count\\) registros\" })"
     ]
   }
 }

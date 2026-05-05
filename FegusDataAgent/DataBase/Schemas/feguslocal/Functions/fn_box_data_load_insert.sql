@@ -1,20 +1,7 @@
--- FUNCTION: feguslocal.fn_box_data_load_insert(integer, bigint, character varying, character varying, timestamp without time zone)
-
--- DROP FUNCTION IF EXISTS feguslocal.fn_box_data_load_insert(integer, bigint, character varying, character varying, timestamp without time zone);
-
-CREATE OR REPLACE FUNCTION feguslocal.fn_box_data_load_insert(
-	p_id_cliente integer,
-	p_id_load bigint,
-	p_state_code character varying,
-	p_is_active character varying,
-	p_asofdate timestamp without time zone)
-    RETURNS TABLE(pidload bigint, psqlcode text, psqlmessage text, pqty integer) 
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-    ROWS 1000
-
-AS $BODY$
+﻿DROP FUNCTION IF EXISTS feguslocal.fn_box_data_load_insert CASCADE;
+CREATE FUNCTION feguslocal.fn_box_data_load_insert(p_id_cliente integer, p_id_load bigint, p_state_code character varying, p_is_active character varying, p_asofdate timestamp without time zone) RETURNS TABLE(pidload bigint, psqlcode text, psqlmessage text, pqty integer)
+    LANGUAGE plpgsql
+    AS $$
 DECLARE
     v_rowcount integer := 0;
 BEGIN
@@ -59,7 +46,4 @@ EXCEPTION
 
         RETURN NEXT;
 END;
-$BODY$;
-
-ALTER FUNCTION feguslocal.fn_box_data_load_insert(integer, bigint, character varying, character varying, timestamp without time zone)
-    OWNER TO postgres;
+$$;

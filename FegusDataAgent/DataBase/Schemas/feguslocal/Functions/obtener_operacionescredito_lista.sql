@@ -1,4 +1,4 @@
--- FUNCTION: feguslocal.obtener_operacionescredito_lista(bigint)
+﻿-- FUNCTION: feguslocal.obtener_operacionescredito_lista(bigint)
 
 -- DROP FUNCTION IF EXISTS feguslocal.obtener_operacionescredito_lista(bigint);
 

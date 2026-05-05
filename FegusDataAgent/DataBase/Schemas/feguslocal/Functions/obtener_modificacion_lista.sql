@@ -1,9 +1,8 @@
--- FUNCTION: feguslocal.obtener_modificacion_lista(integer, bigint)
+﻿-- FUNCTION: feguslocal.obtener_modificacion_lista(integer, bigint)
 
 -- DROP FUNCTION IF EXISTS feguslocal.obtener_modificacion_lista(integer, bigint);
 
-CREATE OR REPLACE FUNCTION feguslocal.obtener_modificacion_lista(
-	p_id_cliente integer,
+CREATE OR REPLACE FUNCTION feguslocal.obtener_modificacion_lista(	
 	p_id_load_local bigint)
     RETURNS SETOF feguslocal.modificacion 
     LANGUAGE 'plpgsql'
@@ -13,10 +12,16 @@ CREATE OR REPLACE FUNCTION feguslocal.obtener_modificacion_lista(
 
 AS $BODY$
 BEGIN
+
+	--Se actualiza cualquier registro donde la columna id_load_local
+	Update feguslocal.modificacion
+	set id_load_local = p_id_load_local
+	where id_load_local = -1;
+
     RETURN QUERY SELECT * FROM feguslocal.modificacion t
-    WHERE t.id_cliente = p_id_cliente AND t.id_load_local = p_id_load_local;
+    WHERE t.id_load_local = p_id_load_local;
 END; 
 $BODY$;
 
-ALTER FUNCTION feguslocal.obtener_modificacion_lista(integer, bigint)
+ALTER FUNCTION feguslocal.obtener_modificacion_lista(bigint)
     OWNER TO postgres;

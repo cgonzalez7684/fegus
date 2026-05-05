@@ -26,11 +26,14 @@ src/app/
     fegusconfig/boxdataload/     ← Box data load management
   shared/
     components/grid-z/   ← GridZComponent — the ONLY AG Grid wrapper in the app
+    components/modal-z/  ← ModalZComponent — reusable modal wrapper
     models/              ← GridColumnConfig interface
     catalogs/            ← SUGEF_CATALOGS (SUGEF code→description mappings)
   services/       ← App-wide services (ToastService)
   views/          ← CoreUI template boilerplate — do NOT put business features here
-  layout/         ← Default shell layout (header, footer, sidebar)
+  layout/
+    default-layout/      ← Shell with sidebar, header, footer, toaster
+      _nav.ts            ← Sidebar navigation menu config — add new routes here
 ```
 
 ## Feature Folder Convention
@@ -54,14 +57,18 @@ feactures/<domain>/<feature>/
 ## Adding a New Feature
 
 1. Create the folder tree above under `feactures/<domain>/<feature>/`
-2. Define `XxxDto` and a service extending `BaseApiService`:
+2. Define `XxxDto`, `XxxValue.dto.ts` (value wrapper), and a service extending `BaseApiService`:
    ```ts
+   // XxxValue.dto.ts — matches the backend's wrapped response shape
+   export interface XxxValue<T> { result: T; }
+
    @Injectable({ providedIn: 'root' })
    export class XxxApiService extends BaseApiService {
      getData(idCliente: string) {
-       return this.get<ApiResponse<XxxDto[]>>(`schema/endpoint/${idCliente}`);
+       return this.get<ApiResponse<XxxValue<XxxDto[]>>>(`schema/endpoint/${idCliente}`);
      }
    }
+   // Access data in component: response.value?.result
    ```
 3. Define a `GridColumnConfig[]` constant in `models/xxx.grid.config.ts`
 4. Create a standalone page component using `GridZComponent` (never embed AG Grid directly)
@@ -89,9 +96,9 @@ Columns with `catalog: 'TIPO_PERSONA'` automatically get:
 - A dropdown cell editor with `code - description` format
 - A `valueParser` that converts the selection back to the raw numeric code
 
-### ApiResponse\<T\>
+### ApiResponse\<T\> and Value Wrapper
 
-All API calls return this shape (mirroring the backend `Result<T>`):
+All API calls return `ApiResponse<T>` (mirroring the backend `Result<T>`):
 ```ts
 interface ApiResponse<T> {
   value: T | null;
@@ -101,7 +108,16 @@ interface ApiResponse<T> {
   errorType: string | null;
 }
 ```
-Always check `response.isSuccess` before using `response.value`.
+
+Backend endpoints wrap the payload in a `{ result: T }` object, so the actual generic chain is `ApiResponse<XxxValue<XxxDto[]>>` and data lives at `response.value?.result`, not `response.value`. Always check `response.isSuccess` before accessing the value.
+
+### Router Structure
+
+`app.routes.ts` uses **two overlapping `''` paths** at the root level — this is intentional:
+- First `''` → `LoginComponent` (unauthenticated)
+- Second `''` → `DefaultLayoutComponent` guarded by `AuthGuard`, with all feature routes as children
+
+New feature routes must be registered as children of the `DefaultLayoutComponent` route, and a corresponding entry added to `layout/default-layout/_nav.ts` for sidebar navigation.
 
 ### Auth
 

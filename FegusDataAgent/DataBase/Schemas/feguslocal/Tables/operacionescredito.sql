@@ -1,17 +1,12 @@
--- Table: feguslocal.operacionescredito
-
--- DROP TABLE IF EXISTS feguslocal.operacionescredito;
-
-CREATE TABLE IF NOT EXISTS feguslocal.operacionescredito
-(
+﻿CREATE TABLE feguslocal.operacionescredito (
     id_load_local bigint NOT NULL,
     "TipoOperacionSFN" numeric(1,0) NOT NULL,
     "TipoPersonaDeudor" numeric(2,0) NOT NULL,
-    "IdDeudor" character varying(30) COLLATE pg_catalog."default" NOT NULL,
-    "IdOperacionCredito" character varying(25) COLLATE pg_catalog."default" NOT NULL,
-    "IdLineaCredito" character varying(25) COLLATE pg_catalog."default",
-    "IndicadorOperacionModificada" character varying(1) COLLATE pg_catalog."default",
-    "IndicadorPresentaCodeudores" character varying(1) COLLATE pg_catalog."default",
+    "IdDeudor" character varying(30) NOT NULL,
+    "IdOperacionCredito" character varying(25) NOT NULL,
+    "IdLineaCredito" character varying(25),
+    "IndicadorOperacionModificada" character varying(1),
+    "IndicadorPresentaCodeudores" character varying(1),
     "TipoEnfoque" numeric(2,0),
     "TipoSegmento" numeric(2,0),
     "CodigoEtapa" numeric(2,0),
@@ -22,7 +17,7 @@ CREATE TABLE IF NOT EXISTS feguslocal.operacionescredito
     "LGDRegulatorio" numeric(5,2),
     "TipoOperacion" numeric(3,0) NOT NULL,
     "TipoCatalogoSUGEF" numeric(3,0) NOT NULL,
-    "CodigoPaisDestinoCredito" character varying(4) COLLATE pg_catalog."default",
+    "CodigoPaisDestinoCredito" character varying(4),
     "CodigoProvinciaDestinoCredito" numeric(2,0),
     "CodigoCantonDestinoCredito" numeric(2,0),
     "CodigoDistritoDestinoCredito" numeric(4,0),
@@ -56,10 +51,10 @@ CREATE TABLE IF NOT EXISTS feguslocal.operacionescredito
     "FechaVencimientoPeriodoGraciaPrincipal" date,
     "TasaLey7472" numeric(10,7),
     "TasaInteresNominalVigente" numeric(5,2),
-    "IndicadorTipoTasa" character varying(2) COLLATE pg_catalog."default",
-    "FactorDeTiempoCalculoIntereses" character varying(1) COLLATE pg_catalog."default",
-    "IndicadorFormaPagoVigentePrincipal" character varying(1) COLLATE pg_catalog."default",
-    "IndicadorFormaPagoVigenteIntereses" character varying(1) COLLATE pg_catalog."default",
+    "IndicadorTipoTasa" character varying(2),
+    "FactorDeTiempoCalculoIntereses" character varying(1),
+    "IndicadorFormaPagoVigentePrincipal" character varying(1),
+    "IndicadorFormaPagoVigenteIntereses" character varying(1),
     "FechaCorteOperacion" date,
     "FechaProximoPagoPrincipal" date,
     "FechaProximoPagoIntereses" date,
@@ -71,13 +66,13 @@ CREATE TABLE IF NOT EXISTS feguslocal.operacionescredito
     "TipoCuotaPrincipal" numeric(2,0),
     "MontoCuotaPrincipalActual" numeric(22,2),
     "MontoCuotaInteresesActual" numeric(22,2),
-    "IndicadorOperacionNueva" character varying(1) COLLATE pg_catalog."default",
+    "IndicadorOperacionNueva" character varying(1),
     "MontoRecuperacionPrincipal" numeric(22,2) NOT NULL,
     "MontoOtrosAumentosDePrincipal" numeric(22,2) NOT NULL,
     "MontoOtrasDisminucionesDePrincipal" numeric(22,2) NOT NULL,
-    "IndicadorBacktoBack" character varying(1) COLLATE pg_catalog."default" NOT NULL,
-    "IndicadorCreditoSindicado" character varying(1) COLLATE pg_catalog."default" NOT NULL,
-    "IndicadorOperacionEspecial" character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    "IndicadorBacktoBack" character varying(1) NOT NULL,
+    "IndicadorCreditoSindicado" character varying(1) NOT NULL,
+    "IndicadorOperacionEspecial" character varying(1) NOT NULL,
     "TipoMotivoOperacionEspecial" numeric(3,0),
     "CodigoClausulaLimiteCredito" numeric(2,0),
     "FechaCambioTipoTasa" date,
@@ -92,22 +87,16 @@ CREATE TABLE IF NOT EXISTS feguslocal.operacionescredito
     "TipoProgramaAutorizadoSBD" numeric(5,0) NOT NULL,
     "IndicadorCreditoGrupalSolidarioSBD" numeric(1,0) NOT NULL,
     "TipoSectorPrioritarioDeudorSBD" numeric(2,0) NOT NULL,
-    "IdFondeadorSBD" character varying(30) COLLATE pg_catalog."default",
+    "IdFondeadorSBD" character varying(30),
     "TipoPersonaIdFondeadorSBD" numeric(2,0),
-    "IndicadorOperacionCedidaEnGarantia" character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    "IndicadorOperacionCedidaEnGarantia" character varying(1) NOT NULL,
     "PorcentajePonderadorSPD" numeric(5,2) NOT NULL,
     "PorcentajePonderadorSPC" numeric(5,2) NOT NULL,
     "PorcentajeIndicadorLTV" numeric(5,2),
-    "IndicadorCambioClimatico" character varying(1) COLLATE pg_catalog."default" NOT NULL,
+    "IndicadorCambioClimatico" character varying(1) NOT NULL,
     "TipoClasificacionRiesgoClimatico" numeric(2,0),
-    "TipoMetodologíaClimático" numeric(2,0),
+    "TipoMetodologiaClimatica" numeric(2,0),
     "TipoPotencialidadImpactoClimatico" numeric(2,0),
-    created_at_utc timestamp without time zone NOT NULL DEFAULT now(),
-    updated_at_utc timestamp without time zone,
-    CONSTRAINT pk_operacionescredito PRIMARY KEY (id_load_local, "IdOperacionCredito")
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS feguslocal.operacionescredito
-    OWNER to postgres;
+    created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at_utc timestamp without time zone
+);

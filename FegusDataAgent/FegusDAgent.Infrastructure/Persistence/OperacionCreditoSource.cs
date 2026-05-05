@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Entities;
 using FegusDAgent.Domain.Interfaces;
@@ -9,9 +9,9 @@ using NpgsqlTypes;
 namespace FegusDAgent.Infrastructure.Persistence;
 
 /// <summary>
-/// Lee operaciones de crédito desde PostgreSQL mediante la función
+/// Lee operaciones de crÃ©dito desde PostgreSQL mediante la funciÃ³n
 /// <c>feguslocal.obtener_operaciones_credito_lista(@id_load_local)</c>.
-/// La función debe devolver columnas en minúsculas alineadas con el mapeo de esta clase.
+/// La funciÃ³n debe devolver columnas en minÃºsculas alineadas con el mapeo de esta clase.
 /// </summary>
 public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
 {
@@ -27,12 +27,13 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
     }
 
     public async IAsyncEnumerable<OperacionCredito> GetDataStreamAsync(
+        int? idCliente,
         long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         // C# disallows yield inside a try-with-catch, so we advance the enumerator
         // inside try-catch and yield the result outside.
-        await using var enumerator = ReadFromDatabaseAsync(idLoadLocal, cancellationToken)
+        await using var enumerator = ReadFromDatabaseAsync(idCliente, idLoadLocal, cancellationToken)
             .GetAsyncEnumerator(cancellationToken);
 
         while (true)
@@ -58,6 +59,7 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
     }
 
     private async IAsyncEnumerable<OperacionCredito> ReadFromDatabaseAsync(
+        int? idCliente,
         long? idLoadLocal,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
@@ -70,7 +72,7 @@ public sealed class OperacionCreditoSource : IEntitySource<OperacionCredito>
             FROM feguslocal.obtener_operacionescredito_lista(@id_load_local)
             """;
 
-        command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Integer)
+        command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Bigint)
         {
             Value = idLoadLocal.HasValue ? (object)idLoadLocal.Value : DBNull.Value
         });

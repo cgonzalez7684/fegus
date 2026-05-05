@@ -1,28 +1,23 @@
--- Table: feguslocal.deudores
-
--- DROP TABLE IF EXISTS feguslocal.deudores;
-
-CREATE TABLE IF NOT EXISTS feguslocal.deudores
-(
+﻿CREATE TABLE feguslocal.deudores (
     id_load_local bigint NOT NULL,
     tipodeudorsfn integer,
     tipopersonadeudor numeric NOT NULL,
-    iddeudor character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    iddeudor character varying(30) NOT NULL,
     codigosectoreconomico numeric,
     tipocapacidadpago integer,
     saldototalsegmentacion numeric,
     tipocondicionespecialdeudor integer,
-    fechacalificacionriesgo text COLLATE pg_catalog."default",
+    fechacalificacionriesgo text,
     tipoindicadorgeneradordivisas integer,
     tipoasignacioncalificacion integer,
     categoriacalificacion numeric,
-    calificacionriesgo text COLLATE pg_catalog."default",
+    calificacionriesgo text,
     codigoempresacalificadora numeric,
-    indicadorvinculadoentidad character varying COLLATE pg_catalog."default",
-    indicadorvinculadogrupofinanciero character varying COLLATE pg_catalog."default",
+    indicadorvinculadoentidad character varying,
+    indicadorvinculadogrupofinanciero character varying,
     idgrupointereseconomico numeric,
     tipocomportamientopago integer,
-    tipoactividadeconomicadeudor character varying(14) COLLATE pg_catalog."default",
+    tipoactividadeconomicadeudor character varying(14),
     tipocomportamientopagosbd integer,
     tipobeneficiariosbd integer,
     totaloperacionesreestructuradassbd integer,
@@ -31,28 +26,13 @@ CREATE TABLE IF NOT EXISTS feguslocal.deudores
     montoingresototaldeudor numeric,
     totalcargamensualcsd numeric,
     indicadorcsd numeric,
-    indicadorcic character varying(1) COLLATE pg_catalog."default",
+    indicadorcic character varying(1),
     saldomoramayorultmeses1421 numeric,
     nummesesmoramayor1421 integer,
     saldomoramayorultmeses1516 numeric,
     nummesesmoramayor1516 integer,
     numdiasatraso1421 integer,
     numdiasatraso1516 integer,
-    created_at_utc timestamp without time zone NOT NULL DEFAULT now(),
-    updated_at_utc timestamp without time zone,
-    CONSTRAINT deudores_pkey PRIMARY KEY (id_load_local, tipopersonadeudor, iddeudor)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS feguslocal.deudores
-    OWNER to postgres;
--- Index: idx_deudores_id_load_local_m1
-
--- DROP INDEX IF EXISTS feguslocal.idx_deudores_id_load_local_m1;
-
-CREATE INDEX IF NOT EXISTS idx_deudores_id_load_local_m1
-    ON feguslocal.deudores USING btree
-    (id_load_local ASC NULLS LAST)
-    TABLESPACE pg_default
-    WHERE id_load_local = '-1'::integer;
+    created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at_utc timestamp without time zone
+);
