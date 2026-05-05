@@ -93,3 +93,5 @@ pnpm-debug.log*
 
 # Archivos de test
 *.spec.ts
+
+.claude/worktrees/
