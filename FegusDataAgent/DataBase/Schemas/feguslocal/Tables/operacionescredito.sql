@@ -95,7 +95,7 @@
     "PorcentajeIndicadorLTV" numeric(5,2),
     "IndicadorCambioClimatico" character varying(1) NOT NULL,
     "TipoClasificacionRiesgoClimatico" numeric(2,0),
-    "TipoMetodolog├¡aClim├ítico" numeric(2,0),
+    "TipoMetodologiaClimatica" numeric(2,0),
     "TipoPotencialidadImpactoClimatico" numeric(2,0),
     created_at_utc timestamp without time zone DEFAULT now() NOT NULL,
     updated_at_utc timestamp without time zone

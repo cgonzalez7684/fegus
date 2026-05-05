@@ -6,9 +6,8 @@ namespace FegusDAgent.Domain.Interfaces;
 
 public interface IEntitySource<T>
 {
-    IAsyncEnumerable<T> GetDataStreamAsync(        
+    IAsyncEnumerable<T> GetDataStreamAsync(
+        int? idCliente,
         long? idLoadLocal,
         CancellationToken cancellationToken);
-
-      
 }

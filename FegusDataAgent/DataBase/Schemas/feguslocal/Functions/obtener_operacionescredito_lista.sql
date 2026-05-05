@@ -1,7 +1,16 @@
-﻿DROP FUNCTION IF EXISTS feguslocal.obtener_operacionescredito_lista CASCADE;
-CREATE FUNCTION feguslocal.obtener_operacionescredito_lista(p_id_load_local bigint) RETURNS SETOF feguslocal.operacionescredito
-    LANGUAGE plpgsql
-    AS $$
+﻿-- FUNCTION: feguslocal.obtener_operacionescredito_lista(bigint)
+
+-- DROP FUNCTION IF EXISTS feguslocal.obtener_operacionescredito_lista(bigint);
+
+CREATE OR REPLACE FUNCTION feguslocal.obtener_operacionescredito_lista(
+	p_id_load_local bigint)
+    RETURNS SETOF feguslocal.operacionescredito 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
 BEGIN
 
 	--Se actualiza cualquier registro donde la columna id_load_local
@@ -14,4 +23,7 @@ BEGIN
     FROM feguslocal.operacionescredito oc
     WHERE oc.id_load_local = p_id_load_local;
 END;
-$$;
+$BODY$;
+
+ALTER FUNCTION feguslocal.obtener_operacionescredito_lista(bigint)
+    OWNER TO postgres;

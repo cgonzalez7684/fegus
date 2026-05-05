@@ -102,6 +102,38 @@ DataBase/Schemas/feguslocal/
   Types/        ← Custom PostgreSQL types
 ```
 
+The following outlines the relationship between a database table, a C# entity, and a PostgreSQL function that allows querying the table to create data collections.
+```
+[actividadeconomica] --> [ActividadEconomica] --> [obtener_actividadeconomica_lista]
+[bienesrealizables] --> [BienesRealizables] --> [obtener_bienesrealizables_lista]
+[bienesrealizablesnoreportados] --> [BienesRealizablesNoReportados] --> [obtener_bienesrealizablesnoreportados_lista]
+[cambioclimatico] --> [CambioClimatico] --> [obtener_cambioclimatico_lista]
+[codeudores] --> [Codeudor] --> [obtener_codeudores_lista]
+[creditossindicados] --> [CreditoSindicado] --> [obtener_creditossindicados_lista]
+[cuentasporcobrarnosasociadas] --> [CuentaPorCobrarNoAsociada] --> [obtener_cuentasporcobrarnosasociadas_lista]
+[cuentasxcobrar] --> [CuentaPorCobrar] --> [obtener_cuentasxcobrar_lista]
+[cuotasatrasadas] --> [CuotaAtrasada] --> [obtener_cuotasatrasadas_lista]
+[deudores] --> [Deudor] --> [obtener_deudores_lista]
+[fideicomiso] --> [Fideicomiso] --> [obtener_fideicomiso_lista]
+[garantiasmobiliarias] --> [GarantiaMobiliaria] --> [obtener_garantiasmobiliarias_lista]
+[garantiasoperacion] --> [GarantiaOperacion] --> [obtener_garantiasoperacion_lista]
+[gravamenes] --> [Gravamen] --> [obtener_gravamenes_lista]
+[ingresodeudores] --> [IngresoDeudor] --> [obtener_ingresodeudores_lista]
+[modificacion] --> [Modificacion] --> [obtener_modificacion_lista]
+[naturalezagasto] --> [NaturalezaGasto] --> [obtener_naturalezagasto_lista]
+[operacionesbienesrealizables] --> [OperacionBienRealizable] --> [obtener_operacionesbienesrealizables_lista]
+[operacionescompradas] --> [OperacionComprada] --> [obtener_operacionescompradas_lista]
+[operacionescredito] --> [OperacionCredito] --> [obtener_operacionescredito_lista]
+[operacionesnoreportadas] --> [OperacionNoReportada] --> [obtener_operacionesnoreportadas_lista]
+[origenrecursos] --> [OrigenRecursos] --> [obtener_origenrecursos_lista]
+[garantiasfiduciarias] --> [GarantiaFiduciaria] --> [obtener_garantiasfiduciarias_lista]
+[garantiasvalores] --> [GarantiaValor] --> [obtener_garantiasvalores_lista]
+[garantiasreales] --> [GarantiaReal] --> [obtener_garantiasreales_lista]
+[garantiasfacturascedidas] --> [GarantiasFacturaCedida] --> [obtener_garantiasfacturascedidas_lista]
+[garantiascartascredito] --> [GarantiaCartaCredito] --> [obtener_garantiascartascredito_lista]
+[garantiaspolizas] --> [GarantiaPoliza] --> [obtener_garantiaspolizas_lista]
+```
+
 Use these scripts to:
 - Confirm exact column names and types before mapping to domain entity properties.
 - Check function signatures (parameters, return columns) before calling via Dapper.
