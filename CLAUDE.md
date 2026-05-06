@@ -143,6 +143,31 @@ The stream endpoint receives a raw gzip-compressed NDJSON body and bulk-inserts 
 | `SaludoWorker:PollIntervalSeconds` | Polling interval for new boxes |
 | `SaludoWorker:MaxAttemptsPerBox` | Before a box transitions to `ERROR` state |
 
+
+
+## Database Script Execution Targets
+
+Claude Code must understand that this repository can work against two PostgreSQL database targets. When a database script is generated, reviewed, or applied, the intended target must be selected explicitly by the user or inferred from the task context.
+
+### Connection Variables
+
+Use the following variable names when referring to database targets:
+
+| Variable | Purpose | Connection string |
+|----------|---------|-------------------|
+| `ConnectionStringLocal` | PostgreSQL database installed on the developer's local machine, used for local debugging and development. | `Host=localhost;Port=5433;Database=FegusApp;Username=postgres;Password=Car7684$;` |
+| `ConnectionStringAzure` | PostgreSQL database deployed in Azure, equivalent to the FegusApp database used in cloud environments. | `Host=dbfegusserver.postgres.database.azure.com;Port=5432;Database=FegusApp;Username=postgres;Password=Car7686$; SslMode=require; Trust Server Certificate=true;` |
+
+### Script Application Rule
+
+Before applying or generating an executable PostgreSQL script, Claude Code must identify which connection target should be used:
+
+- Use `ConnectionStringLocal` for local debugging, local tests, development validation, and scripts that are not intended to affect Azure.
+- Use `ConnectionStringAzure` only when the user explicitly asks to apply, validate, or prepare the script for the Azure PostgreSQL database.
+- If the target database is not clear, Claude Code must not assume Azure. Prefer `ConnectionStringLocal` for safe local validation, or ask the user to confirm the target before execution.
+- Any script that modifies schema or data must be generated with a clear note indicating the intended target connection variable.
+- Never hard-code these values inside application source code unless the user explicitly asks for a temporary local/debug example. Prefer configuration files, environment variables, user secrets, or secure deployment settings.
+
 ## Key Non-Obvious Conventions
 
 - The application features folder is spelled **`Feactures`** (not `Features`) in `BackEnd/Application/Feactures/` — this is intentional and consistent

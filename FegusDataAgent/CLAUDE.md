@@ -93,8 +93,7 @@ The folder `FegusDataAgent/DataBase/Schemas/feguslocal/` contains the authoritat
 
 ```
 DataBase/Schemas/feguslocal/
-  Tables/       ← deudores, operacionescredito, garantiasoperacion, cuotasatrasadas,
-                   cuentasxcobrar, fe_box_data_load, and 20+ other financial tables
+  Tables/       ← actividadeconomica, bienesrealizables, bienesrealizablesnoreportados, cambioclimatico, codeudores, creditossindicados, cuentasporcobrarnosasociadas, cuentasxcobrar, cuotasatrasadas, deudores, fe_box_data_load, fideicomiso, garantiascartascredito, garantiasfacturascedidas, garantiasfiduciarias, garantiasmobiliarias, garantiasoperacion, garantiaspolizas, garantiasreales, garantiasvalores, gravamenes, ingresodeudores, modificacion, naturalezagasto, operacionesbienesrealizables, operacionescompradas, operacionescredito, operacionesnoreportadas, origenrecursos
   Functions/    ← obtener_deudores_lista, obtener_operacionescredito_lista,
                    obtener_garantiasoperacion_lista, generar_id_fegus, etc.
   Procedures/   ← generar_operaciones_deudor, gerancion_datos_dummy
