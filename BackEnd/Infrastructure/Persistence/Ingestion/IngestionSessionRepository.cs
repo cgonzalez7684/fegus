@@ -103,13 +103,13 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
         return session;
     }
 
-    private static string GetRawTableName(string dataset) => dataset switch
+    /*private static string GetRawTableName(string dataset) => dataset switch
     {
         "Deudores"          => "fegusconfig.fe_ingestion_deudores_raw",
         "OperacionesCredito" => "fegusconfig.fe_ingestion_operaciones_raw",
         "GarantiasOperacion" => "fegusconfig.fe_ingestion_garantias_raw",
         _ => throw new NotSupportedException($"Dataset '{dataset}' is not supported.")
-    };
+    };*/
 
     public async Task<IngestionSession?> GetByIdAsync(
         Guid sessionId,

@@ -69,28 +69,46 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
 
     private static string GetCopySql(string dataset)
     {
-        if (dataset == DataSetNameIngestion.Deudores.Value)
-            return """
-                COPY fegusconfig.fe_ingestion_deudores_raw
-                (session_id, id_cliente, seq, payload, id_load)
-                FROM STDIN (FORMAT BINARY)
-            """;
+        var table = dataset switch
+        {
+            // ── original datasets ────────────────────────────────────────────
+            "Deudores"                     => "fe_ingestion_deudores_raw",
+            "OperacionesCredito"           => "fe_ingestion_operaciones_raw",
+            "GarantiasOperacion"           => "fe_ingestion_garantias_raw",
 
-        if (dataset == DataSetNameIngestion.OperacionesCredito.Value)
-            return """
-                COPY fegusconfig.fe_ingestion_operaciones_raw
-                (session_id, id_cliente, seq, payload, id_load)
-                FROM STDIN (FORMAT BINARY)
-            """;
+            // ── extended datasets ─────────────────────────────────────────────
+            "ActividadEconomica"           => "fe_ingestion_actividadeconomica_raw",
+            "BienesRealizables"            => "fe_ingestion_bienesrealizables_raw",
+            "BienesRealizablesNoReportados"=> "fe_ingestion_bienesrealizablesnoreportados_raw",
+            "CambioClimatico"              => "fe_ingestion_cambioclimatico_raw",
+            "Codeudores"                   => "fe_ingestion_codeudores_raw",
+            "CreditosSindicados"           => "fe_ingestion_creditossindicados_raw",
+            "CuentasPorCobrarNoAsociadas"  => "fe_ingestion_cuentasporcobrarnosasociadas_raw",
+            "Fideicomiso"                  => "fe_ingestion_fideicomiso_raw",
+            "GarantiasCartasCredito"       => "fe_ingestion_garantiascartascredito_raw",
+            "GarantiasFacturasCedidas"     => "fe_ingestion_garantiasfacturascedidas_raw",
+            "GarantiasFiduciarias"         => "fe_ingestion_garantiasfiduciarias_raw",
+            "GarantiasMobiliarias"         => "fe_ingestion_garantiasmobiliarias_raw",
+            "GarantiasPolizas"             => "fe_ingestion_garantiaspolizas_raw",
+            "GarantiasReales"              => "fe_ingestion_garantiasreales_raw",
+            "GarantiasValores"             => "fe_ingestion_garantiasvalores_raw",
+            "Gravamenes"                   => "fe_ingestion_gravamenes_raw",
+            "IngresoDeudores"              => "fe_ingestion_ingresodeudores_raw",
+            "Modificacion"                 => "fe_ingestion_modificacion_raw",
+            "NaturalezaGasto"              => "fe_ingestion_naturalezagasto_raw",
+            "OperacionesBienesRealizables" => "fe_ingestion_operacionesbienesrealizables_raw",
+            "OperacionesCompradas"         => "fe_ingestion_operacionescompradas_raw",
+            "OperacionesNoReportadas"      => "fe_ingestion_operacionesnoreportadas_raw",
+            "OrigenRecursos"               => "fe_ingestion_origenrecursos_raw",
 
-        if (dataset == DataSetNameIngestion.GarantiasOperacion.Value)
-            return """
-                COPY fegusconfig.fe_ingestion_garantias_raw
-                (session_id, id_cliente, seq, payload, id_load)
-                FROM STDIN (FORMAT BINARY)
-            """;
+            _ => throw new NotSupportedException($"Dataset '{dataset}' is not supported.")
+        };
 
-        throw new NotSupportedException($"Dataset '{dataset}' is not supported.");
+        return $"""
+            COPY fegusconfig.{table}
+            (session_id, id_cliente, seq, payload, id_load)
+            FROM STDIN (FORMAT BINARY)
+        """;
     }
 
 }
