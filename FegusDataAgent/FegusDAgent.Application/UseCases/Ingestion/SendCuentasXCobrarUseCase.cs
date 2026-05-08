@@ -37,13 +37,14 @@ public sealed class SendCuentasXCobrarUseCase
                               box.IdLoad, dataset, token, cancellationToken)
                           ?? await _sessionClient.CreateSessionAsync(
                               box.IdLoad, dataset, token, cancellationToken);
-
-            _logger.Info($"SendCuentasXCobrar using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad}.");
+            
 
             var sessionStatus = await _sessionClient.GetStatusAsync(
                 session.SessionId, token, cancellationToken);
 
             var lastSequence = sessionStatus.LastSequencePersisted;
+
+            _logger.Info($"SendCuentasXCobrar using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad} for idLoadLocal={box.IdLoadLocal} lastSequence={lastSequence}.");
 
             var dataStream = _source.GetDataStreamAsync(box.IdCliente, box.IdLoadLocal, cancellationToken);
 

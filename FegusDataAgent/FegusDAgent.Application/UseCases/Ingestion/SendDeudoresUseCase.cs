@@ -41,7 +41,7 @@ public sealed class SendDeudoresUseCase
                           ?? await _sessionClient.CreateSessionAsync(
                               box.IdLoad, dataset, token, cancellationToken);
 
-            _logger.Info($"SendDeudores using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad}.");
+            
 
             // 2️⃣ Recuperar último checkpoint desde la sesión remota
             var sessionStatus = await _sessionClient.GetStatusAsync(
@@ -50,6 +50,8 @@ public sealed class SendDeudoresUseCase
                 cancellationToken);
 
             var lastSequence = sessionStatus.LastSequencePersisted;
+
+            _logger.Info($"SendDeudores using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad} for idLoadLocal={box.IdLoadLocal} lastSequence={lastSequence}.");
 
             // 3️⃣ Obtener snapshot completo de deudores, esto no es un API
             //     es la ejecucion local de la funcion de pgsql que obtiene los datos de deudores para el idLoadLocal dado. El resultado se devuelve como un stream asincrono.
