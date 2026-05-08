@@ -70,13 +70,10 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
     private static string GetCopySql(string dataset)
     {
         var table = dataset switch
-        {
-            // ── original datasets ────────────────────────────────────────────
+        {            
             "Deudores"                     => "fe_ingestion_deudores_raw",
             "OperacionesCredito"           => "fe_ingestion_operaciones_raw",
-            "GarantiasOperacion"           => "fe_ingestion_garantias_raw",
-
-            // ── extended datasets ─────────────────────────────────────────────
+            "GarantiasOperacion"           => "fe_ingestion_garantias_raw",            
             "ActividadEconomica"           => "fe_ingestion_actividadeconomica_raw",
             "BienesRealizables"            => "fe_ingestion_bienesrealizables_raw",
             "BienesRealizablesNoReportados"=> "fe_ingestion_bienesrealizablesnoreportados_raw",
@@ -100,6 +97,8 @@ public sealed class PostgresCopyStreamWriter : IIngestionStreamWriter
             "OperacionesCompradas"         => "fe_ingestion_operacionescompradas_raw",
             "OperacionesNoReportadas"      => "fe_ingestion_operacionesnoreportadas_raw",
             "OrigenRecursos"               => "fe_ingestion_origenrecursos_raw",
+            "CuentasXCobrar"               => "fe_ingestion_cuentas_cobrar_asociadas_raw",
+            "CuotasAtrasadas"               => "fe_ingestion_cuotas_atrasadas_raw",
 
             _ => throw new NotSupportedException($"Dataset '{dataset}' is not supported.")
         };
