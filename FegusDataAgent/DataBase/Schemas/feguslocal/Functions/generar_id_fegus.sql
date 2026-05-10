@@ -11,6 +11,10 @@ BEGIN
     
     EXECUTE v_sql INTO v_next;
 
-    RETURN p_prefijo || LPAD(v_next::text, p_longitud, '0');
+    -- GREATEST(...) prevents LPAD from truncating when the sequence value exceeds p_longitud digits.
+    RETURN p_prefijo || LPAD(v_next::text, GREATEST(p_longitud, LENGTH(v_next::text)), '0');
 END;
 $$;
+
+ALTER FUNCTION feguslocal.generar_id_fegus(text, text, integer)
+    OWNER TO postgres;

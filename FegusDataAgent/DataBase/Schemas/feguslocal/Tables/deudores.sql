@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.deudores (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     tipodeudorsfn integer,
     tipopersonadeudor numeric NOT NULL,
     iddeudor character varying(30) NOT NULL,

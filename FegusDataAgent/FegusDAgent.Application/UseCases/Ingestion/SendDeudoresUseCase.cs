@@ -56,13 +56,12 @@ public sealed class SendDeudoresUseCase
             // 3️⃣ Obtener snapshot completo de deudores, esto no es un API
             //     es la ejecucion local de la funcion de pgsql que obtiene los datos de deudores para el idLoadLocal dado. El resultado se devuelve como un stream asincrono.
             var deudoresStream = _source
-                .GetDataStreamAsync(box.IdCliente, box.IdLoadLocal, cancellationToken);
+                .GetDataStreamAsync(box.IdCliente, box.IdLoadLocal, lastSequence, cancellationToken);
 
             // 4️⃣ Enviar datos por streaming
             await _streamSender.SendStreamAsync(
                 session,
                 deudoresStream,
-                lastSequence,
                 token,
                 cancellationToken);
 

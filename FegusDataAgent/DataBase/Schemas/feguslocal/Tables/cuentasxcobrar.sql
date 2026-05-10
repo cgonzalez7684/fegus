@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.cuentasxcobrar (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idoperacioncredito character varying(50) NOT NULL,
     idcuentacobrarasociada character varying(50) NOT NULL,
     cuentacontablecuentacobrarasociada character varying(50) NOT NULL,

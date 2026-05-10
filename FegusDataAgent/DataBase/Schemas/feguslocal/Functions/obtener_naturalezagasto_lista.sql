@@ -1,10 +1,11 @@
-﻿-- FUNCTION: feguslocal.obtener_naturalezagasto_lista(integer, bigint)
+-- FUNCTION: feguslocal.obtener_naturalezagasto_lista(bigint, bigint)
 
--- DROP FUNCTION IF EXISTS feguslocal.obtener_naturalezagasto_lista(integer, bigint);
+-- DROP FUNCTION IF EXISTS feguslocal.obtener_naturalezagasto_lista(bigint, bigint);
 
-CREATE OR REPLACE FUNCTION feguslocal.obtener_naturalezagasto_lista(	
-	p_id_load_local bigint)
-    RETURNS SETOF feguslocal.naturalezagasto 
+CREATE OR REPLACE FUNCTION feguslocal.obtener_naturalezagasto_lista(
+	p_id_load_local bigint,
+	p_last_seq bigint DEFAULT 0)
+    RETURNS SETOF feguslocal.naturalezagasto
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -19,9 +20,11 @@ BEGIN
 	where id_load_local = -1;
 
     RETURN QUERY SELECT * FROM feguslocal.naturalezagasto t
-    WHERE t.id_load_local = p_id_load_local;
-END; 
+    WHERE t.id_load_local = p_id_load_local
+    AND t.seq > p_last_seq
+    ORDER BY t.seq;
+END;
 $BODY$;
 
-ALTER FUNCTION feguslocal.obtener_naturalezagasto_lista(bigint)
+ALTER FUNCTION feguslocal.obtener_naturalezagasto_lista(bigint, bigint)
     OWNER TO postgres;

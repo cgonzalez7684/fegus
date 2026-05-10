@@ -51,4 +51,12 @@ BEGIN
             v_table_name,
             v_rows_updated;
     END LOOP;
+
+	DELETE FROM feguslocal.fe_box_data_load WHERE id_load_local = v_old_id_load_local;
+
+	GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
+
+	RAISE NOTICE 'Tabla feguslocal.fe_box_data_load borrar registro id_load_local. Registros afectados: %',		
+		v_rows_updated;
+	
 END $$;

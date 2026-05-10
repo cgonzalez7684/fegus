@@ -38,7 +38,9 @@
       "Bash(psql \"host=dbfegusserver.postgres.database.azure.com port=5432 dbname=FegusApp user=postgres password=Car7686$ sslmode=require\" -f \"C:\\\\Software\\\\Fegus\\\\BackEnd\\\\DataBase\\\\Schemas\\\\fegusconfig\\\\Tables\\\\fe_ingestion_modificacion_raw.sql\")",
       "Bash(psql \"host=dbfegusserver.postgres.database.azure.com port=5432 dbname=FegusApp user=postgres password=Car7686$ sslmode=require\" -f \"C:\\\\Software\\\\Fegus\\\\BackEnd\\\\DataBase\\\\Schemas\\\\fegusconfig\\\\Tables\\\\fe_ingestion_naturalezagasto_raw.sql\")",
       "Bash(psql \"host=dbfegusserver.postgres.database.azure.com port=5432 dbname=FegusApp user=postgres password=Car7686$ sslmode=require\" -f \"C:\\\\Software\\\\Fegus\\\\BackEnd\\\\DataBase\\\\Schemas\\\\fegusconfig\\\\Tables\\\\fe_ingestion_operacionesbienesrealizables_raw.sql\")",
-      "Bash(psql \"host=dbfegusserver.postgres.database.azure.com port=5432 dbname=FegusApp user=postgres password=Car7686$ sslmode=require\" -f \"C:\\\\Software\\\\Fegus\\\\BackEnd\\\\DataBase\\\\Schemas\\\\fegusconfig\\\\Tables\\\\fe_ingestion_operacionescompradas_raw.sql\")"
+      "Bash(psql \"host=dbfegusserver.postgres.database.azure.com port=5432 dbname=FegusApp user=postgres password=Car7686$ sslmode=require\" -f \"C:\\\\Software\\\\Fegus\\\\BackEnd\\\\DataBase\\\\Schemas\\\\fegusconfig\\\\Tables\\\\fe_ingestion_operacionescompradas_raw.sql\")",
+      "PowerShell(psql --version)",
+      "PowerShell($env:PGPASSWORD = \"Car7684$\"; psql -h localhost -p 5433 -U postgres -d FegusApp -f \"C:\\\\Software\\\\Fegus\\\\FegusDataAgent\\\\DataBase\\\\Schemas\\\\feguslocal\\\\Scripts\\\\migrate_add_seq_to_entity_tables.sql\")"
     ]
   }
 }

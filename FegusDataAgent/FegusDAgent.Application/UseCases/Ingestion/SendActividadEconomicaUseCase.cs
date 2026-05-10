@@ -45,9 +45,9 @@ public sealed class SendActividadEconomicaUseCase
 
             _logger.Info($"SendActividadEconomica using sessionId={session.SessionId} state={session.SessionStateCode} for idLoad={box.IdLoad} for idLoadLocal={box.IdLoadLocal} lastSequence={lastSequence}.");
 
-            var dataStream = _source.GetDataStreamAsync(box.IdCliente, box.IdLoadLocal, cancellationToken);
+            var dataStream = _source.GetDataStreamAsync(box.IdCliente, box.IdLoadLocal, lastSequence, cancellationToken);
 
-            await _streamSender.SendStreamAsync(session, dataStream, lastSequence, token, cancellationToken);
+            await _streamSender.SendStreamAsync(session, dataStream, token, cancellationToken);
 
             await _sessionClient.CommitAsync(session.SessionId, token, cancellationToken);
         }
