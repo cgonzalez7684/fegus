@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.garantiasfacturascedidas (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idgarantiafacturacedida character varying(25) NOT NULL,
     fechaconstitucion date NOT NULL,
     fechavencimiento date,

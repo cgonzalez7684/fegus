@@ -2,6 +2,7 @@
 using FegusDAgent.Application.Logging;
 using FegusDAgent.Domain.Entities;
 using FegusDAgent.Domain.Interfaces;
+using FegusDAgent.Domain.Values;
 using FegusDAgent.Infrastructure.Interfaces;
 using Npgsql;
 using NpgsqlTypes;
@@ -21,12 +22,13 @@ public sealed class OrigenRecursosSource : IEntitySource<OrigenRecursos>
         _logger = logger;
     }
 
-    public async IAsyncEnumerable<OrigenRecursos> GetDataStreamAsync(
+    public async IAsyncEnumerable<SourceRecord<OrigenRecursos>> GetDataStreamAsync(
         int? idCliente,
         long? idLoadLocal,
+        long lastSeq,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await using var enumerator = ReadFromDatabaseAsync(idCliente, idLoadLocal, cancellationToken)
+        await using var enumerator = ReadFromDatabaseAsync(idCliente, idLoadLocal, lastSeq, cancellationToken)
             .GetAsyncEnumerator(cancellationToken);
 
         while (true)
@@ -51,9 +53,10 @@ public sealed class OrigenRecursosSource : IEntitySource<OrigenRecursos>
         }
     }
 
-    private async IAsyncEnumerable<OrigenRecursos> ReadFromDatabaseAsync(
+    private async IAsyncEnumerable<SourceRecord<OrigenRecursos>> ReadFromDatabaseAsync(
         int? idCliente,
         long? idLoadLocal,
+        long lastSeq,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
@@ -61,17 +64,18 @@ public sealed class OrigenRecursosSource : IEntitySource<OrigenRecursos>
         command.CommandText =
             """
             SELECT *
-            FROM feguslocal.obtener_origenrecursos_lista(@id_load_local)
+            FROM feguslocal.obtener_origenrecursos_lista(@id_load_local, @last_seq)
             """;
 
         command.Parameters.Add(new NpgsqlParameter("id_load_local", NpgsqlDbType.Bigint)
         {
             Value = idLoadLocal.HasValue ? (object)idLoadLocal.Value : DBNull.Value
         });
+        command.Parameters.Add(new NpgsqlParameter("last_seq", NpgsqlDbType.Bigint) { Value = lastSeq });
 
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
-            yield return MapRow(reader);
+            yield return new SourceRecord<OrigenRecursos>(reader.GetInt64(reader.GetOrdinal("seq")), MapRow(reader));
     }
 
     private static OrigenRecursos MapRow(NpgsqlDataReader reader) =>

@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.cambioclimatico (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idoperacioncredito character varying(50) NOT NULL,
     tipotema character varying(10) NOT NULL,
     tiposubtema character varying(10) NOT NULL,

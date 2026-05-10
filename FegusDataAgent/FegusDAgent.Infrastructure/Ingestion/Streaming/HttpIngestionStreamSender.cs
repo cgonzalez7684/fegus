@@ -28,8 +28,7 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
 
     public async Task SendStreamAsync<T>(
         IngestionSession session,
-        IAsyncEnumerable<T> data,
-        long startSequence,
+        IAsyncEnumerable<SourceRecord<T>> data,
         string token,
         CancellationToken cancellationToken)
     {
@@ -52,7 +51,7 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
                 cancellationToken);
 
             // 2️⃣ Escribimos el stream
-            await WriteStreamAsync(producer, data, startSequence, cancellationToken);
+            await WriteStreamAsync(producer, data, cancellationToken);
 
             // 3️⃣ Esperamos la respuesta HTTP
             var response = await postTask;
@@ -79,8 +78,7 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
 
     private static async Task WriteStreamAsync<T>(
         ProducerStream producer,
-        IAsyncEnumerable<T> data,
-        long startSequence,
+        IAsyncEnumerable<SourceRecord<T>> data,
         CancellationToken ct)
     {
         await using var gzip = new GZipStream(
@@ -90,14 +88,12 @@ public sealed class HttpIngestionStreamSender : IIngestionStreamSender
 
         await using var writer = new StreamWriter(gzip);
 
-        long seq = startSequence;
-
         await foreach (var item in data.WithCancellation(ct))
         {
             var line = JsonSerializer.Serialize(new
             {
-                seq = ++seq,
-                data = item
+                seq = item.Seq,
+                data = item.Data
             });
 
             await writer.WriteLineAsync(line);

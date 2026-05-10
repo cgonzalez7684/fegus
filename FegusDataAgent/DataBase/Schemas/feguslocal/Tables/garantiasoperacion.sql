@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.garantiasoperacion (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     tipopersonadeudor character varying(2) NOT NULL,
     iddeudor character varying(50) NOT NULL,
     idoperacioncredito character varying(50) NOT NULL,

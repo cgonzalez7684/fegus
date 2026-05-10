@@ -26,14 +26,23 @@ BEGIN
         INTO v_count
         USING v_session_id;*/
 
-		EXECUTE format(
+		/*EXECUTE format(
             'SELECT COUNT(*) FROM %I.%I WHERE id_load = $1',
             v_table.schemaname,
             v_table.tablename
         )
         INTO v_count
-        USING v_id_load;
+        USING v_id_load;*/
+
+		EXECUTE format(
+            'SELECT COUNT(*) FROM %I.%I',
+            v_table.schemaname,
+            v_table.tablename
+        )
+        INTO v_count;
+        
 
         RAISE NOTICE '%.%: %', v_table.schemaname, v_table.tablename, v_count;
     END LOOP;
 END $$;
+

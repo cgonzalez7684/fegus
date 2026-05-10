@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.garantiasmobiliarias (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idgarantiamobiliaria character varying(50) NOT NULL,
     fechapublicidadgm date NOT NULL,
     montogarantiamobiliaria numeric(18,2) NOT NULL,

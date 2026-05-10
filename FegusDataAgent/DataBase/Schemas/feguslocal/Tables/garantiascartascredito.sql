@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.garantiascartascredito (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idgarantiacartacredito character varying(25) NOT NULL,
     tipomitigadorcartacredito numeric(2,0) NOT NULL,
     fechaconstitucion date NOT NULL,

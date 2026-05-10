@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.fideicomiso (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     idfideicomisogarantia character varying(50) NOT NULL,
     fechaconstitucion date NOT NULL,
     fechavencimiento date NOT NULL,

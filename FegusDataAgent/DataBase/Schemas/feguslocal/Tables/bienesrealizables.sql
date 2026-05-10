@@ -1,5 +1,6 @@
 ﻿CREATE TABLE feguslocal.bienesrealizables (
     id_load_local bigint NOT NULL,
+    seq bigint NOT NULL GENERATED ALWAYS AS IDENTITY (START 1 INCREMENT 1),
     tipoadquisicionbien character varying(10) NOT NULL,
     idbienrealizable character varying(50) NOT NULL,
     indicadorgarantia character varying(1) NOT NULL,
