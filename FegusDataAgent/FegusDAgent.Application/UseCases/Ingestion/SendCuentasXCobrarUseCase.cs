@@ -39,6 +39,12 @@ public sealed class SendCuentasXCobrarUseCase
                               box.IdLoad, dataset, token, cancellationToken);
             
 
+            if (string.Equals(session.SessionStateCode, "COMPLETED", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.Info($"Dataset {dataset} already COMPLETED for idLoad={box.IdLoad}. Skipping duplicate load.");
+                return;
+            }
+
             var sessionStatus = await _sessionClient.GetStatusAsync(
                 session.SessionId, token, cancellationToken);
 
