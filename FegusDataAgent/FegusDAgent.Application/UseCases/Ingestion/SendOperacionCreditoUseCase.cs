@@ -43,6 +43,12 @@ public sealed class SendOperacionCreditoUseCase
                           ?? await _sessionClient.CreateSessionAsync(
                               box.IdLoad, dataset, token, cancellationToken);
 
+            if (string.Equals(session.SessionStateCode, "COMPLETED", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.Info($"Dataset {dataset} already COMPLETED for idLoad={box.IdLoad}. Skipping duplicate load.");
+                return;
+            }
+
             // 2️⃣ Recuperar último checkpoint desde la sesión remota
             var sessionStatus = await _sessionClient.GetStatusAsync(
                 session.SessionId,

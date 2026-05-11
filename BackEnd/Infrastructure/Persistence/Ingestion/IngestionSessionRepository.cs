@@ -182,7 +182,7 @@ public sealed class IngestionSessionRepository : IIngestionSessionRepository
             WHERE id_cliente = @IdCliente
               AND id_load    = @IdLoad
               AND dataset    = @Dataset
-              AND session_state_code IN ('CREATED','RECEIVING')
+              AND session_state_code IN ('CREATED','RECEIVING','COMPLETED')
             ORDER BY created_at_utc DESC
             LIMIT 1
         """;
