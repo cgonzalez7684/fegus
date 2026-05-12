@@ -10,4 +10,10 @@ public sealed class OrchestrationOptions
     /// Máximo de intentos por box antes de marcarlo en estado ERROR. Default 5.
     /// </summary>
     public int MaxAttemptsPerBox { get; set; } = 5;
+
+    /// <summary>
+    /// Máximo de streams de datasets activos simultáneamente hacia el BackEnd. Default 8.
+    /// Limita conexiones COPY concurrentes a PostgreSQL para evitar timeouts en Azure.
+    /// </summary>
+    public int MaxConcurrentStreams { get; set; } = 8;
 }

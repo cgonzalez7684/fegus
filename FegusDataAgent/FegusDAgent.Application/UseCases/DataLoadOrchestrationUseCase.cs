@@ -137,40 +137,50 @@ public sealed class DataLoadOrchestrationUseCase(
             return false;
         }
 
-        // 5. Stream datasets in parallel
+        // 5. Stream datasets with bounded concurrency to avoid saturating Azure PostgreSQL.
+        // All 28 tasks are created up front; the gate limits how many run simultaneously.
 
         try
         {
-            await Task.WhenAll(
-                sendDeudores.ExecuteAsync(token, box, cancellationToken),
-                sendOperacionCredito.ExecuteAsync(token, box, cancellationToken),
-                sendActividadEconomica.ExecuteAsync(token, box, cancellationToken),
-                sendBienesRealizables.ExecuteAsync(token, box, cancellationToken),
-                sendBienesRealizablesNoReportados.ExecuteAsync(token, box, cancellationToken),
-                sendCambioClimatico.ExecuteAsync(token, box, cancellationToken),
-                sendCodeudores.ExecuteAsync(token, box, cancellationToken),
-                sendCreditosSindicados.ExecuteAsync(token, box, cancellationToken),
-                sendCuentasPorCobrarNoAsociadas.ExecuteAsync(token, box, cancellationToken),
-                sendCuentasXCobrar.ExecuteAsync(token, box, cancellationToken),
-                sendCuotasAtrasadas.ExecuteAsync(token, box, cancellationToken),
-                sendFideicomiso.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasCartasCredito.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasFacturasCedidas.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasFiduciarias.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasMobiliarias.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasOperacion.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasPolizas.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasReales.ExecuteAsync(token, box, cancellationToken),
-                sendGarantiasValores.ExecuteAsync(token, box, cancellationToken),
-                sendGravamenes.ExecuteAsync(token, box, cancellationToken),
-                sendIngresoDeudores.ExecuteAsync(token, box, cancellationToken),
-                sendModificacion.ExecuteAsync(token, box, cancellationToken),
-                sendNaturalezaGasto.ExecuteAsync(token, box, cancellationToken),
-                sendOperacionesBienesRealizables.ExecuteAsync(token, box, cancellationToken),
-                sendOperacionesCompradas.ExecuteAsync(token, box, cancellationToken),
-                sendOperacionesNoReportadas.ExecuteAsync(token, box, cancellationToken),
-                sendOrigenRecursos.ExecuteAsync(token, box, cancellationToken)
-                );
+            Func<Task>[] senders =
+            [
+                () => sendDeudores.ExecuteAsync(token, box, cancellationToken),
+                () => sendOperacionCredito.ExecuteAsync(token, box, cancellationToken),
+                () => sendActividadEconomica.ExecuteAsync(token, box, cancellationToken),
+                () => sendBienesRealizables.ExecuteAsync(token, box, cancellationToken),
+                () => sendBienesRealizablesNoReportados.ExecuteAsync(token, box, cancellationToken),
+                () => sendCambioClimatico.ExecuteAsync(token, box, cancellationToken),
+                () => sendCodeudores.ExecuteAsync(token, box, cancellationToken),
+                () => sendCreditosSindicados.ExecuteAsync(token, box, cancellationToken),
+                () => sendCuentasPorCobrarNoAsociadas.ExecuteAsync(token, box, cancellationToken),
+                () => sendCuentasXCobrar.ExecuteAsync(token, box, cancellationToken),
+                () => sendCuotasAtrasadas.ExecuteAsync(token, box, cancellationToken),
+                () => sendFideicomiso.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasCartasCredito.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasFacturasCedidas.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasFiduciarias.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasMobiliarias.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasOperacion.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasPolizas.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasReales.ExecuteAsync(token, box, cancellationToken),
+                () => sendGarantiasValores.ExecuteAsync(token, box, cancellationToken),
+                () => sendGravamenes.ExecuteAsync(token, box, cancellationToken),
+                () => sendIngresoDeudores.ExecuteAsync(token, box, cancellationToken),
+                () => sendModificacion.ExecuteAsync(token, box, cancellationToken),
+                () => sendNaturalezaGasto.ExecuteAsync(token, box, cancellationToken),
+                () => sendOperacionesBienesRealizables.ExecuteAsync(token, box, cancellationToken),
+                () => sendOperacionesCompradas.ExecuteAsync(token, box, cancellationToken),
+                () => sendOperacionesNoReportadas.ExecuteAsync(token, box, cancellationToken),
+                () => sendOrigenRecursos.ExecuteAsync(token, box, cancellationToken),
+            ];
+
+            using var gate = new SemaphoreSlim(orchestrationOptions.MaxConcurrentStreams);
+            await Task.WhenAll(senders.Select(async sender =>
+            {
+                await gate.WaitAsync(cancellationToken);
+                try   { await sender(); }
+                finally { gate.Release(); }
+            }));
 
             box.StateCode = DataLoadState.Completed.ToString();
             box.LastErrorMessage = null;
