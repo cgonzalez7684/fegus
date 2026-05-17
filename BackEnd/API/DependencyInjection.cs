@@ -109,6 +109,11 @@ public static class DependencyInjection
 
         services.AddHostedService<IngestionSessionReaperHostedService>();
 
+        services.Configure<BoxLoadingOptions>(
+            configuration.GetSection("BoxLoading"));
+
+        services.AddHostedService<BoxLoadingHostedService>();
+
         services.AddSingleton<TempFileStorage>(sp =>
         {
             var options = sp

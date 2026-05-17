@@ -14,6 +14,7 @@ global using System.Diagnostics;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using API.Middleware;
+global using API.HostedServices;
 global using Application;
 global using efGate.WebAPI;
 global using Infrastructure;
