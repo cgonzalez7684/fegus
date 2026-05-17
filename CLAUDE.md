@@ -15,6 +15,10 @@ docs/             Architecture and convention documentation — always read befo
 
 Each project has its own `CLAUDE.md` with per-project detail. This file covers cross-project concerns.
 
+## Domain Context
+
+FEGUS is a SaaS regulatory reporting platform for financial institutions in Costa Rica. It validates, processes, and submits credit-portfolio data aligned with **SUGEF** (Superintendencia General de Entidades Financieras) requirements. Every concept in the codebase — entity names, DB identifiers, catalog codes — derives from SUGEF regulations. The system is multi-tenant: each financial institution client is identified by `id_cliente` and all data is strictly scoped to it.
+
 ## Build & Run Commands
 
 ### BackEnd
@@ -22,7 +26,7 @@ Each project has its own `CLAUDE.md` with per-project detail. This file covers c
 cd BackEnd
 dotnet build
 dotnet run --project API           # API listens on http://localhost:8080
-dotnet test
+dotnet test                        # BackEnd only — no test projects exist in FegusDAgent
 ```
 
 ### FegusDAgent
@@ -104,6 +108,27 @@ await conn.QueryAsync<T>("schema.fn_name", new { param }, commandType: CommandTy
 ```
 PostgreSQL function names use Spanish snake_case (`feguslocal.obtener_deudores_lista`).
 
+### PostgreSQL Schemas
+
+| Schema | Purpose |
+|--------|---------|
+| `fegusseg` | Authentication — users, roles, refresh tokens |
+| `fegusdata` | Credit entities — Deudores, OperacionesCredito, Garantias |
+| `fegusconfig` | Workflow and ingestion — box lifecycle, ingestion sessions, raw staging |
+| `feguscatalogos` | SUGEF regulatory code mappings (read-only reference data) |
+| `feguslocal` | Agent-only — exists on the developer's local PostgreSQL instance used by FegusDAgent |
+
+### Box State Machine
+
+Boxes (data-load submissions) are tracked in `fegusconfig.fe_box_data_load` and progress through:
+
+```
+NEW → CREATED → STAGING → VALIDATING → CALCULATING → COMPLETED
+                                                    ↘ ERROR (on max-attempts exceeded)
+```
+
+This state is polled by FegusDAgent and drives its orchestration logic. The BackEnd exposes the current box state via `GET /fegusconfig/box/{idCliente}/next`.
+
 ### Ingestion Session Lifecycle
 
 `CREATED → RECEIVING → COMPLETED | FAILED` (tracked in `fegusconfig.fe_ingestion_sessions`)
@@ -153,10 +178,12 @@ Claude Code must understand that this repository can work against two PostgreSQL
 
 Use the following variable names when referring to database targets:
 
+> **Never commit credentials here.** Look up connection details in the project's local `appsettings.json` or user secrets.
+
 | Variable | Purpose | Connection string |
 |----------|---------|-------------------|
-| `ConnectionStringLocal` | PostgreSQL database installed on the developer's local machine, used for local debugging and development. | `Host=localhost;Port=5433;Database=FegusApp;Username=postgres;Password=Car7684$;` |
-| `ConnectionStringAzure` | PostgreSQL database deployed in Azure, equivalent to the FegusApp database used in cloud environments. | `Host=dbfegusserver.postgres.database.azure.com;Port=5432;Database=FegusApp;Username=postgres;Password=Car7686$; SslMode=require; Trust Server Certificate=true;` |
+| `ConnectionStringLocal` | PostgreSQL on the developer's local machine (local dev/debug) | `Host=localhost;Port=5433;Database=FegusApp;Username=postgres;Password=<see appsettings.json>;` |
+| `ConnectionStringAzure` | PostgreSQL deployed in Azure (cloud/production) | `Host=dbfegusserver.postgres.database.azure.com;Port=5432;Database=FegusApp;Username=postgres;Password=<see appsettings.json>;SslMode=require;Trust Server Certificate=true;` |
 
 ### Script Application Rule
 
@@ -170,9 +197,10 @@ Before applying or generating an executable PostgreSQL script, Claude Code must 
 
 ## Key Non-Obvious Conventions
 
-- The application features folder is spelled **`Feactures`** (not `Features`) in `BackEnd/Application/Feactures/` — this is intentional and consistent
+- The application features folder is spelled **`Feactures`** (not `Features`) in both `BackEnd/Application/Feactures/` and `fegus/src/app/feactures/` — this is intentional and consistent across the monorepo
 - The worker's appsettings section is named **`SaludoWorker`** even though it controls the general worker pool (`ConsumerCount`, `PollIntervalSeconds`, etc.)
 - Business entity and DB identifier names are in **Spanish**; C# class/method names and API routes are in **English**
 - `OperacionCredito` streaming is implemented but currently **disabled** in `FegusDataAgent/FegusDAgent.Application/UseCases/DataLoadOrchestrationUseCase.cs` (line ~96, commented out in the `Task.WhenAll` call)
 - The frontend uses `GridZComponent` as the single AG Grid wrapper for all data grids — do not embed AG Grid directly in feature components
+- All backend HTTP responses are wrapped in `ApiResponse<T>`; unwrap with `response.value?.result` in Angular services
 - SUGEF catalog mappings live in `fegus/src/app/shared/catalogs/sugef-catalogs.ts` and drive dropdown editors and tooltips via `GridColumnConfig.catalog`

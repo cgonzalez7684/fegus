@@ -6,6 +6,7 @@ global using Application.Feactures.Deudores;
 global using Dapper;
 global using Microsoft.Extensions.DependencyInjection;
 global using Infrastructure.Persistence.Repositories;
+global using Infrastructure.Persistence.Loading;
 global using Domain.Entities;
 global using Domain.Interfaces.Auth;
 global using Infrastructure.Auth;
