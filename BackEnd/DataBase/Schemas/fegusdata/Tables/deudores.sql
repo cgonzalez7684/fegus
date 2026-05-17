@@ -5,8 +5,9 @@
 CREATE TABLE IF NOT EXISTS fegusdata.deudores
 (
     id_cliente integer NOT NULL,
-    id_load bigint NOT NULL,
-    session_id uuid NOT NULL,
+	id_load bigint NOT NULL,
+	session_id uuid NOT NULL,
+	seq bigint NOT NULL,
     tipodeudorsfn integer,
     tipopersonadeudor numeric NOT NULL,
     iddeudor character varying(30) COLLATE pg_catalog."default" NOT NULL,
@@ -33,18 +34,36 @@ CREATE TABLE IF NOT EXISTS fegusdata.deudores
     montoingresototaldeudor numeric,
     totalcargamensualcsd numeric,
     indicadorcsd numeric,
+    indicadorcic character varying(1) COLLATE pg_catalog."default",
     saldomoramayorultmeses1421 numeric,
     nummesesmoramayor1421 integer,
     saldomoramayorultmeses1516 numeric,
     nummesesmoramayor1516 integer,
     numdiasatraso1421 integer,
     numdiasatraso1516 integer,
-    fechaultgestion date,
-    codusuarioultgestion character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT deudores_pkey PRIMARY KEY (id_cliente, id_load, session_id,tipopersonadeudor, iddeudor)
+    created_at_utc timestamp without time zone NOT NULL DEFAULT now(),
+    updated_at_utc timestamp without time zone,    
+    CONSTRAINT deudores_pkey PRIMARY KEY (id_cliente, id_load, session_id, tipopersonadeudor, iddeudor)
 )
 
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS fegusdata.deudores
     OWNER to postgres;
+
+
+CREATE INDEX IF NOT EXISTS ix_deudores_idx1
+ON fegusdata.deudores (
+    id_cliente,
+    id_load,
+    tipopersonadeudor,
+    iddeudor    
+);
+
+CREATE INDEX IF NOT EXISTS ix_deudores_idx2
+ON fegusdata.deudores (
+    id_cliente,
+    id_load,    
+    iddeudor
+);
+

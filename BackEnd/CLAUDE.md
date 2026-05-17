@@ -36,13 +36,15 @@ API (FastEndpoints)
 
 1. Domain entity → `Domain/Entities/`
 2. Repository interface → `Domain/Interfaces/` or `Application/Interfaces/`
-3. Command or Query record → `Application/Feactures/<Feature>/` implementing `ICommand<T>` / `IQuery<T>` from `Common`
-4. Handler implementing `ICommandHandler<,>` / `IQueryHandler<,>` in the same folder
+3. Command or Query record → `Application/Feactures/<Feature>/Commands/<Op>/` or `.../Queries/<Op>/` implementing `ICommand<T>` / `IQuery<T>` from `Common`
+4. Handler in the same folder implementing `ICommandHandler<,>` / `IQueryHandler<,>`
 5. Repository implementation in `Infrastructure/Persistence/` using Dapper
 6. FastEndpoints endpoint in `API/Endpoints/<Feature>/`
 7. Register repository in `Infrastructure/DependencyInjection.cs`
 
 The folder is spelled `Feactures` (not `Features`) — intentional and consistent across the solution.
+
+**Endpoint request = MediatR record.** The request type declared in `Endpoint<TRequest, TResponse>` is the same record that implements `ICommand<T>` / `IQuery<T>`. There is no intermediate DTO or mapping step — FastEndpoints binds the HTTP request directly into the command/query record, which is then passed straight to `_sender.Send(req, ct)`.
 
 ## Key Patterns
 
@@ -55,8 +57,9 @@ The folder is spelled `Feactures` (not `Features`) — intentional and consisten
 - `Configure()` declares route, verb, auth policy, roles.
 - `HandleAsync(req, ct)` sends the MediatR command/query and maps the result via `Send.ResponseAsync(result)`.
 
-**Database** — Dapper + Npgsql only (no EF). All queries call PostgreSQL stored functions:
+**Database** — Dapper + Npgsql only (no EF). Inject `IDbConnectionFactory` and call `_connectionFactory.CreateConnection()` to open a connection. All queries call PostgreSQL stored functions:
 ```csharp
+using var conn = _connectionFactory.CreateConnection();
 await conn.QueryAsync<T>("schema.function_name", new { param }, commandType: CommandType.StoredProcedure);
 ```
 Active schemas: `fegusconfig` (system/config tables), `fegusdata` (debtor data), `feguscatalogos` (catalogs), `feguslocal` (processing).
@@ -96,6 +99,8 @@ Routes require JWT with `idcliente` claim and `ingestion.agent` role (policy: `I
 
 Temp files land in `IngestionStorage:TempStoragePath` (Windows: `C:\Fegus\TempStorage`; Linux/prod: `/var/fegus/ingestion-temp`).
 
+Kestrel is configured with a **500 MB max request body** to handle large ingestion streams (`API/Program.cs`).
+
 ## Authentication
 
 JWT Bearer. Token claims: `sub` (userId), `idcliente`, `username`, `email`, `roles`, `perms`.
@@ -104,6 +109,8 @@ Auth policies: `AuthenticatedUser` (valid JWT) and `Ingestion` (requires `ingest
 `JwtTokenService` and `IAuthRepository` live in `Infrastructure`.
 
 ## Configuration
+
+Three appsettings files exist: `appsettings.json` (base), `appsettings.Development.json`, `appsettings.Production.json`. The active environment is controlled by `ASPNETCORE_ENVIRONMENT`.
 
 | Key | Dev value |
 |-----|-----------|
