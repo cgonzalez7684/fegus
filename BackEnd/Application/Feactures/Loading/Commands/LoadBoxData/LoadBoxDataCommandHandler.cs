@@ -91,7 +91,7 @@ public sealed class LoadBoxDataCommandHandler : ICommandHandler<LoadBoxDataComma
         box.LastErrorMessage = errorMessage;
         box.StateCode = (box.AttemptCount ?? 0) >= maxAttempts
             ? DataLoadState.Error
-            : DataLoadState.Loading;
+            : DataLoadState.Staging;
 
         await _boxes.UpdateFeBoxDataLoadAsync(box, ct);
 

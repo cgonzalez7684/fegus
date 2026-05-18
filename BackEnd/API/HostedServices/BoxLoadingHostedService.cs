@@ -64,11 +64,11 @@ public sealed class BoxLoadingHostedService : BackgroundService
 
         var boxes = await loading.GetBoxesReadyForLoadingAsync(ct);
 
+        _logger.LogInformation(
+            "BoxLoadingHostedService: poll — {Count} box(es) in STAGING ready for LOADING.", boxes.Count);
+
         if (boxes.Count == 0)
             return;
-
-        _logger.LogInformation(
-            "BoxLoadingHostedService: {Count} box(es) ready for LOADING.", boxes.Count);
 
         foreach (var (idCliente, idLoad) in boxes)
         {
